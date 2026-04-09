@@ -55,19 +55,38 @@ const Chatbot = () => {
     try {
       const response = await productApi.chatbot(inputValue);
 
+      let botReply = "Xin lỗi, tôi chưa hiểu câu hỏi của bạn";
+
+      if (response.data.success) {
+        botReply = response.data.reply;
+      } else if (response.data.response) {
+        botReply = response.data.response;
+      } else if (typeof response.data === 'string') {
+        botReply = response.data;
+      }
+
       const botMessage: Message = {
         id: Date.now() + 1,
-        text: response.data.response,
+        text: botReply,
         sender: "bot",
         timestamp: new Date(),
       };
 
       setMessages((prev) => [...prev, botMessage]);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Lỗi chatbot:", error);
+
+      let errorText = "Xin lỗi, hiện tại tôi đang gặp chút sự cố. Vui lòng thử lại sau!";
+
+      if (error.response?.data?.error) {
+        errorText = `Lỗi: ${error.response.data.error}`;
+      } else if (error.message === "Network Error") {
+        errorText = "Không thể kết nối đến server. Vui lòng kiểm tra kết nối!";
+      }
+
       const errorMessage: Message = {
         id: Date.now() + 1,
-        text: "Xin lỗi, hiện tại tôi đang gặp chút sự cố. Vui lòng thử lại sau!",
+        text: errorText,
         sender: "bot",
         timestamp: new Date(),
       };
@@ -120,21 +139,18 @@ const Chatbot = () => {
                   initial={{ opacity: 0, x: msg.sender === "user" ? 10 : -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   key={msg.id}
-                  className={`flex ${
-                    msg.sender === "user" ? "justify-end" : "justify-start"
-                  }`}
+                  className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"
+                    }`}
                 >
                   <div
-                    className={`flex gap-2.5 max-w-[85%] ${
-                      msg.sender === "user" ? "flex-row-reverse" : ""
-                    }`}
+                    className={`flex gap-2.5 max-w-[85%] ${msg.sender === "user" ? "flex-row-reverse" : ""
+                      }`}
                   >
                     <div
-                      className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${
-                        msg.sender === "user"
-                          ? "bg-shopee-blue text-white"
-                          : "bg-white text-shopee-blue dark:bg-slate-900 dark:text-slate-100"
-                      }`}
+                      className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${msg.sender === "user"
+                        ? "bg-shopee-blue text-white"
+                        : "bg-white text-shopee-blue dark:bg-slate-900 dark:text-slate-100"
+                        }`}
                     >
                       {msg.sender === "user" ? (
                         <User size={16} />
@@ -143,19 +159,17 @@ const Chatbot = () => {
                       )}
                     </div>
                     <div
-                      className={`p-3.5 rounded-2xl text-sm leading-relaxed ${
-                        msg.sender === "user"
-                          ? "glass text-slate-800 dark:bg-slate-900/80 dark:text-slate-100 antialiased font-semibold rounded-tr-none shadow-md"
-                          : "bg-white text-gray-800 dark:bg-slate-900/80 dark:text-slate-100 rounded-tl-none shadow-sm border border-gray-100 dark:border-slate-800"
-                      }`}
+                      className={`p-3.5 rounded-2xl text-sm leading-relaxed ${msg.sender === "user"
+                        ? "glass text-slate-800 dark:bg-slate-900/80 dark:text-slate-100 antialiased font-semibold rounded-tr-none shadow-md"
+                        : "bg-white text-gray-800 dark:bg-slate-900/80 dark:text-slate-100 rounded-tl-none shadow-sm border border-gray-100 dark:border-slate-800"
+                        }`}
                     >
                       {msg.text}
                       <div
-                        className={`text-[9px] mt-1.5 font-medium ${
-                          msg.sender === "user"
-                            ? "text-slate-600 dark:text-slate-400 text-right"
-                            : "text-slate-600 dark:text-slate-400"
-                        }`}
+                        className={`text-[9px] mt-1.5 font-medium ${msg.sender === "user"
+                          ? "text-slate-600 dark:text-slate-400 text-right"
+                          : "text-slate-600 dark:text-slate-400"
+                          }`}
                       >
                         {msg.timestamp.toLocaleTimeString([], {
                           hour: "2-digit",

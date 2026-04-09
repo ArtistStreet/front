@@ -29,7 +29,7 @@ export const productApi = {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
-  chatbot: (message: string) => api.post("/chatbot", { message }),
+  // chatbot: (message: string) => api.post("/chatbot", { message }),
   getDashboardStats: (token: string) => {
     return axios.get(`${API_URL}/dashboard/stats`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -249,6 +249,17 @@ export const productApi = {
   healthDb: () => {
     return axios.get(`${API_URL}/health/db`);
   },
+  chatbot: async (message: string) => {
+    try {
+      const response = await axios.post(`${API_URL}/chat`, {
+        message: message
+      });
+      return response;
+    } catch (error) {
+      console.error('Lỗi gọi chatbot:', error);
+      throw error;
+    }
+  }
 };
 
 export default api;
