@@ -605,13 +605,17 @@ export const productApi = {
   healthDb: () => {
     return axios.get(`${API_URL}/health/db`);
   },
-  becomeSeller: (token: string) => {
-    return axios.post(
-      `${API_URL}/auth/become-seller`,
-      {},
-      { headers: { Authorization: `Bearer ${token}` } },
-    );
-  },
+  chatbot: async (message: string) => {
+    try {
+      const response = await axios.post(`${API_URL}/chat`, {
+        message: message
+      });
+      return response;
+    } catch (error) {
+      console.error('Lỗi gọi chatbot:', error);
+      throw error;
+    }
+  }
 };
 
 export default api;

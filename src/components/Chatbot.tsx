@@ -152,55 +152,19 @@ const Chatbot = () => {
       },
     );
 
-    return () => {
-      socket.disconnect();
-      socketRef.current = null;
-    };
-  }, [token, currentUserId, sellerId]);
+      let botReply = "Xin lỗi, tôi chưa hiểu câu hỏi của bạn";
 
-  useEffect(() => {
-    if (!token || !user || !sellerId) return;
-    const fetchHistory = async () => {
-      try {
-        const res = await productApi.getChatMessages(token, String(sellerId));
-        const rawMessages = res.data as ServerChatMessage[];
-        const serverMessages: Message[] = rawMessages.map((m) => ({
-          id: m.id,
-          text: m.text,
-          sender: m.sender === "seller" ? "seller" : "customer",
-          timestamp: new Date(m.createdAt),
-          isRead: m.isRead,
-        }));
-        const lastReadMsg = rawMessages
-          .filter((m) => m.sender === "customer" && m.isRead)
-          .slice(-1)[0];
-        if (lastReadMsg?.sellerReadAt) {
-          setLastRead(new Date(lastReadMsg.sellerReadAt));
-        }
-        messageIdsRef.current = new Set(rawMessages.map((m) => m.id));
-        setMessages([
-          {
-            id: 1,
-            text: "Xin chào! Tôi là trợ lý ảo của Shopee. Tôi có thể giúp gì cho bạn?",
-            sender: "bot",
-            timestamp: new Date(),
-          },
-          ...serverMessages,
-        ]);
-      } catch (error) {
-        console.error("Lỗi khi tải lịch sử chat:", error);
+      if (response.data.success) {
+        botReply = response.data.reply;
+      } else if (response.data.response) {
+        botReply = response.data.response;
+      } else if (typeof response.data === 'string') {
+        botReply = response.data;
       }
-    };
-    fetchHistory();
-  }, [token, user, sellerId]);
 
-  const handleSendMessage = async () => {
-    const text = inputValue.trim();
-    if (!text || !sellerId) return;
-    if (currentUserId && String(sellerId) === currentUserId) {
-      const selfShopMessage: Message = {
-        id: Date.now() + 2,
-        text: "Bạn đang đăng nhập bằng chính tài khoản shop này, không thể tự chat với chính mình.",
+      const botMessage: Message = {
+        id: Date.now() + 1,
+        text: botReply,
         sender: "bot",
         timestamp: new Date(),
       };
@@ -209,67 +173,21 @@ const Chatbot = () => {
     }
     setInputValue("");
 
-    try {
-      if (token) {
-        const sent = await productApi.sendChatMessage(
-          text,
-          token,
-          String(sellerId),
-        );
-        const sentId = sent.data.id || String(Date.now());
-        if (!messageIdsRef.current.has(sentId)) {
-          messageIdsRef.current.add(sentId);
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: sentId,
-              text,
-              sender: "customer",
-              timestamp: new Date(sent.data.createdAt || Date.now()),
-              isRead: sent.data.isRead ?? false,
-            },
-          ]);
-        }
-        // Tự động gọi chatbot nếu người bán không đang gõ
-        if (!sellerTyping) {
-          setIsTyping(true);
-          await productApi.chatbot(text, String(sellerId), token);
-          setIsTyping(false);
-        }
-      } else {
-        // Khách chưa đăng nhập: chỉ chat với bot (sellerId lúc này có thể là mặc định hoặc null)
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: Date.now(),
-            text,
-            sender: "customer",
-            timestamp: new Date(),
-            isRead: false,
-          },
-        ]);
-        setIsTyping(true);
-        const response = await productApi.chatbot(text);
-        const botMessage: Message = {
-          id: Date.now(),
-          text: response.data.response,
-          sender: "bot",
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, botMessage]);
-        setIsTyping(false);
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error: any) {
+      console.error("Lỗi chatbot:", error);
+
+      let errorText = "Xin lỗi, hiện tại tôi đang gặp chút sự cố. Vui lòng thử lại sau!";
+
+      if (error.response?.data?.error) {
+        errorText = `Lỗi: ${error.response.data.error}`;
+      } else if (error.message === "Network Error") {
+        errorText = "Không thể kết nối đến server. Vui lòng kiểm tra kết nối!";
       }
-    } catch (error) {
-      console.error("Lỗi gửi tin nhắn:", error);
-      const apiError = error as {
-        response?: { data?: { message?: string } };
-      };
-      const reason =
-        apiError.response?.data?.message ||
-        "Xin lỗi, không thể gửi tin nhắn. Vui lòng thử lại sau!";
+
       const errorMessage: Message = {
         id: Date.now() + 1,
-        text: reason,
+        text: errorText,
         sender: "bot",
         timestamp: new Date(),
       };
@@ -324,45 +242,52 @@ const Chatbot = () => {
                     </div>
                   </div>
                 </div>
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="bg-white/10 hover:bg-white/20 p-2 rounded-xl transition-colors backdrop-blur-sm border border-white/20"
-                >
-                  <X size={18} />
-                </button>
               </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="bg-white/10 hover:bg-white/20 p-2 rounded-xl transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
 
-              {/* Messages */}
-              <div className="flex-1 overflow-y-auto px-4 sm:px-5 py-4 space-y-4 bg-gradient-to-b from-slate-50/90 via-slate-50/70 to-slate-100/80 dark:from-slate-900/70 dark:via-slate-900/80 dark:to-slate-950/80">
-                {messages.map((msg, index) => (
-                  <motion.div
-                    initial={{
-                      opacity: 0,
-                      x: msg.sender === "customer" ? 10 : -10,
-                    }}
-                    animate={{ opacity: 1, x: 0 }}
-                    key={msg.id}
-                    className={`flex ${
-                      msg.sender === "customer"
-                        ? "justify-end"
-                        : "justify-start"
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-5 space-y-4 bg-gray-50/30 dark:bg-slate-900/50">
+              {messages.map((msg) => (
+                <motion.div
+                  initial={{ opacity: 0, x: msg.sender === "user" ? 10 : -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  key={msg.id}
+                  className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"
                     }`}
+                >
+                  <div
+                    className={`flex gap-2.5 max-w-[85%] ${msg.sender === "user" ? "flex-row-reverse" : ""
+                      }`}
                   >
                     <div
-                      className={`flex gap-2.5 max-w-[85%] ${
-                        msg.sender === "customer" ? "flex-row-reverse" : ""
-                      }`}
+                      className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${msg.sender === "user"
+                        ? "bg-shopee-blue text-white"
+                        : "bg-white text-shopee-blue dark:bg-slate-900 dark:text-slate-100"
+                        }`}
+                    >
+                      {msg.sender === "user" ? (
+                        <User size={16} />
+                      ) : (
+                        <Bot size={16} />
+                      )}
+                    </div>
+                    <div
+                      className={`p-3.5 rounded-2xl text-sm leading-relaxed ${msg.sender === "user"
+                        ? "glass text-slate-800 dark:bg-slate-900/80 dark:text-slate-100 antialiased font-semibold rounded-tr-none shadow-md"
+                        : "bg-white text-gray-800 dark:bg-slate-900/80 dark:text-slate-100 rounded-tl-none shadow-sm border border-gray-100 dark:border-slate-800"
+                        }`}
                     >
                       <div
-                        className={`w-8 h-8 rounded-2xl flex items-center justify-center shrink-0 shadow-sm overflow-hidden ${
-                          msg.sender === "customer"
-                            ? user?.avatar
-                              ? "bg-transparent"
-                              : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-200"
-                            : msg.sender === "seller"
-                              ? "bg-emerald-500 text-white"
-                              : "bg-[#2563eb] text-white dark:bg-[#1d4ed8] dark:text-white"
-                        }`}
+                        className={`text-[9px] mt-1.5 font-medium ${msg.sender === "user"
+                          ? "text-slate-600 dark:text-slate-400 text-right"
+                          : "text-slate-600 dark:text-slate-400"
+                          }`}
                       >
                         {msg.sender === "customer" ? (
                           user?.avatar ? (
