@@ -10,6 +10,12 @@ interface User {
   gender?: string;
   birthDate?: string;
   avatar?: string;
+  shopName?: string;
+  shopDescription?: string;
+  shopAvatar?: string;
+  shopCover?: string;
+  shopAddress?: string;
+  _id?: string;
 }
 
 export interface AuthContextType {
@@ -18,10 +24,11 @@ export interface AuthContextType {
   login: (userData: User, token: string) => void;
   logout: () => void;
   isAdmin: boolean;
+  isSeller: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType>(
-  {} as AuthContextType
+  {} as AuthContextType,
 );
 
 export const useAuth = () => useContext(AuthContext);
@@ -29,9 +36,16 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const normalizeUser = (value: User | null): User | null => {
+    if (!value) return null;
+    const normalizedId = value.id || value._id;
+    if (!normalizedId) return value;
+    return { ...value, id: normalizedId };
+  };
+
   const [user, setUser] = useState<User | null>(() => {
     const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+    return storedUser ? normalizeUser(JSON.parse(storedUser) as User) : null;
   });
   const [token, setToken] = useState<string | null>(() => {
     return localStorage.getItem("token");
@@ -48,7 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [user, token]);
 
   const login = (userData: User, tokenData: string) => {
-    setUser(userData);
+    setUser(normalizeUser(userData));
     setToken(tokenData);
   };
 
@@ -58,9 +72,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const isAdmin = user?.role === "admin";
+  const isSeller = user?.role === "seller" || user?.role === "admin";
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, isAdmin }}>
+    <AuthContext.Provider
+      value={{ user, token, login, logout, isAdmin, isSeller }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { productApi } from "../utils/api";
 import AnimatedPage from "../components/AnimatedPage";
+import { GlassProgressLoader, GlassListSkeleton } from "../components/GlassLoader";
 
 type Address = {
   _id: string;
@@ -209,9 +210,9 @@ const AddressesPage = () => {
         </div>
 
         {loading ? (
-          <div className="glass-card rounded-3xl p-8 text-center">
-            <div className="w-8 h-8 border-4 border-shopee-blue border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-sm text-gray-500">Đang tải địa chỉ...</p>
+          <div className="space-y-4">
+            <GlassProgressLoader label="Đang tải địa chỉ..." variant="full" />
+            <GlassListSkeleton rows={3} variant="full" />
           </div>
         ) : addresses.length === 0 ? (
           <div className="glass-card rounded-3xl p-8 text-center">
