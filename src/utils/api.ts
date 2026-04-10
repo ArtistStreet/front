@@ -245,16 +245,16 @@ export const productApi = {
       },
     );
   },
-  chatbot: (message: string, partnerId?: string, token?: string) => {
-    if (token) {
-      return axios.post(
-        `${API_URL}/chatbot`,
-        { message, partnerId },
-        { headers: { Authorization: `Bearer ${token}` } },
-      );
-    }
-    return api.post("/chatbot", { message, partnerId });
-  },
+  // chatbot: (message: string, partnerId?: string, token?: string) => {
+  //   if (token) {
+  //     return axios.post(
+  //       `${API_URL}/chatbot`,
+  //       { message, partnerId },
+  //       { headers: { Authorization: `Bearer ${token}` } },
+  //     );
+  //   }
+  //   return api.post("/chatbot", { message, partnerId });
+  // },
   getChatMessages: (token: string, partnerId?: string, sellerId?: string) => {
     return axios.get<ChatMessage[]>(`${API_URL}/chat/messages`, {
       headers: { Authorization: `Bearer ${token}` },
