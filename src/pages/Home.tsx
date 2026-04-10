@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CATEGORIES } from "../utils/mockData";
 import ProductCard from "../components/ProductCard";
 import { ChevronRight, ChevronLeft } from "lucide-react";
@@ -6,12 +6,37 @@ import { productApi } from "../utils/api";
 import type { Product } from "../types";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
+import {
+  ProductCardSkeleton as ProductGridSkeleton,
+} from "../components/GlassLoader";
 
 const Home = () => {
+  const heroBanners = [
+    {
+      id: 1,
+      image: "https://picsum.photos/seed/banner1/1200/600",
+      title: "Siêu Sale Công Nghệ",
+      subtitle: "Giảm đến 50% cho các thiết bị Apple",
+    },
+    {
+      id: 2,
+      image: "https://picsum.photos/seed/banner2/1200/600",
+      title: "Flash Deal Trong Ngày",
+      subtitle: "Săn ưu đãi sốc từ 0h - 24h",
+    },
+    {
+      id: 3,
+      image: "https://picsum.photos/seed/banner3/1200/600",
+      title: "Mua Sắm Không Lo Giá",
+      subtitle: "Miễn phí vận chuyển cho đơn từ 99K",
+    },
+  ];
   const [products, setProducts] = useState<Product[]>([]);
   const [bestProducts, setBestProducts] = useState<Product[]>([]);
   const [newProducts, setNewProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loadingMain, setLoadingMain] = useState(true);
+  const [loadingBest, setLoadingBest] = useState(true);
+  const [loadingNew, setLoadingNew] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -19,21 +44,25 @@ const Home = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [activeBannerIndex, setActiveBannerIndex] = useState(0);
   const { theme: _theme } = useTheme();
   const PAGE_SIZE = 12;
+  const currentQuery = useMemo(() => {
+    const searchParams = new URLSearchParams(location.search);
+    return {
+      search: searchParams.get("search") || "",
+      sort: searchParams.get("sort") || "",
+    };
+  }, [location.search]);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      setLoading(true);
+      setLoadingMain(true);
       try {
-        const searchParams = new URLSearchParams(location.search);
-        const searchTerm = searchParams.get("search") || "";
-        const sortParam = searchParams.get("sort") || "";
-
         const response = await productApi.getAll({
-          search: searchTerm,
+          search: currentQuery.search,
           category: selectedCategory || "",
-          sort: sortParam || "",
+          sort: currentQuery.sort || "",
           limit: String(PAGE_SIZE),
           page: "1",
         });
@@ -46,6 +75,15 @@ const Home = () => {
           setProducts(mappedProducts);
           setPage(1);
           setHasMore(mappedProducts.length === PAGE_SIZE);
+          if (mappedProducts.length === PAGE_SIZE) {
+            void productApi.prefetchAll({
+              search: currentQuery.search,
+              category: selectedCategory || "",
+              sort: currentQuery.sort || "",
+              limit: String(PAGE_SIZE),
+              page: "2",
+            });
+          }
         } else {
           setProducts([]);
           setHasMore(false);
@@ -53,15 +91,17 @@ const Home = () => {
       } catch (error) {
         console.error("Lỗi khi tải sản phẩm:", error);
       } finally {
-        setLoading(false);
+        setLoadingMain(false);
       }
     };
 
     fetchProducts();
-  }, [location.search, selectedCategory]);
+  }, [currentQuery, selectedCategory]);
 
   useEffect(() => {
     const fetchBestAndNew = async () => {
+      setLoadingBest(true);
+      setLoadingNew(true);
       try {
         const [bestRes, newRes] = await Promise.all([
           productApi.getAll({ sort: "sold", limit: "6" }),
@@ -71,13 +111,20 @@ const Home = () => {
           (bestRes.data || []).map((p: Product) => ({
             ...p,
             id: p._id ?? p.id,
-          }))
+          })),
         );
         setNewProducts(
-          (newRes.data || []).map((p: Product) => ({ ...p, id: p._id ?? p.id }))
+          (newRes.data || []).map((p: Product) => ({
+            ...p,
+            id: p._id ?? p.id,
+          })),
         );
       } catch (_e) {
-        // ignore
+        setBestProducts([]);
+        setNewProducts([]);
+      } finally {
+        setLoadingBest(false);
+        setLoadingNew(false);
       }
     };
     fetchBestAndNew();
@@ -85,7 +132,7 @@ const Home = () => {
 
   const handleCategoryClick = (categoryName: string) => {
     setSelectedCategory((prev) =>
-      prev === categoryName ? null : categoryName
+      prev === categoryName ? null : categoryName,
     );
   };
 
@@ -93,14 +140,11 @@ const Home = () => {
     if (loadingMore || !hasMore) return;
     setLoadingMore(true);
     try {
-      const searchParams = new URLSearchParams(location.search);
-      const searchTerm = searchParams.get("search") || "";
-      const sortParam = searchParams.get("sort") || "";
       const nextPage = page + 1;
       const res = await productApi.getAll({
-        search: searchTerm,
+        search: currentQuery.search,
         category: selectedCategory || "",
-        sort: sortParam || "",
+        sort: currentQuery.sort || "",
         limit: String(PAGE_SIZE),
         page: String(nextPage),
       });
@@ -111,6 +155,15 @@ const Home = () => {
       setProducts((prev) => [...prev, ...mapped]);
       setPage(nextPage);
       setHasMore(mapped.length === PAGE_SIZE);
+      if (mapped.length === PAGE_SIZE) {
+        void productApi.prefetchAll({
+          search: currentQuery.search,
+          category: selectedCategory || "",
+          sort: currentQuery.sort || "",
+          limit: String(PAGE_SIZE),
+          page: String(nextPage + 1),
+        });
+      }
     } catch (_e) {
       // ignore load more errors
     } finally {
@@ -126,7 +179,24 @@ const Home = () => {
     return () => mq.removeEventListener?.("change", update);
   }, []);
 
-  const activeSort = new URLSearchParams(location.search).get("sort") || "";
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveBannerIndex((prev) => (prev + 1) % heroBanners.length);
+    }, 5000);
+    return () => window.clearInterval(timer);
+  }, [heroBanners.length]);
+
+  const handlePrevBanner = () => {
+    setActiveBannerIndex((prev) =>
+      prev === 0 ? heroBanners.length - 1 : prev - 1,
+    );
+  };
+
+  const handleNextBanner = () => {
+    setActiveBannerIndex((prev) => (prev + 1) % heroBanners.length);
+  };
+
+  const activeSort = currentQuery.sort || "";
   const setSort = (val: "" | "sold" | "new") => {
     const sp = new URLSearchParams(location.search);
     if (val) sp.set("sort", val);
@@ -141,29 +211,61 @@ const Home = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mt-6 h-[220px] md:h-[280px] lg:h-[320px]">
           <div className="lg:col-span-2 relative glass-card rounded-3xl overflow-hidden group">
             <img
-              src="https://picsum.photos/seed/banner1/800/400"
+              src={heroBanners[activeBannerIndex].image}
               alt="Main Banner"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
             <div className="absolute bottom-6 left-6 text-white">
-              <h2 className="text-3xl font-bold mb-2">Siêu Sale Công Nghệ</h2>
+              <h2 className="text-3xl font-bold mb-2">
+                {heroBanners[activeBannerIndex].title}
+              </h2>
               <p className="text-sm opacity-90">
-                Giảm đến 50% cho các thiết bị Apple
+                {heroBanners[activeBannerIndex].subtitle}
               </p>
             </div>
-            <button className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/20 backdrop-blur-md p-3 rounded-2xl text-white hover:bg-white/40 transition-all">
+            <button
+              type="button"
+              onClick={handlePrevBanner}
+              aria-label="Banner trước"
+              className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/20 backdrop-blur-md p-3 rounded-2xl text-white hover:bg-white/40 transition-all"
+            >
               <ChevronLeft size={24} />
             </button>
-            <button className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/20 backdrop-blur-md p-3 rounded-2xl text-white hover:bg-white/40 transition-all">
+            <button
+              type="button"
+              onClick={handleNextBanner}
+              aria-label="Banner tiếp theo"
+              className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/20 backdrop-blur-md p-3 rounded-2xl text-white hover:bg-white/40 transition-all"
+            >
               <ChevronRight size={24} />
             </button>
+            <div className="absolute bottom-4 right-4 flex gap-2">
+              {heroBanners.map((banner, index) => (
+                <button
+                  key={banner.id}
+                  type="button"
+                  onClick={() => setActiveBannerIndex(index)}
+                  aria-label={`Chuyển đến banner ${index + 1}`}
+                  className={`h-2.5 rounded-full transition-all ${
+                    index === activeBannerIndex
+                      ? "w-7 bg-white"
+                      : "w-2.5 bg-white/60 hover:bg-white/80"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
           <div className="grid grid-rows-2 gap-3 h-full mt-3 lg:mt-0">
             <div className="glass-card rounded-3xl overflow-hidden relative group">
               <img
                 src="https://picsum.photos/seed/sub1/400/200"
                 alt="Sub Banner 1"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-shopee-blue/10"></div>
@@ -172,6 +274,8 @@ const Home = () => {
               <img
                 src="https://picsum.photos/seed/sub2/400/200"
                 alt="Sub Banner 2"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-shopee-lightBlue/10"></div>
@@ -268,10 +372,8 @@ const Home = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4 pb-2">
-            {loading ? (
-              <div className="col-span-6 flex justify-center py-10">
-                <div className="w-8 h-8 border-3 border-shopee-blue border-t-transparent rounded-full animate-spin"></div>
-              </div>
+            {loadingMain ? (
+              <ProductGridSkeleton count={6} className="col-span-6" minHeight="min-h-[360px]" />
             ) : (
               products
                 .slice(0, 6)
@@ -288,17 +390,25 @@ const Home = () => {
             <h2 className="text-gray-800 dark:text-slate-100 font-bold uppercase text-sm tracking-wider">
               Bán Chạy
             </h2>
-            <a
-              href="#"
+            <Link
+              to="/?sort=sold"
               className="text-shopee-blue text-xs font-bold hover:opacity-80 transition-opacity"
             >
               Xem tất cả
-            </a>
+            </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
-            {bestProducts.map((product) => (
-              <ProductCard key={`best-${product.id}`} product={product} />
-            ))}
+            {loadingBest ? (
+              <ProductGridSkeleton count={6} className="col-span-6" minHeight="min-h-[360px]" />
+            ) : bestProducts.length > 0 ? (
+              bestProducts.map((product) => (
+                <ProductCard key={`best-${product.id}`} product={product} />
+              ))
+            ) : (
+              <div className="col-span-6 glass-card rounded-2xl py-8 text-center text-sm text-gray-500 dark:text-slate-400">
+                Chưa có sản phẩm bán chạy
+              </div>
+            )}
           </div>
         </div>
 
@@ -316,9 +426,17 @@ const Home = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
-            {newProducts.map((product) => (
-              <ProductCard key={`new-${product.id}`} product={product} />
-            ))}
+            {loadingNew ? (
+              <ProductGridSkeleton count={6} className="col-span-6" minHeight="min-h-[360px]" />
+            ) : newProducts.length > 0 ? (
+              newProducts.map((product) => (
+                <ProductCard key={`new-${product.id}`} product={product} />
+              ))
+            ) : (
+              <div className="col-span-6 glass-card rounded-2xl py-8 text-center text-sm text-gray-500 dark:text-slate-400">
+                Chưa có sản phẩm mới
+              </div>
+            )}
           </div>
         </div>
 
@@ -365,10 +483,8 @@ const Home = () => {
           </div>
 
           <div className="mt-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
-            {loading ? (
-              <div className="col-span-full flex justify-center py-20">
-                <div className="w-12 h-12 border-4 border-shopee-blue border-t-transparent rounded-full animate-spin"></div>
-              </div>
+            {loadingMain ? (
+              <ProductGridSkeleton count={12} className="col-span-full" minHeight="min-h-[720px]" />
             ) : products.length > 0 ? (
               products.map((product) => (
                 <ProductCard key={product.id} product={product} />
@@ -389,15 +505,22 @@ const Home = () => {
         </div>
 
         {hasMore && (
-          <div className="mt-12 flex justify-center">
-            <button
-              onClick={handleLoadMore}
-              disabled={loadingMore}
-              className="liquid-btn text-white px-16 py-3.5 rounded-2xl font-bold shadow-xl shadow-shopee-blue/20 hover:scale-105 transition-all disabled:opacity-50"
-              aria-busy={loadingMore}
-            >
-              {loadingMore ? "Đang tải..." : "Xem Thêm Sản Phẩm"}
-            </button>
+          <div className="mt-12">
+            <div className="flex justify-center">
+              <button
+                onClick={handleLoadMore}
+                disabled={loadingMore}
+                className="liquid-btn text-white px-16 py-3.5 rounded-2xl font-bold shadow-xl shadow-shopee-blue/20 hover:scale-105 transition-all disabled:opacity-50"
+                aria-busy={loadingMore}
+              >
+                {loadingMore ? "Đang tải thêm..." : "Xem Thêm Sản Phẩm"}
+              </button>
+            </div>
+            {loadingMore && (
+              <div className="mt-6">
+                <ProductGridSkeleton count={6} minHeight="min-h-[360px]" />
+              </div>
+            )}
           </div>
         )}
       </div>

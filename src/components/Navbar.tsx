@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import {
   Search,
   ShoppingCart,
@@ -18,20 +18,40 @@ import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 import { productApi } from "../utils/api";
 import type { Notification } from "../types";
+import { io } from "socket.io-client";
+import { prefetchRouteByPath } from "../utils/routePrefetch";
 
 const Navbar = () => {
   const { cartCount } = useCart();
   const { theme, toggleTheme } = useTheme();
-  const { user, logout, isAdmin, token } = useAuth();
+  const { user, logout, isAdmin, isSeller, token, login } = useAuth();
   const [searchValue, setSearchValue] = useState("");
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [hasLoadedNotifications, setHasLoadedNotifications] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+  const currentPathRef = useRef(location.pathname);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const fetchNotifications = async () => {
+  type ApiError = { response?: { data?: { message?: string } } };
+
+  const handleBecomeSeller = async () => {
+    if (!token) return;
+    try {
+      const res = await productApi.becomeSeller(token);
+      login(res.data.user, res.data.token);
+      alert("Chúc mừng! Bạn đã trở thành người bán hàng.");
+      navigate("/admin/dashboard");
+    } catch (error) {
+      const apiError = error as ApiError;
+      alert(apiError.response?.data?.message || "Có lỗi xảy ra");
+    }
+  };
+
+  const fetchNotifications = useCallback(async () => {
     if (!user || !token) return [] as Notification[];
     try {
       const res = await productApi.getNotifications(token);
@@ -42,7 +62,31 @@ const Navbar = () => {
       console.error("Lỗi khi tải thông báo:", error);
       return [] as Notification[];
     }
-  };
+  }, [user, token]);
+
+  useEffect(() => {
+    currentPathRef.current = location.pathname;
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (user && token) {
+      const socket = io("http://localhost:5000");
+      socket.emit("chat:join", { userId: user.id });
+      socket.on("notification:new", (newNotification: Notification) => {
+        if (
+          newNotification.type === "chat" &&
+          currentPathRef.current === "/admin/chat"
+        ) {
+          return;
+        }
+        setNotifications((prev) => [newNotification, ...prev]);
+        setHasLoadedNotifications(true);
+      });
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [user, token]);
 
   const markAllNotificationsAsRead = async (list?: Notification[]) => {
     if (!token) return;
@@ -51,7 +95,7 @@ const Navbar = () => {
     if (unread.length === 0) return;
     try {
       await Promise.all(
-        unread.map((n) => productApi.markNotificationAsRead(n._id, token))
+        unread.map((n) => productApi.markNotificationAsRead(n._id, token)),
       );
       setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
     } catch (error) {
@@ -59,7 +103,10 @@ const Navbar = () => {
     }
   };
 
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const unreadCount = useMemo(
+    () => notifications.filter((n) => !n.isRead).length,
+    [notifications],
+  );
 
   const handleNotificationClick = async (n: Notification) => {
     if (!token) return;
@@ -68,13 +115,15 @@ const Navbar = () => {
         await productApi.markNotificationAsRead(n._id, token);
         setNotifications((prev) =>
           prev.map((item) =>
-            item._id === n._id ? { ...item, isRead: true } : item
-          )
+            item._id === n._id ? { ...item, isRead: true } : item,
+          ),
         );
       } catch (error) {
         console.error("Lỗi khi đánh dấu đã đọc:", error);
       }
     }
+    setShowNotifications(false);
+    navigate("/notifications", { state: { highlightId: n._id } });
   };
 
   // DB health indicator removed per requirement
@@ -92,24 +141,36 @@ const Navbar = () => {
         {/* Top Navbar */}
         <div className="relative flex justify-between items-center py-2 text-[11px] text-gray-500 dark:text-gray-400 font-medium">
           <div className="hidden md:flex space-x-4">
-            {isAdmin ? (
+            {isSeller ? (
               <Link
                 to="/admin/dashboard"
                 className="hover:text-shopee-blue transition-colors"
+                onMouseEnter={() => prefetchRouteByPath("/admin/dashboard")}
               >
                 Kênh Người Bán
               </Link>
+            ) : user ? (
+              <button
+                onClick={handleBecomeSeller}
+                className="hover:text-shopee-blue transition-colors cursor-pointer"
+              >
+                Trở thành Người Bán
+              </button>
             ) : (
               <Link
                 to="/login"
                 className="hover:text-shopee-blue transition-colors"
+                onMouseEnter={() => prefetchRouteByPath("/login")}
               >
                 Kênh Người Bán
               </Link>
             )}
-            <a href="#" className="hover:text-shopee-blue transition-colors">
+            <button
+              type="button"
+              className="hover:text-shopee-blue transition-colors"
+            >
               Tải ứng dụng
-            </a>
+            </button>
             <div className="flex items-center space-x-1">
               <span>Kết nối</span>
             </div>
@@ -132,9 +193,18 @@ const Navbar = () => {
 
             <div className="relative hidden md:block">
               <button
+                onClick={() => {
+                  setShowNotifications(false);
+                  navigate("/notifications");
+                }}
                 onMouseEnter={async () => {
                   setShowNotifications(true);
-                  const list = await fetchNotifications();
+                  const list = hasLoadedNotifications
+                    ? notifications
+                    : await fetchNotifications();
+                  if (!hasLoadedNotifications) {
+                    setHasLoadedNotifications(true);
+                  }
                   await markAllNotificationsAsRead(list);
                 }}
                 className="flex items-center space-x-1 hover:text-shopee-blue transition-colors relative py-1"
@@ -201,13 +271,13 @@ const Navbar = () => {
               )}
             </div>
 
-            <a
-              href="#"
+            <button
+              type="button"
               className="hidden md:flex items-center space-x-1 hover:text-shopee-blue transition-colors"
             >
               <HelpCircle size={13} />
               <span>Hỗ trợ</span>
-            </a>
+            </button>
             <div className="hidden md:flex items-center space-x-1 cursor-pointer hover:text-shopee-blue transition-colors">
               <Globe size={13} />
               <span>Tiếng Việt</span>
@@ -239,6 +309,8 @@ const Navbar = () => {
                       <img
                         src={user.avatar}
                         alt={user.name}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover"
                       />
                     ) : (
@@ -258,18 +330,21 @@ const Navbar = () => {
                     <Link
                       to="/account"
                       className="block px-4 py-2 text-sm hover:bg-shopee-blue/5 text-gray-800 dark:text-slate-100 transition-colors"
+                      onMouseEnter={() => prefetchRouteByPath("/account")}
                     >
                       Tài khoản của tôi
                     </Link>
                     <Link
                       to="/orders"
                       className="block px-4 py-2 text-sm hover:bg-shopee-blue/5 text-gray-800 dark:text-slate-100 transition-colors"
+                      onMouseEnter={() => prefetchRouteByPath("/orders")}
                     >
                       Đơn mua
                     </Link>
                     <Link
                       to="/vouchers"
                       className="block px-4 py-2 text-sm hover:bg-shopee-blue/5 text-gray-800 dark:text-slate-100 transition-colors"
+                      onMouseEnter={() => prefetchRouteByPath("/vouchers")}
                     >
                       Kho voucher
                     </Link>
@@ -279,6 +354,9 @@ const Navbar = () => {
                         <Link
                           to="/admin/dashboard"
                           className="flex items-center space-x-3 px-4 py-2 hover:bg-shopee-blue/5 text-shopee-blue font-bold transition-colors text-sm"
+                          onMouseEnter={() =>
+                            prefetchRouteByPath("/admin/dashboard")
+                          }
                         >
                           <ShieldCheck size={16} />
                           <span>Kênh Người Bán</span>
@@ -287,7 +365,10 @@ const Navbar = () => {
                     )}
                     <div className="my-1 border-t border-gray-100 dark:border-gray-700" />
                     <button
-                      onClick={logout}
+                      onClick={() => {
+                        logout();
+                        navigate("/");
+                      }}
                       className="w-full flex items-center space-x-3 px-4 py-2 hover:bg-red-50 text-red-500 transition-colors text-sm"
                     >
                       <LogOut size={16} />
@@ -302,7 +383,11 @@ const Navbar = () => {
                   Đăng Ký
                 </Link>
                 <div className="border-r border-gray-300 dark:border-gray-600 h-3 my-auto"></div>
-                <Link to="/login" className="hover:text-shopee-blue font-bold">
+                <Link
+                  to="/login"
+                  className="hover:text-shopee-blue font-bold"
+                  onMouseEnter={() => prefetchRouteByPath("/login")}
+                >
                   Đăng Nhập
                 </Link>
               </div>
@@ -310,56 +395,59 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Main Navbar */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center py-2 md:py-3 gap-2 md:gap-8">
-          <Link to="/" className="hidden md:flex items-center shrink-0">
-            <h1 className="text-3xl font-extrabold tracking-tight text-shopee-blue">
-              shoppe
-            </h1>
-          </Link>
+        {!isAdminRoute && (
+          <div className="flex flex-col md:flex-row items-stretch md:items-center py-2 md:py-3 gap-2 md:gap-8">
+            <Link to="/" className="hidden md:flex items-center shrink-0">
+              <h1 className="text-3xl font-extrabold tracking-tight text-shopee-blue">
+                shoppe
+              </h1>
+            </Link>
 
-          {!(
-            location.pathname === "/login" || location.pathname === "/register"
-          ) && (
-            <div className="w-full md:flex-1 order-1 md:order-2">
-              <div className="flex items-center gap-3">
-                <form
-                  onSubmit={handleSearch}
-                  className="flex-1 rounded-2xl flex p-1.5 bg-white/95 dark:bg-slate-800/70 border border-gray-200 dark:border-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-shopee-blue/30"
-                >
-                  <input
-                    type="text"
-                    placeholder="Tìm kiếm sản phẩm..."
-                    className="flex-1 px-4 py-2 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 bg-transparent outline-none text-sm"
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                  />
-                  <button
-                    type="submit"
-                    className="liquid-btn text-white p-2 rounded-xl"
+            {!(
+              location.pathname === "/login" ||
+              location.pathname === "/register"
+            ) && (
+              <div className="w-full md:flex-1 order-1 md:order-2">
+                <div className="flex items-center gap-3">
+                  <form
+                    onSubmit={handleSearch}
+                    className="flex-1 rounded-2xl flex p-1.5 bg-white/95 dark:bg-slate-800/70 border border-gray-200 dark:border-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-shopee-blue/30"
                   >
-                    <Search size={18} />
-                  </button>
-                </form>
+                    <input
+                      type="text"
+                      placeholder="Tìm kiếm sản phẩm..."
+                      className="flex-1 px-4 py-2 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 bg-transparent outline-none text-sm"
+                      value={searchValue}
+                      onChange={(e) => setSearchValue(e.target.value)}
+                    />
+                    <button
+                      type="submit"
+                      className="liquid-btn text-white p-2 rounded-xl"
+                    >
+                      <Search size={18} />
+                    </button>
+                  </form>
 
-                <Link
-                  to="/cart"
-                  className="hidden md:inline-flex relative p-2.5 bg-gray-100 dark:bg-gray-800/50 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors group"
-                >
-                  <ShoppingCart
-                    size={22}
-                    className="text-gray-700 dark:text-gray-300 group-hover:text-shopee-blue transition-colors"
-                  />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-1 -right-1 glass glass-capsule glass-tint-blue text-slate-900 dark:text-slate-100 text-[9px] px-1.5 py-0.5 font-bold ring-2 ring-white dark:ring-slate-900">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
+                  <Link
+                    to="/cart"
+                    className="hidden md:inline-flex relative p-2.5 bg-gray-100 dark:bg-gray-800/50 rounded-2xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors group"
+                    onMouseEnter={() => prefetchRouteByPath("/cart")}
+                  >
+                    <ShoppingCart
+                      size={22}
+                      className="text-gray-700 dark:text-gray-300 group-hover:text-shopee-blue transition-colors"
+                    />
+                    {cartCount > 0 && (
+                      <span className="absolute -top-1 -right-1 glass glass-capsule glass-tint-blue text-slate-900 dark:text-slate-100 text-[9px] px-1.5 py-0.5 font-bold ring-2 ring-white dark:ring-slate-900">
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+        )}
 
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
@@ -372,13 +460,13 @@ const Navbar = () => {
               >
                 Kênh Người Bán
               </Link>
-              <a
-                href="#"
-                className="p-2 rounded-xl hover:bg-shopee-blue/5 text-gray-700 dark:text-gray-200"
+              <button
+                type="button"
+                className="p-2 rounded-xl hover:bg-shopee-blue/5 text-gray-700 dark:text-gray-200 text-left"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Tải ứng dụng
-              </a>
+              </button>
               <button
                 className="p-2 rounded-xl hover:bg-shopee-blue/5 text-left text-gray-700 dark:text-gray-200"
                 onClick={() => {
@@ -388,13 +476,16 @@ const Navbar = () => {
               >
                 Chuyển giao diện
               </button>
-              <a
-                href="#"
-                className="p-2 rounded-xl hover:bg-shopee-blue/5 text-gray-700 dark:text-gray-200"
-                onClick={() => setMobileMenuOpen(false)}
+              <button
+                type="button"
+                className="p-2 rounded-xl hover:bg-shopee-blue/5 text-gray-700 dark:text-gray-200 text-left"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  navigate("/notifications");
+                }}
               >
-                Hỗ trợ
-              </a>
+                Thông báo
+              </button>
             </div>
           </div>
         )}

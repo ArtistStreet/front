@@ -4,6 +4,10 @@ import { Link } from "react-router-dom";
 import { productApi } from "../utils/api";
 import { ShoppingCart, MapPin } from "lucide-react";
 import AnimatedPage from "../components/AnimatedPage";
+import {
+  GlassListSkeleton,
+  GlassProgressLoader,
+} from "../components/GlassLoader";
 
 interface OrderItem {
   name: string;
@@ -30,7 +34,7 @@ interface Order {
 const OrdersPage = () => {
   const { user, token } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -80,9 +84,9 @@ const OrdersPage = () => {
         </div>
 
         {loading ? (
-          <div className="glass-card rounded-3xl p-8 text-center">
-            <div className="w-8 h-8 border-4 border-shopee-blue border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-sm text-gray-500">Đang tải đơn hàng...</p>
+          <div className="space-y-6">
+            <GlassProgressLoader label="Đang tải đơn hàng..." variant="full" minHeight="min-h-[200px]" />
+            <GlassListSkeleton rows={6} variant="full" minHeight="min-h-[600px]" />
           </div>
         ) : orders.length === 0 ? (
           <div className="glass-card rounded-3xl p-8 text-center">
@@ -91,7 +95,7 @@ const OrdersPage = () => {
             </p>
           </div>
         ) : (
-            orders.map((order) => (
+          orders.map((order) => (
             <div
               key={order._id}
               className="glass-card rounded-3xl p-4 md:p-5 flex flex-col gap-3"
@@ -152,45 +156,47 @@ const OrdersPage = () => {
                 ))}
               </div>
 
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-gray-100">
-                  <div className="text-xs text-gray-500">
-                    Trạng thái:{" "}
-                    <span className="font-semibold text-gray-700">
-                      {order.isCancelled
-                        ? "Đã hủy"
-                        : order.isPaid
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-gray-100">
+                <div className="text-xs text-gray-500">
+                  Trạng thái:{" "}
+                  <span className="font-semibold text-gray-700">
+                    {order.isCancelled
+                      ? "Đã hủy"
+                      : order.isPaid
                         ? "Đã thanh toán"
                         : "Chờ thanh toán"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm font-bold">
-                      Tổng:{" "}
-                      <span className="text-shopee-blue">
-                        ₫{order.totalPrice.toLocaleString()}
-                      </span>
-                    </span>
-                    {!order.isPaid && !order.isCancelled && (
-                      <button
-                        onClick={async () => {
-                          try {
-                            await productApi.cancelOrder(order._id, token);
-                            setOrders((prev) =>
-                              prev.map((o) =>
-                                o._id === order._id ? { ...o, isCancelled: true } : o
-                              )
-                            );
-                          } catch {
-                            alert("Không thể hủy đơn hàng. Vui lòng thử lại.");
-                          }
-                        }}
-                        className="px-3 py-1.5 rounded-xl border border-red-500 text-red-500 text-xs font-bold hover:bg-red-50 transition-colors"
-                      >
-                        Hủy đơn
-                      </button>
-                    )}
-                  </div>
+                  </span>
                 </div>
+                <div className="flex items-center gap-3">
+                  <span className="text-sm font-bold">
+                    Tổng:{" "}
+                    <span className="text-shopee-blue">
+                      ₫{order.totalPrice.toLocaleString()}
+                    </span>
+                  </span>
+                  {!order.isPaid && !order.isCancelled && (
+                    <button
+                      onClick={async () => {
+                        try {
+                          await productApi.cancelOrder(order._id, token);
+                          setOrders((prev) =>
+                            prev.map((o) =>
+                              o._id === order._id
+                                ? { ...o, isCancelled: true }
+                                : o,
+                            ),
+                          );
+                        } catch {
+                          alert("Không thể hủy đơn hàng. Vui lòng thử lại.");
+                        }
+                      }}
+                      className="px-3 py-1.5 rounded-xl border border-red-500 text-red-500 text-xs font-bold hover:bg-red-50 transition-colors"
+                    >
+                      Hủy đơn
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           ))
         )}

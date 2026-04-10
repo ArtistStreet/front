@@ -1,46 +1,65 @@
+import { memo } from "react";
 import { Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import type { Product } from "../types";
+import { prefetchRouteByPath } from "../utils/routePrefetch";
+import { productApi } from "../utils/api";
 
 interface ProductCardProps {
   product: Product;
 }
 
+const prefetchedProductIds = new Set<string>();
+
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   return (
     <Link
       to={`/product/${product.id}`}
-      className="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 group flex flex-col h-full border border-white/50"
+      className="glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-500 group flex flex-col h-full border border-white/50 min-w-0"
+      onMouseEnter={() => {
+        const productId = String(product.id);
+        if (prefetchedProductIds.has(productId)) return;
+        prefetchedProductIds.add(productId);
+        prefetchRouteByPath(`/product/${productId}`);
+        void productApi.prefetchById(productId);
+      }}
     >
       <div className="relative pt-[100%] overflow-hidden">
         <img
           src={product.image}
           alt={product.name}
+          loading="lazy"
+          decoding="async"
           className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
         {product.discount > 0 && (
-          <div className="absolute top-2 right-2 bg-yellow-400/90 backdrop-blur-md text-shopee-blue text-[10px] font-bold px-2 py-1 rounded-lg">
+          <div className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 bg-yellow-400/90 backdrop-blur-md text-shopee-blue text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg">
             -{product.discount}%
           </div>
         )}
         {product.isMall && (
-          <div className="absolute top-2 left-2 bg-shopee-blue text-white text-[9px] font-bold px-1.5 py-0.5 rounded-md shadow-lg shadow-shopee-blue/20">
+          <div className="absolute top-1.5 sm:top-2 left-1.5 sm:left-2 bg-shopee-blue text-white text-[8px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded-md shadow-lg shadow-shopee-blue/20">
             Mall
           </div>
         )}
       </div>
 
-      <div className="p-2 md:p-3 flex flex-col flex-1 bg-white/70 dark:bg-slate-900/60">
+      <div className="p-2 sm:p-2.5 md:p-3 flex flex-col flex-1 bg-white/70 dark:bg-slate-900/60">
         <h3
-          className="text-xs md:text-sm text-gray-800 dark:text-slate-100 line-clamp-3 md:line-clamp-2 mb-1.5 md:mb-2 font-medium leading-snug group-hover:text-shopee-blue transition-colors"
+          className="text-[11px] sm:text-xs md:text-sm text-gray-800 dark:text-slate-100 line-clamp-2 mb-0.5 md:mb-1 font-medium leading-snug group-hover:text-shopee-blue transition-colors"
           title={product.name}
         >
           {product.name}
         </h3>
+        {product.shopName && (
+          <p className="text-[10px] text-gray-500 dark:text-gray-400 mb-1">
+            {product.shopName}
+          </p>
+        )}
 
         <div className="mt-auto">
-          <div className="flex items-center gap-1.5 mb-1.5 md:mb-2">
-            <span className="text-shopee-blue font-bold text-sm md:text-base">
+          <div className="flex items-center gap-1 mb-1.5 md:mb-2">
+            <span className="text-shopee-blue font-bold text-xs sm:text-sm md:text-base">
               ₫{product.price.toLocaleString()}
             </span>
             {product.discount > 0 && (
@@ -68,4 +87,4 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

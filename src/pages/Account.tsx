@@ -25,6 +25,16 @@ const AccountPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [changingPassword, setChangingPassword] = useState(false);
 
+  type UpdateProfilePayload = {
+    username: string;
+    name: string;
+    email: string;
+    phone: string;
+    gender: string;
+    birthDate?: string;
+    avatar: string;
+  };
+
   useEffect(() => {
     if (user) {
       setUsername(user.username || "");
@@ -42,18 +52,17 @@ const AccountPage = () => {
     if (!token) return;
     setSaving(true);
     try {
-      const res = await productApi.updateProfile(
-        {
-          username,
-          name,
-          email,
-          phone,
-          gender,
-          birthDate: birthDate || undefined,
-          avatar,
-        },
-        token
-      );
+      const payload: UpdateProfilePayload = {
+        username,
+        name,
+        email,
+        phone,
+        gender,
+        birthDate: birthDate || undefined,
+        avatar,
+      };
+
+      const res = await productApi.updateProfile(payload, token);
       login(res.data.user, res.data.token);
       alert("Cập nhật hồ sơ thành công");
     } catch (error) {
@@ -153,15 +162,15 @@ const AccountPage = () => {
   if (!user) {
     return (
       <AnimatedPage>
-        <div className="site-container py-10 min-h-[60vh]">
-          <div className="glass-card rounded-3xl p-8 text-center">
+        <div className="py-10 min-h-[60vh]">
+          <div className="glass-card rounded-3xl p-8 text-center max-w-md mx-auto">
             <User size={28} className="mx-auto mb-3 text-gray-400" />
             <p className="text-gray-600 mb-4">
               Vui lòng đăng nhập để xem thông tin tài khoản
             </p>
             <Link
               to="/login"
-              className="liquid-btn text-white px-6 py-3 rounded-2xl font-bold"
+              className="inline-flex items-center justify-center liquid-btn text-white px-6 py-3 rounded-2xl font-bold whitespace-nowrap"
             >
               Đăng nhập
             </Link>

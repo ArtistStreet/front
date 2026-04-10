@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { productApi } from "../utils/api";
 import { AnimatePresence, motion } from "framer-motion";
 import { Trash2, Plus, Minus, Ticket, X } from "lucide-react";
+import { GlassListSkeleton } from "../components/GlassLoader";
 
 type CheckoutVoucher = {
   code: string;
@@ -31,7 +32,7 @@ const Cart = () => {
   const [voucherCodeInput, setVoucherCodeInput] = useState("");
   const [voucherApplyLoading, setVoucherApplyLoading] = useState(false);
   const [voucherApplyError, setVoucherApplyError] = useState<string | null>(
-    null
+    null,
   );
   const [selectedVoucher, setSelectedVoucher] =
     useState<CheckoutVoucher | null>(null);
@@ -84,7 +85,7 @@ const Cart = () => {
       cart
         .filter((item) => selectedIds.includes(item.id))
         .reduce((sum, item) => sum + item.price * item.quantity, 0),
-    [cart, selectedIds]
+    [cart, selectedIds],
   );
 
   const discountAmount = useMemo(() => {
@@ -98,7 +99,7 @@ const Cart = () => {
 
   const finalTotal = useMemo(
     () => Math.max(selectedTotal - discountAmount, 0),
-    [selectedTotal, discountAmount]
+    [selectedTotal, discountAmount],
   );
 
   const handleCheckout = () => {
@@ -116,6 +117,8 @@ const Cart = () => {
       quantity: item.quantity,
       style: "",
       color: "",
+      variantSummary: item.variantSummary || "",
+      selectedOptions: item.selectedOptions || {},
     }));
 
     navigate("/checkout", {
@@ -130,7 +133,7 @@ const Cart = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-[60vh] flex items-center justify-center flex-col gap-4">
+      <div className="min-h-[60vh] flex items-center justify-center flex-col gap-4 px-4">
         <p className="text-gray-500">Giỏ hàng của bạn đang trống.</p>
         <Link
           to="/"
@@ -143,10 +146,12 @@ const Cart = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Giỏ hàng ({cartCount})</h1>
-        <div className="flex items-center gap-3 text-sm text-gray-600">
+    <div className="site-container py-4 md:py-8 pb-20 md:pb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 md:mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold">
+          Giỏ hàng ({cartCount})
+        </h1>
+        <div className="flex items-center justify-between sm:justify-start gap-3 text-sm text-gray-600">
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
@@ -167,36 +172,56 @@ const Cart = () => {
           </span>
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         <div className="lg:col-span-2 space-y-4">
           {cart.map((item) => (
-            <div
-              key={item.id}
-              className="glass-card rounded-2xl p-4 flex items-center gap-4"
-            >
-              <input
-                type="checkbox"
-                checked={selectedIds.includes(item.id)}
-                onChange={() => {
-                  setSelectedIds((prev) =>
-                    prev.includes(item.id)
-                      ? prev.filter((id) => id !== item.id)
-                      : [...prev, item.id]
-                  );
-                }}
-                className="w-4 h-4 rounded border-gray-300 text-shopee-blue focus:ring-shopee-blue"
-              />
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-20 h-20 object-cover rounded-xl"
-              />
-              <div className="flex-1">
-                <p className="font-medium">{item.name}</p>
-                <p className="text-sm text-gray-500">
-                  ₫{item.price.toLocaleString()}
-                </p>
-                <div className="mt-2 flex items-center gap-2">
+            <div key={item.id} className="glass-card rounded-2xl p-3 sm:p-4">
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={selectedIds.includes(item.id)}
+                  onChange={() => {
+                    setSelectedIds((prev) =>
+                      prev.includes(item.id)
+                        ? prev.filter((id) => id !== item.id)
+                        : [...prev, item.id],
+                    );
+                  }}
+                  className="w-4 h-4 rounded border-gray-300 text-shopee-blue focus:ring-shopee-blue mt-1"
+                />
+                <Link
+                  to={`/product/${item.id}`}
+                  className="flex-1 flex items-center gap-3 group min-w-0"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl group-hover:scale-105 transition-transform shrink-0"
+                  />
+                  <div className="min-w-0">
+                    <p className="font-medium group-hover:text-shopee-blue transition-colors line-clamp-2 text-sm sm:text-base">
+                      {item.name}
+                    </p>
+                    {item.variantSummary && (
+                      <p className="text-xs text-gray-500 mt-1 line-clamp-1">
+                        {item.variantSummary}
+                      </p>
+                    )}
+                    <p className="text-sm text-gray-500 mt-1">
+                      ₫{item.price.toLocaleString()}
+                    </p>
+                  </div>
+                </Link>
+                <button
+                  onClick={() => removeFromCart(item.id)}
+                  className="text-red-500 hover:text-red-600 shrink-0"
+                  aria-label="Xóa khỏi giỏ"
+                >
+                  <Trash2 size={19} />
+                </button>
+              </div>
+              <div className="mt-3 pl-7 sm:pl-8 flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={() =>
                       updateQuantity(item.id, Math.max(1, item.quantity - 1))
@@ -206,7 +231,7 @@ const Cart = () => {
                   >
                     <Minus size={16} />
                   </button>
-                  <span className="px-3 py-1 border rounded-lg">
+                  <span className="px-3 py-1 border rounded-lg min-w-10 text-center">
                     {item.quantity}
                   </span>
                   <button
@@ -217,18 +242,14 @@ const Cart = () => {
                     <Plus size={16} />
                   </button>
                 </div>
+                <p className="text-sm sm:text-base font-bold text-shopee-blue whitespace-nowrap">
+                  ₫{(item.price * item.quantity).toLocaleString()}
+                </p>
               </div>
-              <button
-                onClick={() => removeFromCart(item.id)}
-                className="text-red-500 hover:text-red-600"
-                aria-label="Xóa khỏi giỏ"
-              >
-                <Trash2 size={20} />
-              </button>
             </div>
           ))}
         </div>
-        <div className="glass-card rounded-2xl p-6 h-fit">
+        <div className="glass-card rounded-2xl p-4 sm:p-6 h-fit lg:sticky lg:top-24">
           <h2 className="font-bold mb-4">Tóm tắt đơn hàng</h2>
           <div className="flex justify-between mb-2 text-sm text-gray-600">
             <span>Tổng tiền hàng</span>
@@ -238,7 +259,7 @@ const Cart = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Voucher
             </label>
-            <div className="flex items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-white/60 backdrop-blur-xl px-3 py-2">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-gray-200 bg-white/60 backdrop-blur-xl px-3 py-2">
               <div className="flex items-center gap-2 min-w-0">
                 <Ticket size={16} className="text-shopee-blue" />
                 {selectedVoucher ? (
@@ -254,7 +275,7 @@ const Cart = () => {
                   <p className="text-sm text-gray-500">Chọn voucher từ kho</p>
                 )}
               </div>
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
                 {selectedVoucher && (
                   <button
                     type="button"
@@ -367,7 +388,7 @@ const Cart = () => {
                             setVoucherApplyError(
                               data.status === "used"
                                 ? "Voucher này đã được sử dụng."
-                                : "Voucher này đã hết hạn."
+                                : "Voucher này đã hết hạn.",
                             );
                             return;
                           }
@@ -397,7 +418,7 @@ const Cart = () => {
                               : undefined;
                           setVoucherApplyError(
                             serverMessage ||
-                              "Không thể áp dụng voucher. Vui lòng thử lại."
+                              "Không thể áp dụng voucher. Vui lòng thử lại.",
                           );
                         } finally {
                           setVoucherApplyLoading(false);
@@ -407,7 +428,7 @@ const Cart = () => {
                       <p className="text-xs font-semibold text-gray-700 mb-2">
                         Nhập mã voucher
                       </p>
-                      <div className="flex gap-2">
+                      <div className="flex flex-col sm:flex-row gap-2">
                         <input
                           value={voucherCodeInput}
                           onChange={(e) =>
@@ -419,7 +440,7 @@ const Cart = () => {
                         <button
                           type="submit"
                           disabled={voucherApplyLoading}
-                          className="px-4 py-2 rounded-2xl text-xs font-bold border border-shopee-blue text-shopee-blue hover:bg-shopee-blue/5 transition-colors disabled:opacity-60"
+                          className="px-4 py-2 rounded-2xl text-xs font-bold border border-shopee-blue text-shopee-blue hover:bg-shopee-blue/5 transition-colors disabled:opacity-60 sm:w-auto w-full"
                         >
                           {voucherApplyLoading ? "Đang áp dụng..." : "Áp dụng"}
                         </button>
@@ -432,11 +453,12 @@ const Cart = () => {
                     </form>
 
                     {vouchersLoading ? (
-                      <div className="rounded-2xl border border-gray-200 bg-white/60 p-4 text-center">
-                        <div className="w-7 h-7 border-4 border-shopee-blue border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-                        <p className="text-sm text-gray-600">
-                          Đang tải voucher...
-                        </p>
+                      <div className="rounded-2xl border border-gray-200 bg-white/60 p-4">
+                        <GlassListSkeleton
+                          rows={3}
+                          variant="compact"
+                          className="w-full"
+                        />
                       </div>
                     ) : myVouchers.length === 0 ? (
                       <div className="rounded-2xl border border-gray-200 bg-white/60 p-4 text-center">
@@ -482,7 +504,7 @@ const Cart = () => {
                                   <p className="text-[11px] text-gray-400 mt-2">
                                     HSD:{" "}
                                     {new Date(v.expiry).toLocaleDateString(
-                                      "vi-VN"
+                                      "vi-VN",
                                     )}
                                   </p>
                                 )}

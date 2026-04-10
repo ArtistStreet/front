@@ -5,6 +5,7 @@ import { Minus, Plus, Ticket, Trash2, X, MapPin } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { productApi } from "../utils/api";
+import { GlassListSkeleton } from "../components/GlassLoader";
 
 type CheckoutItem = {
   id: string;
@@ -14,6 +15,8 @@ type CheckoutItem = {
   quantity: number;
   style?: string;
   color?: string;
+  variantSummary?: string;
+  selectedOptions?: Record<string, string>;
 };
 
 type CheckoutVoucher = {
@@ -65,7 +68,7 @@ const Checkout = () => {
   const [voucherCodeInput, setVoucherCodeInput] = useState("");
   const [voucherApplyLoading, setVoucherApplyLoading] = useState(false);
   const [voucherApplyError, setVoucherApplyError] = useState<string | null>(
-    null
+    null,
   );
   const [selectedVoucher, setSelectedVoucher] =
     useState<CheckoutVoucher | null>(state.voucher || null);
@@ -129,9 +132,9 @@ const Checkout = () => {
     () =>
       items.reduce(
         (sum, item) => sum + Number(item.price) * Number(item.quantity),
-        0
+        0,
       ),
-    [items]
+    [items],
   );
 
   const discountAmount = useMemo(() => {
@@ -145,14 +148,14 @@ const Checkout = () => {
 
   const finalTotal = useMemo(
     () => Math.max(subtotal - discountAmount, 0),
-    [discountAmount, subtotal]
+    [discountAmount, subtotal],
   );
 
   const updateQuantity = (id: string, quantity: number) => {
     setItems((prev) =>
       prev
         .map((i) => (i.id === id ? { ...i, quantity } : i))
-        .filter((i) => i.quantity > 0)
+        .filter((i) => i.quantity > 0),
     );
   };
 
@@ -185,7 +188,7 @@ const Checkout = () => {
             isDefault: selectedAddress.isDefault,
           },
         },
-        token
+        token,
       );
 
       if (state.fromCart && Array.isArray(state.fromCartItemIds)) {
@@ -233,11 +236,13 @@ const Checkout = () => {
               </h2>
             </div>
             {addressLoading ? (
-              <div className="flex items-center gap-3">
-                <div className="w-5 h-5 border-2 border-shopee-blue border-t-transparent rounded-full animate-spin" />
-                <span className="text-sm text-gray-500">
-                  Đang tải địa chỉ...
-                </span>
+              <div className="w-full">
+                <GlassListSkeleton
+                  rows={3}
+                  variant="full"
+                  className="w-full"
+                  minHeight="min-h-[150px]"
+                />
               </div>
             ) : addresses.length === 0 ? (
               <div className="text-center py-4">
@@ -292,19 +297,22 @@ const Checkout = () => {
             {items.map((item) => (
               <div
                 key={item.id}
-                className="glass-card rounded-2xl p-4 flex items-center gap-4"
+                className="glass-card rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4"
               >
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="w-20 h-20 object-cover rounded-xl"
+                  loading="lazy"
+                  decoding="async"
+                  className="w-20 h-20 object-cover rounded-xl shrink-0"
                 />
-                <div className="flex-1 min-w-0">
+                <div className="flex-1 min-w-0 w-full">
                   <p className="font-medium line-clamp-2">{item.name}</p>
                   <p className="text-xs text-gray-500">
-                    {item.style && item.color
-                      ? `Phân loại: ${item.style} / ${item.color}`
-                      : ""}
+                    {item.variantSummary ||
+                      (item.style && item.color
+                        ? `Phân loại: ${item.style} / ${item.color}`
+                        : "")}
                   </p>
                   <p className="text-sm text-gray-500">
                     ₫{item.price.toLocaleString()}
@@ -331,13 +339,15 @@ const Checkout = () => {
                     </button>
                   </div>
                 </div>
-                <button
-                  onClick={() => removeItem(item.id)}
-                  className="text-red-500 hover:text-red-600"
-                  aria-label="Xóa khỏi thanh toán"
-                >
-                  <Trash2 size={20} />
-                </button>
+                <div className="w-full sm:w-auto flex justify-end">
+                  <button
+                    onClick={() => removeItem(item.id)}
+                    className="text-red-500 hover:text-red-600"
+                    aria-label="Xóa khỏi thanh toán"
+                  >
+                    <Trash2 size={20} />
+                  </button>
+                </div>
               </div>
             ))}
           </div>
@@ -585,7 +595,7 @@ const Checkout = () => {
                             setVoucherApplyError(
                               data.status === "used"
                                 ? "Voucher này đã được sử dụng."
-                                : "Voucher này đã hết hạn."
+                                : "Voucher này đã hết hạn.",
                             );
                             return;
                           }
@@ -615,7 +625,7 @@ const Checkout = () => {
                               : undefined;
                           setVoucherApplyError(
                             serverMessage ||
-                              "Không thể áp dụng voucher. Vui lòng thử lại."
+                              "Không thể áp dụng voucher. Vui lòng thử lại.",
                           );
                         } finally {
                           setVoucherApplyLoading(false);
@@ -650,11 +660,12 @@ const Checkout = () => {
                     </form>
 
                     {vouchersLoading ? (
-                      <div className="rounded-2xl border border-gray-200 bg-white/60 p-4 text-center">
-                        <div className="w-7 h-7 border-4 border-shopee-blue border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-                        <p className="text-sm text-gray-600">
-                          Đang tải voucher...
-                        </p>
+                      <div className="rounded-2xl border border-gray-200 bg-white/60 p-4">
+                        <GlassListSkeleton
+                          rows={3}
+                          variant="compact"
+                          className="w-full"
+                        />
                       </div>
                     ) : myVouchers.length === 0 ? (
                       <div className="rounded-2xl border border-gray-200 bg-white/60 p-4 text-center">
@@ -700,7 +711,7 @@ const Checkout = () => {
                                   <p className="text-[11px] text-gray-400 mt-2">
                                     HSD:{" "}
                                     {new Date(v.expiry).toLocaleDateString(
-                                      "vi-VN"
+                                      "vi-VN",
                                     )}
                                   </p>
                                 )}

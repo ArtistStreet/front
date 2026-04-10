@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, Plus, X } from "lucide-react";
 import AnimatedPage from "../components/AnimatedPage";
 import { useAuth } from "../context/AuthContext";
 import { productApi } from "../utils/api";
+import { GlassListSkeleton, GlassProgressLoader } from "../components/GlassLoader";
 
 type Voucher = {
   code: string;
@@ -23,65 +24,15 @@ type VoucherHistoryItem = Voucher & {
 
 const VouchersPage = () => {
   const { token } = useAuth();
+  const [loading, setLoading] = useState(true);
   const [showAddInput, setShowAddInput] = useState(false);
   const [voucherCode, setVoucherCode] = useState("");
   const [activeSection, setActiveSection] = useState<
     "my" | "discover" | "history"
   >("my");
-  const [myVouchers, setMyVouchers] = useState<Voucher[]>([
-    {
-      code: "GIAM10",
-      description: "Giảm 10% tối đa 50.000đ cho mọi đơn hàng.",
-      discount: "-10%",
-      expiry: "31/12/2026",
-    },
-    {
-      code: "GIAM20",
-      description: "Giảm 20% tối đa 100.000đ cho đơn từ 500.000đ.",
-      discount: "-20%",
-      expiry: "31/12/2026",
-    },
-  ]);
-  const [shopVouchers, setShopVouchers] = useState<Voucher[]>([
-    {
-      code: "SHOPA15",
-      description: "Giảm 15% cho sản phẩm tại Shop A.",
-      discount: "-15%",
-      expiry: "30/11/2026",
-      shop: "Shop A",
-    },
-    {
-      code: "FREESHIP",
-      description: "Miễn phí vận chuyển cho đơn từ 199.000đ.",
-      discount: "Freeship",
-      expiry: "31/10/2026",
-      shop: "Shop B",
-    },
-  ]);
-  const [history, setHistory] = useState<VoucherHistoryItem[]>([
-    {
-      code: "GIAM5",
-      description: "Giảm 5% cho mọi đơn hàng.",
-      discount: "-5%",
-      expiry: "01/01/2025",
-      status: "expired",
-    },
-    {
-      code: "NEWUSER20",
-      description: "Giảm 20% cho đơn đầu tiên.",
-      discount: "-20%",
-      expiry: "31/12/2026",
-      status: "used",
-      usedAt: "12/03/2026",
-    },
-    {
-      code: "GIAM30",
-      description: "Giảm 30% tối đa 150.000đ.",
-      discount: "-30%",
-      expiry: "31/12/2026",
-      status: "valid",
-    },
-  ]);
+  const [myVouchers, setMyVouchers] = useState<Voucher[]>([]);
+  const [shopVouchers, setShopVouchers] = useState<Voucher[]>([]);
+  const [history, setHistory] = useState<VoucherHistoryItem[]>([]);
 
   const handleApplyVoucher = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,29 +68,44 @@ const VouchersPage = () => {
     }
   };
 
+  const myVoucherCodeSet = useMemo(
+    () => new Set(myVouchers.map((v) => v.code)),
+    [myVouchers],
+  );
+
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+    let cancelled = false;
     const fetchData = async () => {
       try {
+        setLoading(true);
         const [myRes, discoverRes, historyRes] = await Promise.all([
           productApi.getMyVouchers(token),
           productApi.getShopVouchers(token),
           productApi.getVoucherHistory(token),
         ]);
-        if (Array.isArray(myRes.data)) {
+        if (!cancelled && Array.isArray(myRes.data)) {
           setMyVouchers(myRes.data as Voucher[]);
         }
-        if (Array.isArray(discoverRes.data)) {
+        if (!cancelled && Array.isArray(discoverRes.data)) {
           setShopVouchers(discoverRes.data as Voucher[]);
         }
-        if (Array.isArray(historyRes.data)) {
+        if (!cancelled && Array.isArray(historyRes.data)) {
           setHistory(historyRes.data as VoucherHistoryItem[]);
         }
       } catch (error) {
         console.error("Lỗi khi tải dữ liệu voucher", error);
+      } finally {
+        if (!cancelled) setLoading(false);
       }
     };
-    fetchData();
+    void fetchData();
+    return () => {
+      cancelled = true;
+    };
   }, [token]);
 
   return (
@@ -246,6 +212,16 @@ const VouchersPage = () => {
         </div>
 
         <div className="space-y-6">
+          {loading ? (
+            <div className="space-y-4">
+              <GlassProgressLoader
+                label="Đang đồng bộ kho voucher..."
+                variant="full"
+              />
+              <GlassListSkeleton rows={5} variant="full" />
+            </div>
+          ) : (
+            <>
           {activeSection === "my" && (
             <div className="glass-card rounded-3xl p-6">
               <h1 className="text-lg font-bold mb-1 text-gray-900 dark:text-slate-100">
@@ -268,6 +244,8 @@ const VouchersPage = () => {
                             <img
                               src={v.shopLogo}
                               alt={v.shop || v.code}
+                              loading="lazy"
+                              decoding="async"
                               className="h-full w-full object-cover"
                             />
                           ) : (
@@ -314,9 +292,7 @@ const VouchersPage = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {shopVouchers.map((v) => {
-                  const alreadySaved = myVouchers.some(
-                    (m) => m.code === v.code
-                  );
+                  const alreadySaved = myVoucherCodeSet.has(v.code);
                   return (
                     <div
                       key={v.code}
@@ -329,6 +305,8 @@ const VouchersPage = () => {
                               <img
                                 src={v.shopLogo}
                                 alt={v.shop || v.code}
+                                loading="lazy"
+                                decoding="async"
                                 className="h-full w-full object-cover"
                               />
                             ) : (
@@ -452,6 +430,8 @@ const VouchersPage = () => {
                 })}
               </div>
             </div>
+          )}
+            </>
           )}
         </div>
       </div>

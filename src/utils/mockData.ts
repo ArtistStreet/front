@@ -10,6 +10,8 @@ export interface Product {
   category: string;
   isMall?: boolean;
   stock?: number;
+  seller?: string;
+  description?: string;
 }
 
 export const CATEGORIES = [
