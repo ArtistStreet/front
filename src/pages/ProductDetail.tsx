@@ -850,14 +850,6 @@ const ProductDetail = () => {
               <span className="text-gray-500 w-32 shrink-0">Danh Mục</span>
               <span className="text-blue-800">{product.category}</span>
             </div>
-            <div className="flex flex-col sm:flex-row gap-1 sm:gap-0">
-              <span className="text-gray-500 w-32 shrink-0">Thương hiệu</span>
-              <span className="text-blue-800">No Brand</span>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-1 sm:gap-0">
-              <span className="text-gray-500 w-32 shrink-0">Gửi từ</span>
-              <span>Nước Ngoài</span>
-            </div>
             {(product.detailSpecs || []).map((spec, index) => (
               <div
                 key={`spec-${index}`}
