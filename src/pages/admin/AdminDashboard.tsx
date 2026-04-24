@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { io } from "socket.io-client";
 import { AdminDashboardSkeleton } from "../../components/GlassLoader";
+import { SOCKET_URL } from "../../utils/runtimeConfig";
 
 const AdminDashboard = () => {
   const { user, token } = useAuth();
@@ -86,7 +87,7 @@ const AdminDashboard = () => {
 
     if (!userId) return;
 
-    const socket = io("http://localhost:5000");
+    const socket = io(SOCKET_URL);
     socket.emit("chat:join", { userId });
 
     socket.on("dashboard:update", () => fetchStats());

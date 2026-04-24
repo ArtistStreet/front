@@ -8,6 +8,7 @@ import {
 } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { productApi } from "../../utils/api";
+import { SOCKET_URL } from "../../utils/runtimeConfig";
 import type { ChatConversation, ChatMessage } from "../../types";
 import { User as UserIcon, Send, ArrowLeft } from "lucide-react";
 import { io, Socket } from "socket.io-client";
@@ -168,7 +169,7 @@ const AdminChat = () => {
 
   useEffect(() => {
     if (!token || !isSupport) return;
-    const socket = io("http://localhost:5000", {
+    const socket = io(SOCKET_URL, {
       transports: ["websocket"],
     });
     socketRef.current = socket;

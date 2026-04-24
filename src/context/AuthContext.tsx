@@ -36,6 +36,13 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const normalizeToken = (value: string | null): string | null => {
+    if (!value) return null;
+    const trimmed = String(value).trim().replace(/^"+|"+$/g, "");
+    if (!trimmed || trimmed === "null" || trimmed === "undefined") return null;
+    return trimmed;
+  };
+
   const normalizeUser = (value: User | null): User | null => {
     if (!value) return null;
     const normalizedId = value.id || value._id;
@@ -48,7 +55,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return storedUser ? normalizeUser(JSON.parse(storedUser) as User) : null;
   });
   const [token, setToken] = useState<string | null>(() => {
-    return localStorage.getItem("token");
+    return normalizeToken(localStorage.getItem("token"));
   });
 
   useEffect(() => {
@@ -62,8 +69,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [user, token]);
 
   const login = (userData: User, tokenData: string) => {
+    const safeToken = normalizeToken(tokenData);
     setUser(normalizeUser(userData));
-    setToken(tokenData);
+    setToken(safeToken);
   };
 
   const logout = () => {

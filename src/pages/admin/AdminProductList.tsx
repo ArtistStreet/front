@@ -17,6 +17,7 @@ import {
   AdminProductTableSkeleton,
   GlassListSkeleton,
 } from "../../components/GlassLoader";
+import { useAuth } from "../../context/AuthContext";
 
 type ProductListItem = Product & {
   _id?: string;
@@ -24,6 +25,7 @@ type ProductListItem = Product & {
 };
 
 const AdminProductList = () => {
+  const { token, logout } = useAuth();
   const [products, setProducts] = useState<ProductListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -40,8 +42,8 @@ const AdminProductList = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const token = localStorage.getItem("token");
       if (!token) {
+        setError("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
         setLoading(false);
         return;
       }
@@ -50,7 +52,14 @@ const AdminProductList = () => {
         const res = await productApi.getMine(token);
         setProducts(res.data || []);
         setError("");
-      } catch {
+      } catch (error) {
+        const status = (error as { response?: { status?: number } }).response
+          ?.status;
+        if (status === 401) {
+          logout();
+          setError("Phiên đăng nhập không hợp lệ. Vui lòng đăng nhập lại.");
+          return;
+        }
         setProducts([]);
         setError("Không thể tải danh sách sản phẩm");
       } finally {
@@ -58,12 +67,15 @@ const AdminProductList = () => {
       }
     };
     fetchProducts();
-  }, []);
+  }, [token, logout]);
 
   const handleDelete = async (id: string | number) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
-      const token = localStorage.getItem("token");
-      await productApi.deleteProduct(String(id), token || "");
+      if (!token) {
+        setError("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+        return;
+      }
+      await productApi.deleteProduct(String(id), token);
       setProducts((prev) =>
         prev.filter(
           (p) => String(p.id) !== String(id) && String(p._id) !== String(id),

@@ -20,6 +20,7 @@ import { productApi } from "../utils/api";
 import type { Notification } from "../types";
 import { io } from "socket.io-client";
 import { prefetchRouteByPath } from "../utils/routePrefetch";
+import { SOCKET_URL } from "../utils/runtimeConfig";
 
 const Navbar = () => {
   const logo = "/logo.png";
@@ -71,7 +72,7 @@ const Navbar = () => {
 
   useEffect(() => {
     if (user && token) {
-      const socket = io("http://localhost:5000");
+      const socket = io(SOCKET_URL);
       socket.emit("chat:join", { userId: user.id });
       socket.on("notification:new", (newNotification: Notification) => {
         if (

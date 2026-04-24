@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import type { Product, ChatConversation, ChatMessage } from "../types";
-const API_URL = "http://localhost:5000/api";
+import { API_URL } from "./runtimeConfig";
 const PRODUCT_LIST_CACHE_TTL_MS = 30000;
 const PRODUCT_LIST_STALE_TTL_MS = 5 * 60 * 1000;
 const PRODUCT_DETAIL_CACHE_TTL_MS = 60000;

@@ -20,6 +20,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { GlassListSkeleton } from "../../components/GlassLoader";
+import { useAuth } from "../../context/AuthContext";
 
 type ProductFormState = {
   name: string;
@@ -67,6 +68,7 @@ const AdminProductForm = () => {
   const MOBILE_STICKY_OFFSET = 120;
   const { id } = useParams();
   const navigate = useNavigate();
+  const { token, logout } = useAuth();
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
@@ -638,7 +640,6 @@ const AdminProductForm = () => {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
       if (!token) throw new Error("Chưa đăng nhập");
 
       const formData = new FormData();
@@ -671,7 +672,6 @@ const AdminProductForm = () => {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
       if (!token) throw new Error("Chưa đăng nhập");
 
       const formData = new FormData();
@@ -852,7 +852,12 @@ const AdminProductForm = () => {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.");
+        showToast("Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.", "error");
+        setLoading(false);
+        return;
+      }
       const mergedImages = Array.from(
         new Set([product.image, ...product.images].filter(Boolean)),
       );
@@ -887,10 +892,10 @@ const AdminProductForm = () => {
         ],
       };
       if (id) {
-        await productApi.update(id, payload, token || "");
+        await productApi.update(id, payload, token);
         showToast("Cập nhật sản phẩm thành công", "success");
       } else {
-        await productApi.create(payload, token || "");
+        await productApi.create(payload, token);
         localStorage.removeItem(draftKey);
         setLastDraftSavedAt(null);
         setIsDirty(false);
@@ -898,6 +903,11 @@ const AdminProductForm = () => {
       }
       navigate("/admin/products");
     } catch (_err) {
+      const status = (_err as { response?: { status?: number } }).response
+        ?.status;
+      if (status === 401) {
+        logout();
+      }
       setError("Có lỗi xảy ra khi lưu sản phẩm. Vui lòng thử lại.");
       showToast("Lưu sản phẩm thất bại", "error");
     } finally {
