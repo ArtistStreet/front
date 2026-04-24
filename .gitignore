@@ -26,3 +26,4 @@ dist-ssr
 # Env files (do not commit secrets)
 .env
 backend/.env
+

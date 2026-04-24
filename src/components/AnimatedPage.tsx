@@ -36,3 +36,6 @@ const AnimatedPage = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default AnimatedPage;
+
+
+

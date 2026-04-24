@@ -79,7 +79,7 @@ const OrdersPage = () => {
         <div className="glass-card rounded-3xl p-6 mb-4">
           <h1 className="text-lg font-bold mb-1">Đơn mua</h1>
           <p className="text-sm text-gray-500">
-            Xem lại các đơn hàng đã đặt trên Shoppe
+            Xem lại các đơn hàng đã đặt trên ShopBee
           </p>
         </div>
 
@@ -148,7 +148,7 @@ const OrdersPage = () => {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm font-bold text-shopee-blue">
+                      <p className="text-sm font-bold text-shopbee-blue">
                         ₫{(item.price * item.quantity).toLocaleString()}
                       </p>
                     </div>
@@ -170,7 +170,7 @@ const OrdersPage = () => {
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-bold">
                     Tổng:{" "}
-                    <span className="text-shopee-blue">
+                    <span className="text-shopbee-blue">
                       ₫{order.totalPrice.toLocaleString()}
                     </span>
                   </span>
@@ -206,3 +206,6 @@ const OrdersPage = () => {
 };
 
 export default OrdersPage;
+
+
+

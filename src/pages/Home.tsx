@@ -268,7 +268,7 @@ const Home = () => {
                 decoding="async"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-shopee-blue/10"></div>
+              <div className="absolute inset-0 bg-shopbee-blue/10"></div>
             </div>
             <div className="glass-card rounded-3xl overflow-hidden relative group">
               <img
@@ -278,7 +278,7 @@ const Home = () => {
                 decoding="async"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-shopee-lightBlue/10"></div>
+              <div className="absolute inset-0 bg-shopbee-lightBlue/10"></div>
             </div>
           </div>
         </div>
@@ -300,7 +300,7 @@ const Home = () => {
                     onClick={() => handleCategoryClick(cat.name)}
                     className={`min-w-[88px] max-w-[100px] p-3 flex flex-col items-center justify-center rounded-2xl transition-all duration-300 cursor-pointer ${
                       selectedCategory === cat.name
-                        ? "bg-white text-gray-900 border border-shopee-blue shadow-lg shadow-shopee-blue/30 scale-105 glass-interactive dark:bg-slate-900 dark:text-slate-50"
+                        ? "bg-white text-gray-900 border border-shopbee-blue shadow-lg shadow-shopbee-blue/30 scale-105 glass-interactive dark:bg-slate-900 dark:text-slate-50"
                         : "glass glass-interactive text-gray-700 dark:text-slate-200"
                     }`}
                   >
@@ -323,7 +323,7 @@ const Home = () => {
                   onClick={() => handleCategoryClick(cat.name)}
                   className={`p-4 flex flex-col items-center justify-center rounded-2xl transition-all duration-300 cursor-pointer ${
                     selectedCategory === cat.name
-                      ? "bg-white text-gray-900 border border-shopee-blue shadow-lg shadow-shopee-blue/30 scale-105 glass-interactive dark:bg-slate-900 dark:text-slate-50"
+                      ? "bg-white text-gray-900 border border-shopbee-blue shadow-lg shadow-shopbee-blue/30 scale-105 glass-interactive dark:bg-slate-900 dark:text-slate-50"
                       : "glass glass-interactive text-gray-700 dark:text-slate-200"
                   }`}
                 >
@@ -343,7 +343,7 @@ const Home = () => {
         <div className="mt-8 glass-card rounded-3xl p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4 text-slate-800 dark:text-slate-100">
             <div className="flex items-center gap-3 sm:gap-4">
-              <h2 className="text-shopee-blue font-black text-lg md:text-xl italic uppercase tracking-tighter">
+              <h2 className="text-shopbee-blue font-black text-lg md:text-xl italic uppercase tracking-tighter">
                 Flash Sale
               </h2>
               <div className="flex gap-1.5 sm:gap-2 items-center">
@@ -366,7 +366,7 @@ const Home = () => {
             </div>
             <Link
               to="/?sort=sold"
-              className="text-shopee-blue text-[11px] sm:text-xs font-bold flex items-center glass glass-capsule glass-interactive glass-tint-cyan px-3 py-1.5 sm:px-4 sm:py-2 self-end sm:self-auto"
+              className="text-shopbee-blue text-[11px] sm:text-xs font-bold flex items-center glass glass-capsule glass-interactive glass-tint-cyan px-3 py-1.5 sm:px-4 sm:py-2 self-end sm:self-auto"
             >
               Xem tất cả <ChevronRight size={14} className="ml-1" />
             </Link>
@@ -392,7 +392,7 @@ const Home = () => {
             </h2>
             <Link
               to="/?sort=sold"
-              className="text-shopee-blue text-xs font-bold hover:opacity-80 transition-opacity"
+              className="text-shopbee-blue text-xs font-bold hover:opacity-80 transition-opacity"
             >
               Xem tất cả
             </Link>
@@ -420,7 +420,7 @@ const Home = () => {
             </h2>
             <Link
               to="/?sort=new"
-              className="text-shopee-blue text-xs font-bold hover:opacity-80 transition-opacity"
+              className="text-shopbee-blue text-xs font-bold hover:opacity-80 transition-opacity"
             >
               Xem tất cả
             </Link>
@@ -449,7 +449,7 @@ const Home = () => {
                   onClick={() => setSort("")}
                   className={`flex-1 py-3 md:py-4 text-center uppercase tracking-tight cursor-pointer transition-colors ${
                     activeSort === ""
-                      ? "font-bold text-shopee-blue border-b-4 border-shopee-blue bg-shopee-blue/5"
+                      ? "font-bold text-shopbee-blue border-b-4 border-shopbee-blue bg-shopbee-blue/5"
                       : "font-bold text-gray-500 hover:bg-gray-50"
                   }`}
                   aria-pressed={activeSort === ""}
@@ -460,7 +460,7 @@ const Home = () => {
                   onClick={() => setSort("sold")}
                   className={`flex-1 py-3 md:py-4 text-center uppercase tracking-tight cursor-pointer transition-colors ${
                     activeSort === "sold"
-                      ? "font-bold text-shopee-blue border-b-4 border-shopee-blue bg-shopee-blue/5"
+                      ? "font-bold text-shopbee-blue border-b-4 border-shopbee-blue bg-shopbee-blue/5"
                       : "font-bold text-gray-500 hover:bg-gray-50"
                   }`}
                   aria-pressed={activeSort === "sold"}
@@ -471,7 +471,7 @@ const Home = () => {
                   onClick={() => setSort("new")}
                   className={`flex-1 py-3 md:py-4 text-center uppercase tracking-tight cursor-pointer transition-colors ${
                     activeSort === "new"
-                      ? "font-bold text-shopee-blue border-b-4 border-shopee-blue bg-shopee-blue/5"
+                      ? "font-bold text-shopbee-blue border-b-4 border-shopbee-blue bg-shopbee-blue/5"
                       : "font-bold text-gray-500 hover:bg-gray-50"
                   }`}
                   aria-pressed={activeSort === "new"}
@@ -510,7 +510,7 @@ const Home = () => {
               <button
                 onClick={handleLoadMore}
                 disabled={loadingMore}
-                className="liquid-btn text-white px-16 py-3.5 rounded-2xl font-bold shadow-xl shadow-shopee-blue/20 hover:scale-105 transition-all disabled:opacity-50"
+                className="liquid-btn text-white px-16 py-3.5 rounded-2xl font-bold shadow-xl shadow-shopbee-blue/20 hover:scale-105 transition-all disabled:opacity-50"
                 aria-busy={loadingMore}
               >
                 {loadingMore ? "Đang tải thêm..." : "Xem Thêm Sản Phẩm"}
@@ -529,3 +529,6 @@ const Home = () => {
 };
 
 export default Home;
+
+
+

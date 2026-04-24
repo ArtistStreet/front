@@ -202,7 +202,7 @@ export const AdminDashboardSkeleton = () => {
           <SkeletonBlock className="h-3 w-48 rounded-full bg-default" />
         </div>
         <div className="flex items-center justify-center">
-          <SkeletonBlock className="w-32 h-11 rounded-xl bg-shopee-blue/20" />
+          <SkeletonBlock className="w-32 h-11 rounded-xl bg-shopbee-blue/20" />
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -247,3 +247,6 @@ export const AdminDashboardSkeleton = () => {
     </div>
   );
 };
+
+
+

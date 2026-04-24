@@ -35,7 +35,7 @@ const AccountSidebar = ({ active = "profile" }: AccountSidebarProps) => {
       className="glass-card rounded-3xl p-4 md:p-5 h-fit"
     >
       <div className="flex items-center gap-3 mb-4">
-        <div className="w-12 h-12 bg-shopee-blue/10 rounded-full flex items-center justify-center overflow-hidden">
+        <div className="w-12 h-12 bg-shopbee-blue/10 rounded-full flex items-center justify-center overflow-hidden">
           {user.avatar ? (
             <img
               src={user.avatar}
@@ -43,7 +43,7 @@ const AccountSidebar = ({ active = "profile" }: AccountSidebarProps) => {
               className="w-full h-full object-cover"
             />
           ) : (
-            <User size={20} className="text-shopee-blue" />
+            <User size={20} className="text-shopbee-blue" />
           )}
         </div>
         <div>
@@ -59,7 +59,7 @@ const AccountSidebar = ({ active = "profile" }: AccountSidebarProps) => {
       {!isSeller && (
         <button
           onClick={handleBecomeSeller}
-          className="w-full mb-6 p-3 rounded-2xl bg-shopee-blue/10 text-shopee-blue font-bold text-xs flex items-center justify-center gap-2 hover:bg-shopee-blue/20 transition-all border border-shopee-blue/20"
+          className="w-full mb-6 p-3 rounded-2xl bg-shopbee-blue/10 text-shopbee-blue font-bold text-xs flex items-center justify-center gap-2 hover:bg-shopbee-blue/20 transition-all border border-shopbee-blue/20"
         >
           <ShieldCheck size={14} />
           Trở thành Người Bán
@@ -74,8 +74,8 @@ const AccountSidebar = ({ active = "profile" }: AccountSidebarProps) => {
           to="/account"
           className={`block text-sm font-medium transition-colors ${
             active === "profile"
-              ? "text-shopee-blue"
-              : "text-gray-600 dark:text-slate-400 hover:text-shopee-blue"
+              ? "text-shopbee-blue"
+              : "text-gray-600 dark:text-slate-400 hover:text-shopbee-blue"
           }`}
         >
           Hồ sơ
@@ -84,8 +84,8 @@ const AccountSidebar = ({ active = "profile" }: AccountSidebarProps) => {
           to="/addresses"
           className={`block text-sm font-medium transition-colors ${
             active === "addresses"
-              ? "text-shopee-blue"
-              : "text-gray-600 dark:text-slate-400 hover:text-shopee-blue"
+              ? "text-shopbee-blue"
+              : "text-gray-600 dark:text-slate-400 hover:text-shopbee-blue"
           }`}
         >
           Địa chỉ
@@ -94,8 +94,8 @@ const AccountSidebar = ({ active = "profile" }: AccountSidebarProps) => {
           to="/orders"
           className={`block text-sm font-medium transition-colors ${
             active === "orders"
-              ? "text-shopee-blue"
-              : "text-gray-600 dark:text-slate-400 hover:text-shopee-blue"
+              ? "text-shopbee-blue"
+              : "text-gray-600 dark:text-slate-400 hover:text-shopbee-blue"
           }`}
         >
           Đơn mua
@@ -106,8 +106,8 @@ const AccountSidebar = ({ active = "profile" }: AccountSidebarProps) => {
           to="/vouchers"
           className={`block text-sm font-medium transition-colors ${
             active === "vouchers"
-              ? "text-shopee-blue"
-              : "text-gray-600 dark:text-slate-400 hover:text-shopee-blue"
+              ? "text-shopbee-blue"
+              : "text-gray-600 dark:text-slate-400 hover:text-shopbee-blue"
           }`}
         >
           Kho voucher
@@ -127,3 +127,6 @@ const AccountSidebar = ({ active = "profile" }: AccountSidebarProps) => {
 };
 
 export default AccountSidebar;
+
+
+

@@ -979,14 +979,14 @@ const AdminProductForm = () => {
             </p>
           </div>
         </div>
-        <span className="hidden md:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-shopee-blue/10 text-shopee-blue text-xs font-semibold">
+        <span className="hidden md:inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-shopbee-blue/10 text-shopbee-blue text-xs font-semibold">
           <Sparkles size={14} />
           Form thông minh
         </span>
       </div>
 
       <div className="mb-5 md:mb-6 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-        <div className="rounded-xl border border-shopee-blue/20 bg-shopee-blue/5 px-3 py-2 text-shopee-blue font-semibold">
+        <div className="rounded-xl border border-shopbee-blue/20 bg-shopbee-blue/5 px-3 py-2 text-shopbee-blue font-semibold">
           1. Thông tin cơ bản
         </div>
         <div className="rounded-xl border border-gray-200 px-3 py-2 text-gray-600">
@@ -1092,7 +1092,7 @@ const AdminProductForm = () => {
               onClick={() => scrollToSection("basic")}
               className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all duration-200 ${
                 activeSection === "basic"
-                  ? "bg-shopee-blue text-white border-shopee-blue shadow-sm scale-[1.02]"
+                  ? "bg-shopbee-blue text-white border-shopbee-blue shadow-sm scale-[1.02]"
                   : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -1104,7 +1104,7 @@ const AdminProductForm = () => {
               onClick={() => scrollToSection("price")}
               className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all duration-200 ${
                 activeSection === "price"
-                  ? "bg-shopee-blue text-white border-shopee-blue shadow-sm scale-[1.02]"
+                  ? "bg-shopbee-blue text-white border-shopbee-blue shadow-sm scale-[1.02]"
                   : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -1116,7 +1116,7 @@ const AdminProductForm = () => {
               onClick={() => scrollToSection("media")}
               className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all duration-200 ${
                 activeSection === "media"
-                  ? "bg-shopee-blue text-white border-shopee-blue shadow-sm scale-[1.02]"
+                  ? "bg-shopbee-blue text-white border-shopbee-blue shadow-sm scale-[1.02]"
                   : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -1128,7 +1128,7 @@ const AdminProductForm = () => {
               onClick={() => scrollToSection("variant")}
               className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all duration-200 ${
                 activeSection === "variant"
-                  ? "bg-shopee-blue text-white border-shopee-blue shadow-sm scale-[1.02]"
+                  ? "bg-shopbee-blue text-white border-shopbee-blue shadow-sm scale-[1.02]"
                   : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
@@ -1144,7 +1144,7 @@ const AdminProductForm = () => {
               className="scroll-mt-32 bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700"
             >
               <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <Package size={20} className="text-shopee-blue" />
+                <Package size={20} className="text-shopbee-blue" />
                 Thông tin cơ bản
               </h2>
               <div className="space-y-4">
@@ -1163,7 +1163,7 @@ const AdminProductForm = () => {
                     className={`w-full px-4 py-2 rounded-xl border bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 ${
                       fieldErrors.name
                         ? "border-red-300 focus:ring-red-200"
-                        : "border-gray-200 dark:border-gray-700 focus:ring-shopee-blue/50"
+                        : "border-gray-200 dark:border-gray-700 focus:ring-shopbee-blue/50"
                     }`}
                   />
                   <p className="text-[11px] text-gray-400 mt-1">
@@ -1188,7 +1188,7 @@ const AdminProductForm = () => {
                     placeholder="Mô tả chi tiết về sản phẩm..."
                     value={product.description}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopee-blue/50"
+                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopbee-blue/50"
                   />
                   <p className="text-[11px] text-gray-400 mt-1">
                     {product.description.trim().length} ký tự
@@ -1197,7 +1197,7 @@ const AdminProductForm = () => {
 
                 <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-2">
-                    <Info size={16} className="text-shopee-blue" />
+                    <Info size={16} className="text-shopbee-blue" />
                     Thông tin chi tiết (Thông số kỹ thuật)
                   </label>
 
@@ -1233,7 +1233,7 @@ const AdminProductForm = () => {
                         placeholder="Nhãn (VD: Chất liệu)"
                         value={newSpecLabel}
                         onChange={(e) => setNewSpecLabel(e.target.value)}
-                        className="w-full px-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-1 focus:ring-shopee-blue/50"
+                        className="w-full px-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-1 focus:ring-shopbee-blue/50"
                       />
                     </div>
                     <div className="sm:col-span-2">
@@ -1242,13 +1242,13 @@ const AdminProductForm = () => {
                         placeholder="Giá trị (VD: Cotton)"
                         value={newSpecValue}
                         onChange={(e) => setNewSpecValue(e.target.value)}
-                        className="w-full px-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-1 focus:ring-shopee-blue/50"
+                        className="w-full px-3 py-1.5 text-sm rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-1 focus:ring-shopbee-blue/50"
                       />
                     </div>
                     <button
                       type="button"
                       onClick={handleAddSpec}
-                      className="px-3 py-1.5 bg-shopee-blue/10 text-shopee-blue hover:bg-shopee-blue/20 rounded-lg text-sm font-semibold transition-colors"
+                      className="px-3 py-1.5 bg-shopbee-blue/10 text-shopbee-blue hover:bg-shopbee-blue/20 rounded-lg text-sm font-semibold transition-colors"
                     >
                       Thêm
                     </button>
@@ -1266,7 +1266,7 @@ const AdminProductForm = () => {
               className="scroll-mt-32 bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700"
             >
               <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <DollarSign size={20} className="text-shopee-blue" />
+                <DollarSign size={20} className="text-shopbee-blue" />
                 Giá & Kho hàng
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1286,7 +1286,7 @@ const AdminProductForm = () => {
                     className={`w-full px-4 py-2 rounded-xl border bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 ${
                       fieldErrors.price
                         ? "border-red-300 focus:ring-red-200"
-                        : "border-gray-200 dark:border-gray-700 focus:ring-shopee-blue/50"
+                        : "border-gray-200 dark:border-gray-700 focus:ring-shopbee-blue/50"
                     }`}
                   />
                   {fieldErrors.price && (
@@ -1306,7 +1306,7 @@ const AdminProductForm = () => {
                     value={product.originalPrice}
                     onChange={handleChange}
                     onFocus={handleNumberFocus}
-                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopee-blue/50"
+                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopbee-blue/50"
                   />
                 </div>
                 <div>
@@ -1325,7 +1325,7 @@ const AdminProductForm = () => {
                     className={`w-full px-4 py-2 rounded-xl border bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 ${
                       fieldErrors.stock
                         ? "border-red-300 focus:ring-red-200"
-                        : "border-gray-200 dark:border-gray-700 focus:ring-shopee-blue/50"
+                        : "border-gray-200 dark:border-gray-700 focus:ring-shopbee-blue/50"
                     }`}
                   />
                   {fieldErrors.stock && (
@@ -1346,7 +1346,7 @@ const AdminProductForm = () => {
                     value={product.discount}
                     onChange={handleChange}
                     onFocus={handleNumberFocus}
-                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopee-blue/50"
+                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopbee-blue/50"
                   />
                   {estimatedDiscount > 0 && (
                     <p className="text-[11px] text-emerald-600 mt-1">
@@ -1362,7 +1362,7 @@ const AdminProductForm = () => {
           <div className="space-y-6">
             <div className="bg-gradient-to-br from-white to-slate-50 dark:from-gray-800 dark:to-gray-900 p-4 md:p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
               <h2 className="text-base font-bold mb-3 flex items-center gap-2">
-                <Info size={18} className="text-shopee-blue" />
+                <Info size={18} className="text-shopbee-blue" />
                 Tóm tắt nhanh
               </h2>
               <div className="space-y-2 text-sm">
@@ -1380,7 +1380,7 @@ const AdminProductForm = () => {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-gray-500">Giá hiển thị</span>
-                  <span className="font-bold text-shopee-blue">
+                  <span className="font-bold text-shopbee-blue">
                     ₫{Number(product.price || 0).toLocaleString("vi-VN")}
                   </span>
                 </div>
@@ -1392,7 +1392,7 @@ const AdminProductForm = () => {
               className="scroll-mt-32 bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700"
             >
               <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <ImageIcon size={20} className="text-shopee-blue" />
+                <ImageIcon size={20} className="text-shopbee-blue" />
                 Ảnh & Video
               </h2>
               <div className="space-y-4">
@@ -1440,9 +1440,9 @@ const AdminProductForm = () => {
                         />
                         <div className="w-full px-4 py-2 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer flex items-center justify-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                           {uploadingImage ? (
-                            <div className="w-2.5 h-2.5 rounded-full bg-shopee-blue animate-pulse" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-shopbee-blue animate-pulse" />
                           ) : (
-                            <Upload size={18} className="text-shopee-blue" />
+                            <Upload size={18} className="text-shopbee-blue" />
                           )}
                           <span>Tải ảnh lên từ thiết bị</span>
                         </div>
@@ -1466,7 +1466,7 @@ const AdminProductForm = () => {
                                 onClick={() => setPrimaryImage(url)}
                                 className={`text-[10px] px-1.5 py-0.5 rounded ${
                                   product.image === url
-                                    ? "bg-shopee-blue text-white"
+                                    ? "bg-shopbee-blue text-white"
                                     : "bg-white/90 text-gray-700"
                                 }`}
                               >
@@ -1495,7 +1495,7 @@ const AdminProductForm = () => {
                         value={newImageUrl}
                         onChange={(e) => setNewImageUrl(e.target.value)}
                         onKeyDown={handleEnterAdd(addImageByUrl)}
-                        className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopee-blue/50 text-sm"
+                        className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopbee-blue/50 text-sm"
                       />
                     </div>
                     <button
@@ -1522,9 +1522,9 @@ const AdminProductForm = () => {
                       />
                       <div className="w-full px-4 py-2 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer flex items-center justify-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                         {uploadingVideo ? (
-                          <div className="w-2.5 h-2.5 rounded-full bg-shopee-blue animate-pulse" />
+                          <div className="w-2.5 h-2.5 rounded-full bg-shopbee-blue animate-pulse" />
                         ) : (
-                          <Video size={18} className="text-shopee-blue" />
+                          <Video size={18} className="text-shopbee-blue" />
                         )}
                         <span>Tải video lên từ thiết bị</span>
                       </div>
@@ -1558,7 +1558,7 @@ const AdminProductForm = () => {
                       value={newVideoUrl}
                       onChange={(e) => setNewVideoUrl(e.target.value)}
                       onKeyDown={handleEnterAdd(addVideoByUrl)}
-                      className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopee-blue/50 text-sm"
+                      className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopbee-blue/50 text-sm"
                     />
                     <button
                       type="button"
@@ -1577,7 +1577,7 @@ const AdminProductForm = () => {
               className="scroll-mt-32 bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700"
             >
               <h2 className="text-lg font-bold mb-4 flex items-center gap-2">
-                <Layers size={20} className="text-shopee-blue" />
+                <Layers size={20} className="text-shopbee-blue" />
                 Phân loại
               </h2>
               <div className="space-y-4">
@@ -1589,7 +1589,7 @@ const AdminProductForm = () => {
                     name="category"
                     value={product.category}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopee-blue/50"
+                    className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopbee-blue/50"
                   >
                     {CATEGORIES.map((cat) => (
                       <option key={cat.id} value={cat.name}>
@@ -1605,13 +1605,13 @@ const AdminProductForm = () => {
                     name="isMall"
                     checked={product.isMall}
                     onChange={handleChange}
-                    className="w-5 h-5 rounded border-gray-300 text-shopee-blue focus:ring-shopee-blue cursor-pointer"
+                    className="w-5 h-5 rounded border-gray-300 text-shopbee-blue focus:ring-shopbee-blue cursor-pointer"
                   />
                   <label
                     htmlFor="isMall"
                     className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
                   >
-                    Sản phẩm Shopee Mall
+                    Sản phẩm ShopBee Mall
                   </label>
                 </div>
                 <div className="space-y-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800">
@@ -1631,7 +1631,7 @@ const AdminProductForm = () => {
                       }
                     />
                     <span className="inline-flex items-center gap-1">
-                      <Ruler size={14} className="text-shopee-blue" />
+                      <Ruler size={14} className="text-shopbee-blue" />
                       Kiểu dáng
                     </span>
                   </label>
@@ -1665,7 +1665,7 @@ const AdminProductForm = () => {
                         {variantDraft.styleValues.map((value) => (
                           <span
                             key={value}
-                            className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-shopee-blue/10 text-shopee-blue text-xs"
+                            className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-shopbee-blue/10 text-shopbee-blue text-xs"
                           >
                             {value}
                             <button
@@ -1888,3 +1888,6 @@ const AdminProductForm = () => {
 };
 
 export default AdminProductForm;
+
+
+

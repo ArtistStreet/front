@@ -317,7 +317,7 @@ const NotificationsPage = () => {
     <div className="site-container py-6 min-h-[60vh]">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <h1 className="text-xl font-bold flex items-center gap-2">
-          <Bell size={20} className="text-shopee-blue" /> Thông báo
+          <Bell size={20} className="text-shopbee-blue" /> Thông báo
         </h1>
         <button
           onClick={markAllAsRead}
@@ -347,7 +347,7 @@ const NotificationsPage = () => {
           onClick={() => setStatusFilter("all")}
           className={`px-3 py-1.5 rounded-full text-xs font-semibold border ${
             statusFilter === "all"
-              ? "bg-shopee-blue text-white border-shopee-blue"
+              ? "bg-shopbee-blue text-white border-shopbee-blue"
               : "bg-white/70 border-gray-200 text-gray-700"
           }`}
         >
@@ -357,7 +357,7 @@ const NotificationsPage = () => {
           onClick={() => setStatusFilter("unread")}
           className={`px-3 py-1.5 rounded-full text-xs font-semibold border ${
             statusFilter === "unread"
-              ? "bg-shopee-blue text-white border-shopee-blue"
+              ? "bg-shopbee-blue text-white border-shopbee-blue"
               : "bg-white/70 border-gray-200 text-gray-700"
           }`}
         >
@@ -367,7 +367,7 @@ const NotificationsPage = () => {
           onClick={() => setStatusFilter("read")}
           className={`px-3 py-1.5 rounded-full text-xs font-semibold border ${
             statusFilter === "read"
-              ? "bg-shopee-blue text-white border-shopee-blue"
+              ? "bg-shopbee-blue text-white border-shopbee-blue"
               : "bg-white/70 border-gray-200 text-gray-700"
           }`}
         >
@@ -445,7 +445,7 @@ const NotificationsPage = () => {
                   key={n._id}
                   className={`p-4 flex items-start justify-between border-b border-gray-100 dark:border-slate-800 cursor-pointer ${
                     !n.isRead
-                      ? "bg-shopee-blue/[0.02]"
+                      ? "bg-shopbee-blue/[0.02]"
                       : "bg-white/60 dark:bg-transparent"
                   }`}
                   onClick={() => handleOpenNotification(n)}
@@ -470,7 +470,7 @@ const NotificationsPage = () => {
                           e.stopPropagation();
                           toggleExpanded(n._id);
                         }}
-                        className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-shopee-blue"
+                        className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-shopbee-blue"
                       >
                         {isExpanded ? (
                           <>
@@ -494,7 +494,7 @@ const NotificationsPage = () => {
                           e.stopPropagation();
                           if (n.link) navigate(n.link);
                         }}
-                        className="text-[11px] font-bold text-shopee-blue hover:opacity-80"
+                        className="text-[11px] font-bold text-shopbee-blue hover:opacity-80"
                       >
                         Mở
                       </button>
@@ -505,7 +505,7 @@ const NotificationsPage = () => {
                           e.stopPropagation();
                           void markRead(n._id);
                         }}
-                        className="text-[11px] font-bold text-shopee-blue hover:opacity-80"
+                        className="text-[11px] font-bold text-shopbee-blue hover:opacity-80"
                       >
                         Đánh dấu đã đọc
                       </button>
@@ -531,7 +531,7 @@ const NotificationsPage = () => {
             <div
               key={n._id}
               className={`p-4 flex items-start justify-between cursor-pointer ${
-                !n.isRead ? "bg-shopee-blue/[0.02]" : ""
+                !n.isRead ? "bg-shopbee-blue/[0.02]" : ""
               }`}
               onClick={() => handleOpenNotification(n)}
             >
@@ -548,7 +548,7 @@ const NotificationsPage = () => {
                       e.stopPropagation();
                       toggleExpanded(n._id);
                     }}
-                    className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-shopee-blue"
+                    className="mt-1 inline-flex items-center gap-1 text-[11px] font-semibold text-shopbee-blue"
                   >
                     {expandedIds.has(n._id) ? (
                       <>
@@ -572,7 +572,7 @@ const NotificationsPage = () => {
                       e.stopPropagation();
                       if (n.link) navigate(n.link);
                     }}
-                    className="text-[11px] font-bold text-shopee-blue hover:opacity-80"
+                    className="text-[11px] font-bold text-shopbee-blue hover:opacity-80"
                   >
                     Mở
                   </button>
@@ -583,7 +583,7 @@ const NotificationsPage = () => {
                       e.stopPropagation();
                       void markRead(n._id);
                     }}
-                    className="text-[11px] font-bold text-shopee-blue hover:opacity-80"
+                    className="text-[11px] font-bold text-shopbee-blue hover:opacity-80"
                   >
                     Đánh dấu đã đọc
                   </button>
@@ -628,3 +628,6 @@ const NotificationsPage = () => {
 };
 
 export default NotificationsPage;
+
+
+

@@ -163,7 +163,7 @@ const Cart = () => {
                   setSelectedIds(cart.map((item) => item.id));
                 }
               }}
-              className="w-4 h-4 rounded border-gray-300 text-shopee-blue focus:ring-shopee-blue"
+              className="w-4 h-4 rounded border-gray-300 text-shopbee-blue focus:ring-shopbee-blue"
             />
             <span>Chọn tất cả</span>
           </label>
@@ -187,7 +187,7 @@ const Cart = () => {
                         : [...prev, item.id],
                     );
                   }}
-                  className="w-4 h-4 rounded border-gray-300 text-shopee-blue focus:ring-shopee-blue mt-1"
+                  className="w-4 h-4 rounded border-gray-300 text-shopbee-blue focus:ring-shopbee-blue mt-1"
                 />
                 <Link
                   to={`/product/${item.id}`}
@@ -199,7 +199,7 @@ const Cart = () => {
                     className="w-16 h-16 sm:w-20 sm:h-20 object-cover rounded-xl group-hover:scale-105 transition-transform shrink-0"
                   />
                   <div className="min-w-0">
-                    <p className="font-medium group-hover:text-shopee-blue transition-colors line-clamp-2 text-sm sm:text-base">
+                    <p className="font-medium group-hover:text-shopbee-blue transition-colors line-clamp-2 text-sm sm:text-base">
                       {item.name}
                     </p>
                     {item.variantSummary && (
@@ -242,7 +242,7 @@ const Cart = () => {
                     <Plus size={16} />
                   </button>
                 </div>
-                <p className="text-sm sm:text-base font-bold text-shopee-blue whitespace-nowrap">
+                <p className="text-sm sm:text-base font-bold text-shopbee-blue whitespace-nowrap">
                   ₫{(item.price * item.quantity).toLocaleString()}
                 </p>
               </div>
@@ -261,7 +261,7 @@ const Cart = () => {
             </label>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-2xl border border-gray-200 bg-white/60 backdrop-blur-xl px-3 py-2">
               <div className="flex items-center gap-2 min-w-0">
-                <Ticket size={16} className="text-shopee-blue" />
+                <Ticket size={16} className="text-shopbee-blue" />
                 {selectedVoucher ? (
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-gray-800 truncate">
@@ -288,7 +288,7 @@ const Cart = () => {
                 <button
                   type="button"
                   onClick={() => setVoucherModalOpen(true)}
-                  className="px-3 py-2 rounded-xl text-xs font-bold border border-shopee-blue text-shopee-blue hover:bg-shopee-blue/5 transition-colors"
+                  className="px-3 py-2 rounded-xl text-xs font-bold border border-shopbee-blue text-shopbee-blue hover:bg-shopbee-blue/5 transition-colors"
                 >
                   Chọn
                 </button>
@@ -306,7 +306,7 @@ const Cart = () => {
           </div>
           <div className="flex justify-between font-bold text-lg mb-6">
             <span>Thành tiền</span>
-            <span className="text-shopee-blue">
+            <span className="text-shopbee-blue">
               ₫{finalTotal.toLocaleString()}
             </span>
           </div>
@@ -435,12 +435,12 @@ const Cart = () => {
                             setVoucherCodeInput(e.target.value.toUpperCase())
                           }
                           placeholder="Nhập mã (VD: GIAM10)"
-                          className="flex-1 px-3 py-2 rounded-2xl border border-gray-200 bg-white/70 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/30 focus:border-shopee-blue/60"
+                          className="flex-1 px-3 py-2 rounded-2xl border border-gray-200 bg-white/70 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/30 focus:border-shopbee-blue/60"
                         />
                         <button
                           type="submit"
                           disabled={voucherApplyLoading}
-                          className="px-4 py-2 rounded-2xl text-xs font-bold border border-shopee-blue text-shopee-blue hover:bg-shopee-blue/5 transition-colors disabled:opacity-60 sm:w-auto w-full"
+                          className="px-4 py-2 rounded-2xl text-xs font-bold border border-shopbee-blue text-shopbee-blue hover:bg-shopbee-blue/5 transition-colors disabled:opacity-60 sm:w-auto w-full"
                         >
                           {voucherApplyLoading ? "Đang áp dụng..." : "Áp dụng"}
                         </button>
@@ -467,7 +467,7 @@ const Cart = () => {
                         </p>
                         <Link
                           to="/vouchers"
-                          className="inline-flex mt-3 px-5 py-2.5 rounded-2xl border border-shopee-blue text-shopee-blue font-bold text-sm hover:bg-shopee-blue/5 transition-colors"
+                          className="inline-flex mt-3 px-5 py-2.5 rounded-2xl border border-shopbee-blue text-shopbee-blue font-bold text-sm hover:bg-shopbee-blue/5 transition-colors"
                           onClick={() => setVoucherModalOpen(false)}
                         >
                           Đi tới Kho voucher
@@ -488,7 +488,7 @@ const Cart = () => {
                             }}
                             className={`w-full text-left rounded-3xl border p-4 transition-all ${
                               isSelected
-                                ? "border-shopee-blue bg-shopee-blue/5"
+                                ? "border-shopbee-blue bg-shopbee-blue/5"
                                 : "border-gray-200 bg-white/60 hover:bg-white"
                             }`}
                           >
@@ -509,7 +509,7 @@ const Cart = () => {
                                   </p>
                                 )}
                               </div>
-                              <span className="shrink-0 text-[11px] font-bold px-2.5 py-1 rounded-full border border-shopee-blue/40 text-shopee-blue bg-white/70">
+                              <span className="shrink-0 text-[11px] font-bold px-2.5 py-1 rounded-full border border-shopbee-blue/40 text-shopbee-blue bg-white/70">
                                 -{percent}%
                                 {cap > 0
                                   ? ` • tối đa ₫${cap.toLocaleString()}`
@@ -532,3 +532,6 @@ const Cart = () => {
 };
 
 export default Cart;
+
+
+

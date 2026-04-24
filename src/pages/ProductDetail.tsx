@@ -507,11 +507,11 @@ const ProductDetail = () => {
     <div className="bg-slate-50 dark:bg-slate-950 py-4 md:py-8 min-h-screen">
       <div className="site-container">
         <div className="flex items-center text-xs text-gray-500 mb-4 md:mb-6 px-1 sm:px-2 overflow-x-auto whitespace-nowrap">
-          <Link to="/" className="hover:text-shopee-blue transition-colors">
-            Shopee
+          <Link to="/" className="hover:text-shopbee-blue transition-colors">
+            ShopBee
           </Link>
           <ChevronRight size={12} className="mx-2" />
-          <span className="hover:text-shopee-blue cursor-pointer">
+          <span className="hover:text-shopbee-blue cursor-pointer">
             {product.category}
           </span>
           <ChevronRight size={12} className="mx-2" />
@@ -558,7 +558,7 @@ const ProductDetail = () => {
                 </>
               )}
               {product.isMall && (
-                <div className="absolute top-4 left-4 bg-shopee-blue text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg">
+                <div className="absolute top-4 left-4 bg-shopbee-blue text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg">
                   MALL
                 </div>
               )}
@@ -583,8 +583,8 @@ const ProductDetail = () => {
                     aria-label={`Xem media sản phẩm ${index + 1}`}
                     className={`pt-[100%] relative rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${
                       isActive
-                        ? "border-shopee-blue shadow-sm shadow-shopee-blue/40"
-                        : "border-transparent hover:border-shopee-blue"
+                        ? "border-shopbee-blue shadow-sm shadow-shopbee-blue/40"
+                        : "border-transparent hover:border-shopbee-blue"
                     }`}
                   >
                     {media.type === "video" ? (
@@ -628,10 +628,10 @@ const ProductDetail = () => {
               </h1>
               <div className="flex items-center flex-wrap gap-x-3 sm:gap-x-6 gap-y-2 text-xs sm:text-sm">
                 <div className="flex items-center gap-1">
-                  <span className="text-shopee-blue font-bold border-b border-shopee-blue leading-none">
+                  <span className="text-shopbee-blue font-bold border-b border-shopbee-blue leading-none">
                     {product.rating}
                   </span>
-                  <div className="flex text-shopee-blue">
+                  <div className="flex text-shopbee-blue">
                     {[1, 2, 3, 4, 5].map((s) => (
                       <Star
                         key={s}
@@ -662,7 +662,7 @@ const ProductDetail = () => {
               </div>
 
               <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-gray-500">
-                <div className="w-6 h-6 rounded-md overflow-hidden bg-shopee-blue/10 flex items-center justify-center">
+                <div className="w-6 h-6 rounded-md overflow-hidden bg-shopbee-blue/10 flex items-center justify-center">
                   {shopAvatar ? (
                     <img
                       src={shopAvatar}
@@ -672,7 +672,7 @@ const ProductDetail = () => {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <Store size={14} className="text-shopee-blue" />
+                    <Store size={14} className="text-shopbee-blue" />
                   )}
                 </div>
                 <span className="font-semibold text-gray-700">{shopName}</span>
@@ -683,13 +683,13 @@ const ProductDetail = () => {
                       ? `/shop?sellerId=${product.sellerId}`
                       : "/shop"
                   }
-                  className="text-shopee-blue font-semibold hover:underline"
+                  className="text-shopbee-blue font-semibold hover:underline"
                 >
                   Xem thêm sản phẩm
                 </Link>
                 <button
                   onClick={handleChatWithSeller}
-                  className="inline-flex items-center gap-1.5 text-shopee-blue font-semibold hover:bg-shopee-blue/5 px-3 py-1 rounded-lg border border-shopee-blue transition-colors"
+                  className="inline-flex items-center gap-1.5 text-shopbee-blue font-semibold hover:bg-shopbee-blue/5 px-3 py-1 rounded-lg border border-shopbee-blue transition-colors"
                 >
                   <MessageSquare size={14} />
                   Chat ngay
@@ -704,11 +704,11 @@ const ProductDetail = () => {
                     ₫{product.originalPrice.toLocaleString()}
                   </span>
                 )}
-                <span className="text-3xl sm:text-4xl font-bold text-shopee-blue">
+                <span className="text-3xl sm:text-4xl font-bold text-shopbee-blue">
                   ₫{product.price.toLocaleString()}
                 </span>
                 {product.discount > 0 && (
-                  <span className="bg-shopee-blue/10 text-shopee-blue text-[10px] font-bold px-2 py-0.5 rounded-md">
+                  <span className="bg-shopbee-blue/10 text-shopbee-blue text-[10px] font-bold px-2 py-0.5 rounded-md">
                     {product.discount}% GIẢM
                   </span>
                 )}
@@ -742,7 +742,7 @@ const ProductDetail = () => {
                                 }
                                 className={`px-3 py-1 rounded-2xl border text-xs font-medium transition-all ${
                                   selectedOptions[groupName] === value
-                                    ? "bg-shopee-blue/10 text-shopee-blue dark:bg-shopee-blue/40 dark:text-white border-shopee-blue shadow-sm shadow-shopee-blue/30"
+                                    ? "bg-shopbee-blue/10 text-shopbee-blue dark:bg-shopbee-blue/40 dark:text-white border-shopbee-blue shadow-sm shadow-shopbee-blue/30"
                                     : "bg-white dark:bg-slate-900/60 text-gray-700 dark:text-slate-200 border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800"
                                 }`}
                               >
@@ -808,21 +808,21 @@ const ProductDetail = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 pt-2 sm:pt-4">
                 <button
                   onClick={handleChatWithSeller}
-                  className="flex items-center justify-center gap-2 py-3.5 sm:py-4 rounded-2xl border-2 border-shopee-blue text-shopee-blue font-bold hover:bg-shopee-blue/5 transition-all"
+                  className="flex items-center justify-center gap-2 py-3.5 sm:py-4 rounded-2xl border-2 border-shopbee-blue text-shopbee-blue font-bold hover:bg-shopbee-blue/5 transition-all"
                 >
                   <MessageSquare size={20} />
                   Chat ngay
                 </button>
                 <button
                   onClick={handleAddToCart}
-                  className="flex items-center justify-center gap-2 py-3.5 sm:py-4 rounded-2xl border-2 border-shopee-blue text-shopee-blue font-bold hover:bg-shopee-blue/5 transition-all"
+                  className="flex items-center justify-center gap-2 py-3.5 sm:py-4 rounded-2xl border-2 border-shopbee-blue text-shopbee-blue font-bold hover:bg-shopbee-blue/5 transition-all"
                 >
                   <ShoppingCart size={20} />
                   Thêm vào giỏ hàng
                 </button>
                 <button
                   onClick={handleBuyNow}
-                  className="liquid-btn text-white font-bold rounded-2xl py-3.5 sm:py-4 shadow-lg shadow-shopee-blue/20"
+                  className="liquid-btn text-white font-bold rounded-2xl py-3.5 sm:py-4 shadow-lg shadow-shopbee-blue/20"
                 >
                   Mua ngay
                 </button>
@@ -831,8 +831,8 @@ const ProductDetail = () => {
 
             <div className="mt-8 md:mt-10 pt-6 md:pt-10 border-t border-gray-100 flex flex-wrap items-center gap-3 sm:gap-10">
               <div className="flex items-center gap-2 text-xs text-gray-500">
-                <ShieldCheck size={16} className="text-shopee-blue" />
-                <span>Shopee Đảm Bảo</span>
+                <ShieldCheck size={16} className="text-shopbee-blue" />
+                <span>ShopBee Đảm Bảo</span>
               </div>
               <span className="text-[10px] text-gray-400">
                 3 ngày trả hàng / Hoàn tiền
@@ -886,7 +886,7 @@ const ProductDetail = () => {
           <h2 className="text-lg sm:text-xl font-bold uppercase mb-5 sm:mb-8 flex items-center gap-2">
             <MessageSquare
               size={20}
-              className="text-shopee-blue sm:w-6 sm:h-6"
+              className="text-shopbee-blue sm:w-6 sm:h-6"
             />
             Đánh giá sản phẩm
           </h2>
@@ -894,13 +894,13 @@ const ProductDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-10">
             <div className="lg:col-span-2 space-y-6 md:space-y-8">
               {reviews.length > 0 && (
-                <div className="bg-shopee-orange/5 border border-shopee-orange/10 p-4 sm:p-6 rounded-lg flex flex-col md:flex-row items-start md:items-center gap-4 sm:gap-8 mb-6 md:mb-8">
+                <div className="bg-shopbee-orange/5 border border-shopbee-orange/10 p-4 sm:p-6 rounded-lg flex flex-col md:flex-row items-start md:items-center gap-4 sm:gap-8 mb-6 md:mb-8">
                   <div className="text-left md:text-center">
-                    <div className="text-2xl sm:text-3xl font-bold text-shopee-orange">
+                    <div className="text-2xl sm:text-3xl font-bold text-shopbee-orange">
                       {ratingStats.avg}{" "}
                       <span className="text-lg font-normal">trên 5</span>
                     </div>
-                    <div className="flex text-shopee-orange my-1 justify-start md:justify-center">
+                    <div className="flex text-shopbee-orange my-1 justify-start md:justify-center">
                       {[1, 2, 3, 4, 5].map((s) => (
                         <Star
                           key={s}
@@ -920,7 +920,7 @@ const ProductDetail = () => {
                       onClick={() => setFilterStar("All")}
                       className={`px-3 sm:px-4 py-1.5 rounded-sm border text-xs sm:text-sm transition-colors ${
                         filterStar === "All"
-                          ? "border-shopee-orange text-shopee-orange bg-white"
+                          ? "border-shopbee-orange text-shopbee-orange bg-white"
                           : "border-gray-200 text-gray-700 bg-white hover:border-gray-300"
                       }`}
                     >
@@ -932,7 +932,7 @@ const ProductDetail = () => {
                         onClick={() => setFilterStar(star)}
                         className={`px-3 sm:px-4 py-1.5 rounded-sm border text-xs sm:text-sm transition-colors ${
                           filterStar === star
-                            ? "border-shopee-orange text-shopee-orange bg-white"
+                            ? "border-shopbee-orange text-shopbee-orange bg-white"
                             : "border-gray-200 text-gray-700 bg-white hover:border-gray-300"
                         }`}
                       >
@@ -975,14 +975,14 @@ const ProductDetail = () => {
                             <button
                               type="button"
                               onClick={() => startEditReview(review)}
-                              className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-lg border border-shopee-blue text-shopee-blue hover:bg-shopee-blue/5"
+                              className="inline-flex items-center gap-1 text-[11px] px-2 py-1 rounded-lg border border-shopbee-blue text-shopbee-blue hover:bg-shopbee-blue/5"
                             >
                               <Pencil size={12} />
                               Sửa đánh giá
                             </button>
                           )}
                         </div>
-                        <div className="flex text-shopee-orange my-1">
+                        <div className="flex text-shopbee-orange my-1">
                           {[1, 2, 3, 4, 5].map((s) => (
                             <Star
                               key={s}
@@ -1004,7 +1004,7 @@ const ProductDetail = () => {
                         </p>
 
                         {isEditing ? (
-                          <div className="space-y-3 rounded-xl border border-shopee-blue/20 p-3 bg-shopee-blue/[0.03]">
+                          <div className="space-y-3 rounded-xl border border-shopbee-blue/20 p-3 bg-shopbee-blue/[0.03]">
                             <div className="flex gap-2">
                               {[1, 2, 3, 4, 5].map((s) => (
                                 <button
@@ -1027,7 +1027,7 @@ const ProductDetail = () => {
                             <textarea
                               value={editComment}
                               onChange={(e) => setEditComment(e.target.value)}
-                              className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-shopee-blue"
+                              className="w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus:border-shopbee-blue"
                               rows={3}
                             />
 
@@ -1133,7 +1133,7 @@ const ProductDetail = () => {
                                 type="button"
                                 onClick={() => submitEditReview(review._id)}
                                 disabled={submittingReview}
-                                className="px-3 py-1.5 rounded-lg bg-shopee-blue text-white text-xs font-semibold disabled:opacity-60"
+                                className="px-3 py-1.5 rounded-lg bg-shopbee-blue text-white text-xs font-semibold disabled:opacity-60"
                               >
                                 Lưu chỉnh sửa
                               </button>
@@ -1198,8 +1198,8 @@ const ProductDetail = () => {
                               </div>
                             )}
                             {review.sellerReply?.message && (
-                              <div className="mt-3 rounded-xl border border-shopee-blue/20 bg-shopee-blue/[0.04] p-3">
-                                <p className="text-xs font-bold text-shopee-blue mb-1">
+                              <div className="mt-3 rounded-xl border border-shopbee-blue/20 bg-shopbee-blue/[0.04] p-3">
+                                <p className="text-xs font-bold text-shopbee-blue mb-1">
                                   Phản hồi từ người bán
                                 </p>
                                 <p className="text-sm text-gray-700 leading-relaxed">
@@ -1228,7 +1228,7 @@ const ProductDetail = () => {
                                       <div
                                         className={`max-w-[92%] rounded-lg border p-2.5 ${
                                           isMine
-                                            ? "border-shopee-blue/20 bg-shopee-blue/[0.06]"
+                                            ? "border-shopbee-blue/20 bg-shopbee-blue/[0.06]"
                                             : "border-gray-100 bg-gray-50/80"
                                         }`}
                                       >
@@ -1251,7 +1251,7 @@ const ProductDetail = () => {
                                             {item.userName}
                                           </p>
                                           {isMine && (
-                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-shopee-blue/10 text-shopee-blue">
+                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-shopbee-blue/10 text-shopbee-blue">
                                               Bạn
                                             </span>
                                           )}
@@ -1278,7 +1278,7 @@ const ProductDetail = () => {
                                         [review._id]: true,
                                       }))
                                     }
-                                    className="text-[11px] text-shopee-blue hover:underline"
+                                    className="text-[11px] text-shopbee-blue hover:underline"
                                   >
                                     Xem thêm{" "}
                                     {(review.comments?.length || 0) - 3} bình
@@ -1299,7 +1299,7 @@ const ProductDetail = () => {
                                     }))
                                   }
                                   placeholder="Viết bình luận cho đánh giá này..."
-                                  className="flex-1 h-9 rounded-lg border border-gray-200 px-3 text-xs outline-none focus:border-shopee-blue"
+                                  className="flex-1 h-9 rounded-lg border border-gray-200 px-3 text-xs outline-none focus:border-shopbee-blue"
                                 />
                                 <button
                                   type="button"
@@ -1309,7 +1309,7 @@ const ProductDetail = () => {
                                   disabled={
                                     submittingCommentReviewId === review._id
                                   }
-                                  className="px-3 h-9 rounded-lg bg-shopee-blue text-white text-xs font-semibold"
+                                  className="px-3 h-9 rounded-lg bg-shopbee-blue text-white text-xs font-semibold"
                                 >
                                   Gửi
                                 </button>
@@ -1371,7 +1371,7 @@ const ProductDetail = () => {
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         placeholder="Hãy chia sẻ cảm nhận của bạn về sản phẩm này..."
-                        className="w-full bg-gray-50 border border-transparent focus:border-shopee-blue focus:bg-white rounded-2xl p-4 text-sm outline-none transition-all h-32 resize-none"
+                        className="w-full bg-gray-50 border border-transparent focus:border-shopbee-blue focus:bg-white rounded-2xl p-4 text-sm outline-none transition-all h-32 resize-none"
                         required
                       />
                     </div>
@@ -1422,7 +1422,7 @@ const ProductDetail = () => {
                     <button
                       type="submit"
                       disabled={submittingReview}
-                      className="w-full liquid-btn text-white font-bold py-3 rounded-2xl shadow-lg shadow-shopee-blue/20 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+                      className="w-full liquid-btn text-white font-bold py-3 rounded-2xl shadow-lg shadow-shopbee-blue/20 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
                     >
                       {submittingReview ? (
                         "Đang gửi..."
@@ -1440,7 +1440,7 @@ const ProductDetail = () => {
                     </p>
                     <Link
                       to="/login"
-                      className="text-shopee-blue font-bold hover:underline"
+                      className="text-shopbee-blue font-bold hover:underline"
                     >
                       Đăng nhập ngay
                     </Link>
@@ -1487,3 +1487,6 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+
+

@@ -142,7 +142,7 @@ const AdminShopProfile = () => {
               value={shopName}
               onChange={(e) => setShopName(e.target.value)}
               placeholder="Nhập tên hiển thị của shop"
-              className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+              className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
             />
           </div>
           <div>
@@ -154,7 +154,7 @@ const AdminShopProfile = () => {
               value={shopDescription}
               onChange={(e) => setShopDescription(e.target.value)}
               placeholder="Mô tả ngắn để khách hiểu về shop của bạn"
-              className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue resize-none"
+              className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue resize-none"
             />
           </div>
           <div>
@@ -166,7 +166,7 @@ const AdminShopProfile = () => {
               value={shopAddress}
               onChange={(e) => setShopAddress(e.target.value)}
               placeholder="Ví dụ: Quận 1, TP. Hồ Chí Minh"
-              className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+              className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
             />
           </div>
           <div>
@@ -178,7 +178,7 @@ const AdminShopProfile = () => {
               value={shopAvatar}
               onChange={(e) => setShopAvatar(e.target.value)}
               placeholder="Hoặc dán URL ảnh (https://...)"
-              className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+              className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
             />
           </div>
           <div>
@@ -190,7 +190,7 @@ const AdminShopProfile = () => {
               value={shopCover}
               onChange={(e) => setShopCover(e.target.value)}
               placeholder="Dán URL ảnh bìa (https://...)"
-              className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+              className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
             />
           </div>
           <button
@@ -215,15 +215,15 @@ const AdminShopProfile = () => {
                 className="w-full h-28 object-cover"
               />
             ) : (
-              <div className="w-full h-28 bg-gradient-to-r from-shopee-blue to-shopee-lightBlue/80" />
+              <div className="w-full h-28 bg-gradient-to-r from-shopbee-blue to-shopbee-lightBlue/80" />
             )}
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-16 h-16 rounded-2xl overflow-hidden bg-shopee-blue/10 flex items-center justify-center">
+            <div className="w-16 h-16 rounded-2xl overflow-hidden bg-shopbee-blue/10 flex items-center justify-center">
               {shopAvatar ? (
                 <img src={shopAvatar} alt={shopTitle} className="w-full h-full object-cover" />
               ) : (
-                <Store size={26} className="text-shopee-blue" />
+                <Store size={26} className="text-shopbee-blue" />
               )}
             </div>
             <div className="min-w-0">
@@ -235,7 +235,7 @@ const AdminShopProfile = () => {
             {shopDescription || "Chưa có mô tả shop."}
           </p>
           <div className="text-xs text-gray-600 inline-flex items-center gap-1.5">
-            <MapPin size={12} className="text-shopee-blue" />
+            <MapPin size={12} className="text-shopbee-blue" />
             <span>{shopAddress || "Chưa cập nhật địa chỉ shop."}</span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -279,3 +279,6 @@ const AdminShopProfile = () => {
 };
 
 export default AdminShopProfile;
+
+
+

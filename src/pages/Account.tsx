@@ -199,7 +199,7 @@ const AccountPage = () => {
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
               <div>
@@ -210,7 +210,7 @@ const AccountPage = () => {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
               <div>
@@ -221,7 +221,7 @@ const AccountPage = () => {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
               <div>
@@ -232,7 +232,7 @@ const AccountPage = () => {
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
               <div>
@@ -242,7 +242,7 @@ const AccountPage = () => {
                 <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 >
                   <option value="male">Nam</option>
                   <option value="female">Nữ</option>
@@ -257,7 +257,7 @@ const AccountPage = () => {
                   type="date"
                   value={birthDate}
                   onChange={(e) => setBirthDate(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
             </div>
@@ -268,7 +268,7 @@ const AccountPage = () => {
               </label>
               <div className="flex flex-col gap-3 md:flex-row md:items-center">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-shopee-blue/10 flex items-center justify-center overflow-hidden">
+                  <div className="w-12 h-12 rounded-full bg-shopbee-blue/10 flex items-center justify-center overflow-hidden">
                     {avatar ? (
                       <img
                         src={avatar}
@@ -276,7 +276,7 @@ const AccountPage = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <User size={20} className="text-shopee-blue" />
+                      <User size={20} className="text-shopbee-blue" />
                     )}
                   </div>
                   <label className="inline-flex items-center px-3 py-2 rounded-2xl border border-gray-200 bg-white text-xs font-semibold text-gray-700 hover:bg-gray-50 cursor-pointer">
@@ -296,7 +296,7 @@ const AccountPage = () => {
                   type="text"
                   value={avatar}
                   onChange={(e) => setAvatar(e.target.value)}
-                  className="w-full md:flex-1 rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full md:flex-1 rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                   placeholder="Hoặc dán URL ảnh (https://...)"
                 />
               </div>
@@ -328,7 +328,7 @@ const AccountPage = () => {
                   type="password"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                   autoComplete="current-password"
                 />
               </div>
@@ -340,7 +340,7 @@ const AccountPage = () => {
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                   autoComplete="new-password"
                 />
               </div>
@@ -352,7 +352,7 @@ const AccountPage = () => {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                   autoComplete="new-password"
                 />
               </div>
@@ -373,3 +373,6 @@ const AccountPage = () => {
 };
 
 export default AccountPage;
+
+
+

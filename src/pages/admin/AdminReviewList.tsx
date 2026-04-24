@@ -249,7 +249,7 @@ const AdminReviewList = () => {
             onClick={() => setFilterRating("All")}
             className={`flex flex-col items-center min-w-[80px] p-2 rounded-2xl transition-all ${
               filterRating === "All"
-                ? "bg-shopee-blue/10 border-shopee-blue/20"
+                ? "bg-shopbee-blue/10 border-shopbee-blue/20"
                 : "hover:bg-gray-50"
             }`}
           >
@@ -277,7 +277,7 @@ const AdminReviewList = () => {
             <input
               type="text"
               placeholder="Tìm kiếm theo tên người dùng hoặc nội dung đánh giá..."
-              className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopee-blue/50"
+              className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopbee-blue/50"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -306,7 +306,7 @@ const AdminReviewList = () => {
                     className="rounded-2xl border border-gray-100 dark:border-gray-700 p-3 bg-white/70 dark:bg-slate-900/50"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-shopee-blue/10 flex items-center justify-center text-shopee-blue overflow-hidden">
+                      <div className="w-10 h-10 rounded-full bg-shopbee-blue/10 flex items-center justify-center text-shopbee-blue overflow-hidden">
                         {r.userAvatar ? (
                           <img
                             src={r.userAvatar}
@@ -383,8 +383,8 @@ const AdminReviewList = () => {
                       </div>
                     )}
                     {r.sellerReply?.message && (
-                      <div className="mt-2 rounded-lg border border-shopee-blue/20 bg-shopee-blue/[0.04] p-2">
-                        <p className="text-[11px] font-semibold text-shopee-blue mb-1">
+                      <div className="mt-2 rounded-lg border border-shopbee-blue/20 bg-shopbee-blue/[0.04] p-2">
+                        <p className="text-[11px] font-semibold text-shopbee-blue mb-1">
                           Phản hồi của shop
                         </p>
                         <p className="text-xs text-gray-700">
@@ -406,7 +406,7 @@ const AdminReviewList = () => {
                               <div
                                 className={`max-w-[88%] rounded-lg border p-2 ${
                                   isMine
-                                    ? "border-shopee-blue/20 bg-shopee-blue/[0.06]"
+                                    ? "border-shopbee-blue/20 bg-shopbee-blue/[0.06]"
                                     : "border-gray-100 bg-gray-50"
                                 }`}
                               >
@@ -426,7 +426,7 @@ const AdminReviewList = () => {
                                     {item.userName}
                                   </p>
                                   {isMine && (
-                                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-shopee-blue/10 text-shopee-blue">
+                                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-shopbee-blue/10 text-shopbee-blue">
                                       Bạn
                                     </span>
                                   )}
@@ -447,7 +447,7 @@ const AdminReviewList = () => {
                                 [r._id]: true,
                               }))
                             }
-                            className="text-[11px] text-shopee-blue hover:underline"
+                            className="text-[11px] text-shopbee-blue hover:underline"
                           >
                             Xem thêm {(r.comments?.length || 0) - 3} bình luận
                           </button>
@@ -471,7 +471,7 @@ const AdminReviewList = () => {
                         type="button"
                         onClick={() => submitComment(r._id)}
                         disabled={submittingCommentId === r._id}
-                        className="px-2.5 h-8 rounded-md bg-shopee-blue text-white text-xs disabled:opacity-60"
+                        className="px-2.5 h-8 rounded-md bg-shopbee-blue text-white text-xs disabled:opacity-60"
                       >
                         Gửi
                       </button>
@@ -490,7 +490,7 @@ const AdminReviewList = () => {
                             type="button"
                             onClick={() => submitReply(r._id)}
                             disabled={submittingReply}
-                            className="px-2.5 py-1 rounded-md bg-shopee-blue text-white text-xs inline-flex items-center gap-1 disabled:opacity-60"
+                            className="px-2.5 py-1 rounded-md bg-shopbee-blue text-white text-xs inline-flex items-center gap-1 disabled:opacity-60"
                           >
                             <Send size={12} />
                             Gửi
@@ -510,7 +510,7 @@ const AdminReviewList = () => {
                         onClick={() =>
                           openReplyBox(r._id, r.sellerReply?.message)
                         }
-                        className="mt-2 px-2.5 py-1 rounded-md border border-shopee-blue text-shopee-blue text-xs"
+                        className="mt-2 px-2.5 py-1 rounded-md border border-shopbee-blue text-shopbee-blue text-xs"
                       >
                         {r.sellerReply?.message ? "Sửa phản hồi" : "Phản hồi"}
                       </button>
@@ -566,7 +566,7 @@ const AdminReviewList = () => {
                       >
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-shopee-blue/10 flex items-center justify-center text-shopee-blue overflow-hidden">
+                            <div className="w-10 h-10 rounded-full bg-shopbee-blue/10 flex items-center justify-center text-shopbee-blue overflow-hidden">
                               {r.userAvatar ? (
                                 <img
                                   src={r.userAvatar}
@@ -648,8 +648,8 @@ const AdminReviewList = () => {
                               </div>
                             )}
                             {r.sellerReply?.message && (
-                              <div className="rounded-md border border-shopee-blue/20 bg-shopee-blue/[0.04] px-2 py-1.5">
-                                <p className="text-[11px] font-semibold text-shopee-blue">
+                              <div className="rounded-md border border-shopbee-blue/20 bg-shopbee-blue/[0.04] px-2 py-1.5">
+                                <p className="text-[11px] font-semibold text-shopbee-blue">
                                   Phản hồi của shop
                                 </p>
                                 <p className="text-xs text-gray-700 mt-0.5">
@@ -673,7 +673,7 @@ const AdminReviewList = () => {
                                       <div
                                         className={`max-w-[90%] rounded-md border px-2 py-1.5 ${
                                           isMine
-                                            ? "border-shopee-blue/20 bg-shopee-blue/[0.06]"
+                                            ? "border-shopbee-blue/20 bg-shopbee-blue/[0.06]"
                                             : "border-gray-100 bg-gray-50"
                                         }`}
                                       >
@@ -693,7 +693,7 @@ const AdminReviewList = () => {
                                             {item.userName}
                                           </p>
                                           {isMine && (
-                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-shopee-blue/10 text-shopee-blue">
+                                            <span className="text-[10px] px-1.5 py-0.5 rounded bg-shopbee-blue/10 text-shopbee-blue">
                                               Bạn
                                             </span>
                                           )}
@@ -714,7 +714,7 @@ const AdminReviewList = () => {
                                         [r._id]: true,
                                       }))
                                     }
-                                    className="text-[11px] text-shopee-blue hover:underline"
+                                    className="text-[11px] text-shopbee-blue hover:underline"
                                   >
                                     Xem thêm {(r.comments?.length || 0) - 3}{" "}
                                     bình luận
@@ -739,7 +739,7 @@ const AdminReviewList = () => {
                                 type="button"
                                 onClick={() => submitComment(r._id)}
                                 disabled={submittingCommentId === r._id}
-                                className="px-2.5 h-8 rounded-md bg-shopee-blue text-white text-xs disabled:opacity-60"
+                                className="px-2.5 h-8 rounded-md bg-shopbee-blue text-white text-xs disabled:opacity-60"
                               >
                                 Gửi
                               </button>
@@ -760,7 +760,7 @@ const AdminReviewList = () => {
                                     type="button"
                                     onClick={() => submitReply(r._id)}
                                     disabled={submittingReply}
-                                    className="px-2.5 py-1 rounded-md bg-shopee-blue text-white text-xs inline-flex items-center gap-1 disabled:opacity-60"
+                                    className="px-2.5 py-1 rounded-md bg-shopbee-blue text-white text-xs inline-flex items-center gap-1 disabled:opacity-60"
                                   >
                                     <Send size={12} />
                                     Gửi phản hồi
@@ -780,7 +780,7 @@ const AdminReviewList = () => {
                                 onClick={() =>
                                   openReplyBox(r._id, r.sellerReply?.message)
                                 }
-                                className="self-start text-xs px-2.5 py-1 rounded-md border border-shopee-blue text-shopee-blue"
+                                className="self-start text-xs px-2.5 py-1 rounded-md border border-shopbee-blue text-shopbee-blue"
                               >
                                 {r.sellerReply?.message
                                   ? "Sửa phản hồi"
@@ -861,3 +861,6 @@ const AdminReviewList = () => {
 };
 
 export default AdminReviewList;
+
+
+

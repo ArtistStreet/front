@@ -558,7 +558,7 @@ const AdminChat = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Tìm theo tên hoặc email..."
-            className="w-full px-3 py-1.5 rounded-2xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs outline-none focus:ring-2 focus:ring-shopee-blue/30"
+            className="w-full px-3 py-1.5 rounded-2xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs outline-none focus:ring-2 focus:ring-shopbee-blue/30"
           />
         </div>
         {loadingConversations ? (
@@ -585,11 +585,11 @@ const AdminChat = () => {
                   conv.partnerId === selectedPartnerId &&
                   String(conv.sellerId || currentUserId) ===
                     String(selectedSellerId || currentUserId)
-                    ? "bg-shopee-blue/10 text-shopee-blue"
+                    ? "bg-shopbee-blue/10 text-shopbee-blue"
                     : "hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-200"
                 }`}
               >
-                <div className="w-9 h-9 rounded-full bg-shopee-blue/10 flex items-center justify-center overflow-hidden">
+                <div className="w-9 h-9 rounded-full bg-shopbee-blue/10 flex items-center justify-center overflow-hidden">
                   {conv.avatar ? (
                     <img
                       src={conv.avatar}
@@ -599,7 +599,7 @@ const AdminChat = () => {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <UserIcon size={18} className="text-shopee-blue" />
+                    <UserIcon size={18} className="text-shopbee-blue" />
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -645,7 +645,7 @@ const AdminChat = () => {
                 >
                   <ArrowLeft size={16} />
                 </button>
-                <div className="w-10 h-10 rounded-full bg-shopee-blue/10 flex items-center justify-center overflow-hidden">
+                <div className="w-10 h-10 rounded-full bg-shopbee-blue/10 flex items-center justify-center overflow-hidden">
                   {activeConversation.avatar ? (
                     <img
                       src={activeConversation.avatar}
@@ -655,7 +655,7 @@ const AdminChat = () => {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <UserIcon size={18} className="text-shopee-blue" />
+                    <UserIcon size={18} className="text-shopbee-blue" />
                   )}
                 </div>
                 <div>
@@ -683,7 +683,7 @@ const AdminChat = () => {
                   onClick={() => setFilter("all")}
                   className={`px-2 py-1 rounded-full border text-xs ${
                     filter === "all"
-                      ? "bg-shopee-blue text-white border-shopee-blue"
+                      ? "bg-shopbee-blue text-white border-shopbee-blue"
                       : "border-gray-200 dark:border-slate-700 text-gray-600 dark:text-slate-300"
                   }`}
                 >
@@ -757,11 +757,11 @@ const AdminChat = () => {
                       fromSeller
                         ? fromAI
                           ? "bg-emerald-500 text-white rounded-br-none"
-                          : "bg-shopee-blue text-white rounded-br-none"
+                          : "bg-shopbee-blue text-white rounded-br-none"
                         : "bg-gray-100 dark:bg-slate-800 text-gray-800 dark:text-slate-100 rounded-bl-none"
                     } transition-all duration-300 ${
                       shouldAnimate
-                        ? "animate-pulse ring-2 ring-shopee-blue/25"
+                        ? "animate-pulse ring-2 ring-shopbee-blue/25"
                         : ""
                     }`}
                   >
@@ -829,7 +829,7 @@ const AdminChat = () => {
                   : "Chọn khách hàng để bắt đầu chat"
               }
               disabled={!activeConversation || sending}
-              className="flex-1 min-w-0 px-3 py-2 rounded-2xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/30 disabled:opacity-60"
+              className="flex-1 min-w-0 px-3 py-2 rounded-2xl border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/30 disabled:opacity-60"
             />
             <button
               type="button"
@@ -848,3 +848,6 @@ const AdminChat = () => {
 };
 
 export default AdminChat;
+
+
+

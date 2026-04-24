@@ -467,6 +467,15 @@ export const productApi = {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
+  becomeSeller: (token: string) => {
+    return axios.post(
+      `${API_URL}/auth/become-seller`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
+  },
   getProfile: (token: string) => {
     return axios.get(`${API_URL}/auth/profile`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -619,3 +628,6 @@ export const productApi = {
 };
 
 export default api;
+
+
+

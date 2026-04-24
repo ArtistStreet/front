@@ -111,7 +111,7 @@ const AdminDashboard = () => {
             Tổng quan về tình hình kinh doanh của shop
           </p>
           {refreshing && (
-            <p className="text-xs text-shopee-blue mt-1">
+            <p className="text-xs text-shopbee-blue mt-1">
               Đang cập nhật dữ liệu...
             </p>
           )}
@@ -122,7 +122,7 @@ const AdminDashboard = () => {
         <div className="flex gap-2">
           <Link
             to="/admin/products/new"
-            className="w-full md:w-auto justify-center flex items-center gap-2 px-4 md:px-5 py-2.5 bg-shopee-blue text-white rounded-xl font-bold hover:bg-shopee-blue/90 transition-all shadow-lg shadow-shopee-blue/30 active:scale-95 border border-white/10"
+            className="w-full md:w-auto justify-center flex items-center gap-2 px-4 md:px-5 py-2.5 bg-shopbee-blue text-white rounded-xl font-bold hover:bg-shopbee-blue/90 transition-all shadow-lg shadow-shopbee-blue/30 active:scale-95 border border-white/10"
           >
             <PlusCircle size={20} />
             Thêm sản phẩm
@@ -133,15 +133,15 @@ const AdminDashboard = () => {
       {/* Business Overview */}
       <section>
         <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-          <TrendingUp size={20} className="text-shopee-blue" />
+          <TrendingUp size={20} className="text-shopbee-blue" />
           Tổng quan kinh doanh
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <div className="glass-card p-4 md:p-6 rounded-3xl relative overflow-hidden group">
-            <div className="absolute -right-4 -top-4 w-24 h-24 bg-shopee-blue/5 rounded-full group-hover:scale-150 transition-transform duration-500" />
+            <div className="absolute -right-4 -top-4 w-24 h-24 bg-shopbee-blue/5 rounded-full group-hover:scale-150 transition-transform duration-500" />
             <div className="flex items-center space-x-4">
-              <div className="bg-shopee-blue/10 p-4 rounded-2xl">
-                <DollarSign className="text-shopee-blue" size={28} />
+              <div className="bg-shopbee-blue/10 p-4 rounded-2xl">
+                <DollarSign className="text-shopbee-blue" size={28} />
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -255,12 +255,12 @@ const AdminDashboard = () => {
         <div className="lg:col-span-2 glass-card rounded-3xl overflow-hidden flex flex-col">
           <div className="p-4 md:p-6 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center gap-2">
             <h2 className="text-xl font-bold flex items-center gap-2">
-              <TrendingUp size={20} className="text-shopee-blue" />
+              <TrendingUp size={20} className="text-shopbee-blue" />
               Sản phẩm bán chạy nhất
             </h2>
             <Link
               to="/admin/products"
-              className="text-shopee-blue text-sm font-bold flex items-center gap-1 hover:underline"
+              className="text-shopbee-blue text-sm font-bold flex items-center gap-1 hover:underline"
             >
               Tất cả <ArrowRight size={14} />
             </Link>
@@ -287,7 +287,7 @@ const AdminDashboard = () => {
                       </div>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className="font-black text-shopee-blue">
+                      <p className="font-black text-shopbee-blue">
                         {product.totalQuantity}{" "}
                         <span className="text-[10px] font-normal text-gray-500">
                           đã bán
@@ -295,7 +295,7 @@ const AdminDashboard = () => {
                       </p>
                       <div className="w-20 md:w-24 h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full mt-1 overflow-hidden">
                         <div
-                          className="h-full bg-shopee-blue rounded-full"
+                          className="h-full bg-shopbee-blue rounded-full"
                           style={{
                             width: `${Math.min((product.totalQuantity / topQuantity) * 100, 100)}%`,
                           }}
@@ -347,7 +347,7 @@ const AdminDashboard = () => {
                 ))}
                 <Link
                   to="/admin/products"
-                  className="block text-center text-xs font-bold text-gray-500 hover:text-shopee-blue transition-colors pt-2"
+                  className="block text-center text-xs font-bold text-gray-500 hover:text-shopbee-blue transition-colors pt-2"
                 >
                   Xem tất cả kho hàng
                 </Link>
@@ -375,9 +375,9 @@ const AdminDashboard = () => {
             <div className="grid grid-cols-1 gap-3">
               <Link
                 to="/admin/products"
-                className="flex items-center gap-3 p-3 rounded-2xl hover:bg-shopee-blue/5 transition-colors group"
+                className="flex items-center gap-3 p-3 rounded-2xl hover:bg-shopbee-blue/5 transition-colors group"
               >
-                <div className="bg-shopee-blue/10 p-2 rounded-xl text-shopee-blue group-hover:scale-110 transition-transform">
+                <div className="bg-shopbee-blue/10 p-2 rounded-xl text-shopbee-blue group-hover:scale-110 transition-transform">
                   <List size={20} />
                 </div>
                 <span className="font-semibold text-sm">
@@ -411,7 +411,7 @@ const AdminDashboard = () => {
               <div className="bg-white/20 p-2 rounded-xl">
                 <Bot size={24} />
               </div>
-              <h3 className="font-bold">Trợ lý AI Shopee</h3>
+              <h3 className="font-bold">Trợ lý AI ShopBee</h3>
             </div>
             <p className="text-emerald-50 text-xs leading-relaxed">
               AI đang giúp bạn trả lời <strong>{stats.aiReplyToday}</strong> câu
@@ -435,3 +435,6 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
+
+

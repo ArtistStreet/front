@@ -35,7 +35,7 @@ const Register = () => {
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
       <div className="glass-card rounded-[32px] p-10 w-full max-w-md border-white/50">
-        <h2 className="text-3xl font-black text-center mb-8 text-shopee-blue tracking-tighter italic uppercase">
+        <h2 className="text-3xl font-black text-center mb-8 text-shopbee-blue tracking-tighter italic uppercase">
           Đăng Ký
         </h2>
 
@@ -52,7 +52,7 @@ const Register = () => {
             </label>
             <input
               type="text"
-              className="w-full bg-gray-100/70 dark:bg-slate-800/70 border border-transparent dark:border-slate-700 focus:border-shopee-blue focus:bg-white dark:focus:bg-slate-800 rounded-2xl px-5 py-3.5 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
+              className="w-full bg-gray-100/70 dark:bg-slate-800/70 border border-transparent dark:border-slate-700 focus:border-shopbee-blue focus:bg-white dark:focus:bg-slate-800 rounded-2xl px-5 py-3.5 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
               placeholder="Nguyễn Văn A"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -65,7 +65,7 @@ const Register = () => {
             </label>
             <input
               type="email"
-              className="w-full bg-gray-100/70 dark:bg-slate-800/70 border border-transparent dark:border-slate-700 focus:border-shopee-blue focus:bg-white dark:focus:bg-slate-800 rounded-2xl px-5 py-3.5 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
+              className="w-full bg-gray-100/70 dark:bg-slate-800/70 border border-transparent dark:border-slate-700 focus:border-shopbee-blue focus:bg-white dark:focus:bg-slate-800 rounded-2xl px-5 py-3.5 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
               placeholder="example@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -78,7 +78,7 @@ const Register = () => {
             </label>
             <input
               type="password"
-              className="w-full bg-gray-100/70 dark:bg-slate-800/70 border border-transparent dark:border-slate-700 focus:border-shopee-blue focus:bg-white dark:focus:bg-slate-800 rounded-2xl px-5 py-3.5 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
+              className="w-full bg-gray-100/70 dark:bg-slate-800/70 border border-transparent dark:border-slate-700 focus:border-shopbee-blue focus:bg-white dark:focus:bg-slate-800 rounded-2xl px-5 py-3.5 outline-none transition-all text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -89,7 +89,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full liquid-btn text-white font-bold py-4 rounded-2xl shadow-xl shadow-shopee-blue/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+            className="w-full liquid-btn text-white font-bold py-4 rounded-2xl shadow-xl shadow-shopbee-blue/20 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
           >
             {loading ? "Đang xử lý..." : "ĐĂNG KÝ"}
           </button>
@@ -99,7 +99,7 @@ const Register = () => {
           Đã có tài khoản?{" "}
           <Link
             to="/login"
-            className="text-shopee-blue font-bold hover:underline"
+            className="text-shopbee-blue font-bold hover:underline"
           >
             Đăng nhập ngay
           </Link>
@@ -110,3 +110,6 @@ const Register = () => {
 };
 
 export default Register;
+
+
+

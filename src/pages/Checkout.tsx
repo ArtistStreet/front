@@ -229,7 +229,7 @@ const Checkout = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <div className="glass-card rounded-2xl p-6">
-            <div className="flex items-center gap-2 mb-4 text-shopee-blue">
+            <div className="flex items-center gap-2 mb-4 text-shopbee-blue">
               <MapPin size={20} />
               <h2 className="font-bold text-lg text-gray-800">
                 Địa chỉ nhận hàng
@@ -269,14 +269,14 @@ const Checkout = () => {
                     {selectedAddress.district}, {selectedAddress.province}
                   </p>
                   {selectedAddress.isDefault && (
-                    <span className="inline-block mt-2 px-2 py-0.5 border border-shopee-blue text-shopee-blue text-[10px] font-bold rounded">
+                    <span className="inline-block mt-2 px-2 py-0.5 border border-shopbee-blue text-shopbee-blue text-[10px] font-bold rounded">
                       Mặc định
                     </span>
                   )}
                 </div>
                 <button
                   onClick={() => setAddressModalOpen(true)}
-                  className="text-sm font-bold text-shopee-blue hover:underline shrink-0"
+                  className="text-sm font-bold text-shopbee-blue hover:underline shrink-0"
                 >
                   Thay đổi
                 </button>
@@ -366,7 +366,7 @@ const Checkout = () => {
             </label>
             <div className="flex items-center justify-between gap-3 rounded-2xl border border-gray-200 bg-white/60 backdrop-blur-xl px-3 py-2">
               <div className="flex items-center gap-2 min-w-0">
-                <Ticket size={16} className="text-shopee-blue" />
+                <Ticket size={16} className="text-shopbee-blue" />
                 {selectedVoucher ? (
                   <div className="min-w-0">
                     <p className="text-sm font-semibold text-gray-800 truncate">
@@ -395,7 +395,7 @@ const Checkout = () => {
                 <button
                   type="button"
                   onClick={() => setVoucherModalOpen(true)}
-                  className="px-3 py-2 rounded-xl text-xs font-bold border border-shopee-blue text-shopee-blue hover:bg-shopee-blue/5 transition-colors"
+                  className="px-3 py-2 rounded-xl text-xs font-bold border border-shopbee-blue text-shopbee-blue hover:bg-shopbee-blue/5 transition-colors"
                 >
                   Chọn
                 </button>
@@ -414,7 +414,7 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between font-bold text-lg mb-6">
             <span>Thành tiền</span>
-            <span className="text-shopee-blue">
+            <span className="text-shopbee-blue">
               ₫{finalTotal.toLocaleString()}
             </span>
           </div>
@@ -473,8 +473,8 @@ const Checkout = () => {
                     }}
                     className={`w-full text-left p-4 rounded-2xl border transition-all ${
                       selectedAddress?._id === addr._id
-                        ? "border-shopee-blue bg-shopee-blue/5"
-                        : "border-gray-200 hover:border-shopee-blue/50"
+                        ? "border-shopbee-blue bg-shopbee-blue/5"
+                        : "border-gray-200 hover:border-shopbee-blue/50"
                     }`}
                   >
                     <div className="flex items-start gap-3">
@@ -482,12 +482,12 @@ const Checkout = () => {
                         <div
                           className={`w-4 h-4 rounded-full border flex items-center justify-center ${
                             selectedAddress?._id === addr._id
-                              ? "border-shopee-blue"
+                              ? "border-shopbee-blue"
                               : "border-gray-400"
                           }`}
                         >
                           {selectedAddress?._id === addr._id && (
-                            <div className="w-2 h-2 rounded-full bg-shopee-blue" />
+                            <div className="w-2 h-2 rounded-full bg-shopbee-blue" />
                           )}
                         </div>
                       </div>
@@ -503,7 +503,7 @@ const Checkout = () => {
                           {addr.province}
                         </p>
                         {addr.isDefault && (
-                          <span className="inline-block mt-2 px-2 py-0.5 border border-shopee-blue text-shopee-blue text-[10px] font-bold rounded">
+                          <span className="inline-block mt-2 px-2 py-0.5 border border-shopbee-blue text-shopbee-blue text-[10px] font-bold rounded">
                             Mặc định
                           </span>
                         )}
@@ -642,12 +642,12 @@ const Checkout = () => {
                             setVoucherCodeInput(e.target.value.toUpperCase())
                           }
                           placeholder="Nhập mã (VD: GIAM10)"
-                          className="flex-1 px-3 py-2 rounded-2xl border border-gray-200 bg-white/70 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/30 focus:border-shopee-blue/60"
+                          className="flex-1 px-3 py-2 rounded-2xl border border-gray-200 bg-white/70 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/30 focus:border-shopbee-blue/60"
                         />
                         <button
                           type="submit"
                           disabled={voucherApplyLoading}
-                          className="px-4 py-2 rounded-2xl text-xs font-bold border border-shopee-blue text-shopee-blue hover:bg-shopee-blue/5 transition-colors disabled:opacity-60"
+                          className="px-4 py-2 rounded-2xl text-xs font-bold border border-shopbee-blue text-shopbee-blue hover:bg-shopbee-blue/5 transition-colors disabled:opacity-60"
                         >
                           {voucherApplyLoading ? "Đang áp dụng..." : "Áp dụng"}
                         </button>
@@ -674,7 +674,7 @@ const Checkout = () => {
                         </p>
                         <Link
                           to="/vouchers"
-                          className="inline-flex mt-3 px-5 py-2.5 rounded-2xl border border-shopee-blue text-shopee-blue font-bold text-sm hover:bg-shopee-blue/5 transition-colors"
+                          className="inline-flex mt-3 px-5 py-2.5 rounded-2xl border border-shopbee-blue text-shopbee-blue font-bold text-sm hover:bg-shopbee-blue/5 transition-colors"
                           onClick={() => setVoucherModalOpen(false)}
                         >
                           Đi tới Kho voucher
@@ -695,7 +695,7 @@ const Checkout = () => {
                             }}
                             className={`w-full text-left rounded-3xl border p-4 transition-all ${
                               isSelected
-                                ? "border-shopee-blue bg-shopee-blue/5"
+                                ? "border-shopbee-blue bg-shopbee-blue/5"
                                 : "border-gray-200 bg-white/60 hover:bg-white"
                             }`}
                           >
@@ -716,7 +716,7 @@ const Checkout = () => {
                                   </p>
                                 )}
                               </div>
-                              <span className="shrink-0 text-[11px] font-bold px-2.5 py-1 rounded-full border border-shopee-blue/40 text-shopee-blue bg-white/70">
+                              <span className="shrink-0 text-[11px] font-bold px-2.5 py-1 rounded-full border border-shopbee-blue/40 text-shopbee-blue bg-white/70">
                                 -{percent}%
                                 {cap > 0
                                   ? ` • tối đa ₫${cap.toLocaleString()}`
@@ -739,3 +739,6 @@ const Checkout = () => {
 };
 
 export default Checkout;
+
+
+

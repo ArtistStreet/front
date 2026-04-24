@@ -145,3 +145,6 @@ export const prefetchLikelyRoutes = (currentPath: string) => {
     queue.forEach((key) => prefetchRoute(key));
   });
 };
+
+
+

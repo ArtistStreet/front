@@ -35,7 +35,7 @@ const AdminLayout = () => {
   const navClassName = ({ isActive }: { isActive: boolean }) =>
     `flex items-center space-x-3 p-3 rounded-2xl transition-all font-bold ${
       isActive
-        ? "bg-shopee-blue/10 text-shopee-blue shadow-sm"
+        ? "bg-shopbee-blue/10 text-shopbee-blue shadow-sm"
         : "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-500"
     }`;
 
@@ -90,7 +90,7 @@ const AdminLayout = () => {
           </button>
         </div>
         <div className="flex items-center gap-3 mb-8 px-2">
-          <div className="w-9 h-9 rounded-2xl bg-shopee-blue/10 flex items-center justify-center overflow-hidden">
+          <div className="w-9 h-9 rounded-2xl bg-shopbee-blue/10 flex items-center justify-center overflow-hidden">
             {shopAvatar ? (
               <img
                 src={shopAvatar}
@@ -98,11 +98,11 @@ const AdminLayout = () => {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <Store size={20} className="text-shopee-blue" />
+              <Store size={20} className="text-shopbee-blue" />
             )}
           </div>
           <div>
-            <h1 className="text-base font-black uppercase tracking-tight text-shopee-blue">
+            <h1 className="text-base font-black uppercase tracking-tight text-shopbee-blue">
               {shopTitle}
             </h1>
             <p className="text-[11px] text-gray-500 dark:text-gray-400">
@@ -141,3 +141,6 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
+
+
+

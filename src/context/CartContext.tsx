@@ -108,7 +108,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     );
     if (token) {
       productApi
-        .updateCartItem(String(productId), finalQty, token)
+        .updateCartItem(String(productId), { quantity: finalQty }, token)
         .catch((err) => {
           const errMsg = err.response?.data?.message;
           if (errMsg) alert(errMsg);
@@ -145,3 +145,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     </CartContext.Provider>
   );
 };
+
+
+

@@ -234,7 +234,7 @@ const AddressesPage = () => {
                       <span className="text-gray-300">•</span>
                       <p className="text-sm text-gray-600">{a.phone}</p>
                       {a.isDefault && (
-                        <span className="text-[11px] px-2 py-0.5 rounded-full border border-shopee-blue/40 text-shopee-blue bg-white/70">
+                        <span className="text-[11px] px-2 py-0.5 rounded-full border border-shopbee-blue/40 text-shopbee-blue bg-white/70">
                           Mặc định
                         </span>
                       )}
@@ -249,7 +249,7 @@ const AddressesPage = () => {
                         type="button"
                         onClick={() => handleSetDefault(a._id)}
                         disabled={saving}
-                        className="px-3 py-2 rounded-2xl text-xs font-bold border border-shopee-blue text-shopee-blue hover:bg-shopee-blue/5 transition-colors disabled:opacity-60"
+                        className="px-3 py-2 rounded-2xl text-xs font-bold border border-shopbee-blue text-shopbee-blue hover:bg-shopbee-blue/5 transition-colors disabled:opacity-60"
                       >
                         Đặt mặc định
                       </button>
@@ -297,7 +297,7 @@ const AddressesPage = () => {
                   onChange={(e) =>
                     setDraft((p) => ({ ...p, fullName: e.target.value }))
                   }
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
               <div>
@@ -309,7 +309,7 @@ const AddressesPage = () => {
                   onChange={(e) =>
                     setDraft((p) => ({ ...p, phone: e.target.value }))
                   }
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
               <div>
@@ -321,7 +321,7 @@ const AddressesPage = () => {
                   onChange={(e) =>
                     setDraft((p) => ({ ...p, province: e.target.value }))
                   }
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
               <div>
@@ -333,7 +333,7 @@ const AddressesPage = () => {
                   onChange={(e) =>
                     setDraft((p) => ({ ...p, district: e.target.value }))
                   }
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
               <div>
@@ -345,7 +345,7 @@ const AddressesPage = () => {
                   onChange={(e) =>
                     setDraft((p) => ({ ...p, ward: e.target.value }))
                   }
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
               <div>
@@ -358,7 +358,7 @@ const AddressesPage = () => {
                     setDraft((p) => ({ ...p, street: e.target.value }))
                   }
                   placeholder="Số nhà, tên đường..."
-                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopee-blue/40 focus:border-shopee-blue"
+                  className="w-full rounded-2xl border border-gray-200 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-shopbee-blue/40 focus:border-shopbee-blue"
                 />
               </div>
             </div>
@@ -400,4 +400,7 @@ const AddressesPage = () => {
 };
 
 export default AddressesPage;
+
+
+
 

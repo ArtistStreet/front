@@ -33,12 +33,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           className="absolute top-0 left-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
         />
         {product.discount > 0 && (
-          <div className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 bg-yellow-400/90 backdrop-blur-md text-shopee-blue text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg">
+          <div className="absolute top-1.5 sm:top-2 right-1.5 sm:right-2 bg-yellow-400/90 backdrop-blur-md text-shopbee-blue text-[9px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg">
             -{product.discount}%
           </div>
         )}
         {product.isMall && (
-          <div className="absolute top-1.5 sm:top-2 left-1.5 sm:left-2 bg-shopee-blue text-white text-[8px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded-md shadow-lg shadow-shopee-blue/20">
+          <div className="absolute top-1.5 sm:top-2 left-1.5 sm:left-2 bg-shopbee-blue text-white text-[8px] sm:text-[9px] font-bold px-1.5 py-0.5 rounded-md shadow-lg shadow-shopbee-blue/20">
             Mall
           </div>
         )}
@@ -46,7 +46,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
       <div className="p-2 sm:p-2.5 md:p-3 flex flex-col flex-1 bg-white/70 dark:bg-slate-900/60">
         <h3
-          className="text-[11px] sm:text-xs md:text-sm text-gray-800 dark:text-slate-100 line-clamp-2 mb-0.5 md:mb-1 font-medium leading-snug group-hover:text-shopee-blue transition-colors"
+          className="text-[11px] sm:text-xs md:text-sm text-gray-800 dark:text-slate-100 line-clamp-2 mb-0.5 md:mb-1 font-medium leading-snug group-hover:text-shopbee-blue transition-colors"
           title={product.name}
         >
           {product.name}
@@ -59,7 +59,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
         <div className="mt-auto">
           <div className="flex items-center gap-1 mb-1.5 md:mb-2">
-            <span className="text-shopee-blue font-bold text-xs sm:text-sm md:text-base">
+            <span className="text-shopbee-blue font-bold text-xs sm:text-sm md:text-base">
               ₫{product.price.toLocaleString()}
             </span>
             {product.discount > 0 && (
@@ -88,3 +88,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 };
 
 export default memo(ProductCard);
+
+
+

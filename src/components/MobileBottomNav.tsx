@@ -44,7 +44,7 @@ const MobileBottomNav = () => {
                   size={18}
                   className={
                     isHome
-                      ? "text-shopee-blue"
+                      ? "text-shopbee-blue"
                       : "text-slate-400/70 dark:text-slate-400/70"
                   }
                 />
@@ -52,7 +52,7 @@ const MobileBottomNav = () => {
               <span
                 className={`relative z-10 text-[9px] sm:text-[10px] font-medium whitespace-nowrap ${
                   isHome
-                    ? "text-shopee-blue"
+                    ? "text-shopbee-blue"
                     : "text-slate-400/80 dark:text-slate-400/80"
                 }`}
               >
@@ -78,7 +78,7 @@ const MobileBottomNav = () => {
                   size={18}
                   className={
                     isCart
-                      ? "text-shopee-blue"
+                      ? "text-shopbee-blue"
                       : "text-slate-400/70 dark:text-slate-400/70"
                   }
                 />
@@ -86,7 +86,7 @@ const MobileBottomNav = () => {
               <span
                 className={`relative z-10 text-[9px] sm:text-[10px] font-medium whitespace-nowrap ${
                   isCart
-                    ? "text-shopee-blue"
+                    ? "text-shopbee-blue"
                     : "text-slate-400/80 dark:text-slate-400/80"
                 }`}
               >
@@ -135,7 +135,7 @@ const MobileBottomNav = () => {
                   size={18}
                   className={
                     isNotif
-                      ? "text-shopee-blue"
+                      ? "text-shopbee-blue"
                       : "text-slate-400/70 dark:text-slate-400/70"
                   }
                 />
@@ -143,7 +143,7 @@ const MobileBottomNav = () => {
               <span
                 className={`relative z-10 text-[9px] sm:text-[10px] font-medium whitespace-nowrap ${
                   isNotif
-                    ? "text-shopee-blue"
+                    ? "text-shopbee-blue"
                     : "text-slate-400/80 dark:text-slate-400/80"
                 }`}
               >
@@ -169,7 +169,7 @@ const MobileBottomNav = () => {
                   size={18}
                   className={
                     isAccount
-                      ? "text-shopee-blue"
+                      ? "text-shopbee-blue"
                       : "text-slate-400/70 dark:text-slate-400/70"
                   }
                 />
@@ -177,7 +177,7 @@ const MobileBottomNav = () => {
               <span
                 className={`relative z-10 text-[9px] sm:text-[10px] font-medium whitespace-nowrap ${
                   isAccount
-                    ? "text-shopee-blue"
+                    ? "text-shopbee-blue"
                     : "text-slate-400/80 dark:text-slate-400/80"
                 }`}
               >
@@ -192,3 +192,6 @@ const MobileBottomNav = () => {
 };
 
 export default MobileBottomNav;
+
+
+

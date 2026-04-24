@@ -117,7 +117,7 @@ const VouchersPage = () => {
           </p>
           <motion.div
             layout
-            className="w-full rounded-2xl bg-white/70 dark:bg-slate-900/40 border border-shopee-blue/40 shadow-sm hover:shadow-xl hover:border-shopee-blue/70 backdrop-blur-xl transition-all duration-300 overflow-hidden"
+            className="w-full rounded-2xl bg-white/70 dark:bg-slate-900/40 border border-shopbee-blue/40 shadow-sm hover:shadow-xl hover:border-shopbee-blue/70 backdrop-blur-xl transition-all duration-300 overflow-hidden"
           >
             <div className="flex items-center justify-between px-3 pt-3 pb-2">
               <button
@@ -131,7 +131,7 @@ const VouchersPage = () => {
                 type="button"
                 onClick={() => setShowAddInput((prev) => !prev)}
                 whileTap={{ scale: 0.9 }}
-                className="h-7 w-7 rounded-full bg-white/80 shadow-sm flex items-center justify-center text-shopee-blue"
+                className="h-7 w-7 rounded-full bg-white/80 shadow-sm flex items-center justify-center text-shopbee-blue"
               >
                 <motion.span
                   animate={{ rotate: showAddInput ? 90 : 0 }}
@@ -161,10 +161,10 @@ const VouchersPage = () => {
                           setVoucherCode(e.target.value.toUpperCase())
                         }
                         placeholder="Nhập mã voucher của bạn"
-                        className="w-full rounded-2xl bg-white/60 dark:bg-slate-900/60 border border-transparent px-3 pr-8 py-2 text-sm outline-none focus:border-shopee-blue/70 focus:ring-2 focus:ring-shopee-blue/20 transition-all placeholder:text-gray-400"
+                        className="w-full rounded-2xl bg-white/60 dark:bg-slate-900/60 border border-transparent px-3 pr-8 py-2 text-sm outline-none focus:border-shopbee-blue/70 focus:ring-2 focus:ring-shopbee-blue/20 transition-all placeholder:text-gray-400"
                       />
                       {voucherCode && (
-                        <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-shopee-blue/80">
+                        <span className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-shopbee-blue/80">
                           <Check size={16} />
                         </span>
                       )}
@@ -190,7 +190,7 @@ const VouchersPage = () => {
             whileTap={{ scale: 0.98 }}
             className={`w-full px-4 py-2.5 rounded-2xl text-sm backdrop-blur-xl border transition-all ${
               activeSection === "discover"
-                ? "border-shopee-blue text-shopee-blue bg-gradient-to-r from-shopee-blue/10 via-white/40 to-shopee-lightBlue/20 dark:from-shopee-blue/40 dark:via-slate-900/70 dark:to-slate-800/80 shadow-lg"
+                ? "border-shopbee-blue text-shopbee-blue bg-gradient-to-r from-shopbee-blue/10 via-white/40 to-shopbee-lightBlue/20 dark:from-shopbee-blue/40 dark:via-slate-900/70 dark:to-slate-800/80 shadow-lg"
                 : "border-white/60 dark:border-slate-700/70 text-gray-700 dark:text-slate-100 bg-white/60 dark:bg-slate-900/50 hover:bg-white/80 dark:hover:bg-slate-900/70 shadow-sm"
             }`}
           >
@@ -203,7 +203,7 @@ const VouchersPage = () => {
             whileTap={{ scale: 0.98 }}
             className={`w-full px-4 py-2.5 rounded-2xl text-sm backdrop-blur-xl border transition-all ${
               activeSection === "history"
-                ? "border-shopee-blue text-shopee-blue bg-gradient-to-r from-shopee-blue/10 via-white/40 to-shopee-lightBlue/20 dark:from-shopee-blue/40 dark:via-slate-900/70 dark:to-slate-800/80 shadow-lg"
+                ? "border-shopbee-blue text-shopbee-blue bg-gradient-to-r from-shopbee-blue/10 via-white/40 to-shopbee-lightBlue/20 dark:from-shopbee-blue/40 dark:via-slate-900/70 dark:to-slate-800/80 shadow-lg"
                 : "border-white/60 dark:border-slate-700/70 text-gray-700 dark:text-slate-100 bg-white/60 dark:bg-slate-900/50 hover:bg-white/80 dark:hover:bg-slate-900/70 shadow-sm"
             }`}
           >
@@ -235,11 +235,11 @@ const VouchersPage = () => {
                 {myVouchers.map((v) => (
                   <div
                     key={v.code}
-                    className="rounded-3xl border border-dashed border-shopee-blue/60 dark:border-slate-700/80 bg-gradient-to-r from-shopee-blue/5 to-shopee-lightBlue/5 dark:from-slate-900/70 dark:to-slate-800/80 p-4 flex flex-col justify-between"
+                    className="rounded-3xl border border-dashed border-shopbee-blue/60 dark:border-slate-700/80 bg-gradient-to-r from-shopbee-blue/5 to-shopbee-lightBlue/5 dark:from-slate-900/70 dark:to-slate-800/80 p-4 flex flex-col justify-between"
                   >
                     <div className="flex justify-between items-start mb-3">
                       <div className="flex items-center gap-3">
-                        <div className="h-9 w-9 rounded-2xl bg-white/80 dark:bg-slate-900/80 flex items-center justify-center shadow-sm ring-1 ring-shopee-blue/10 overflow-hidden">
+                        <div className="h-9 w-9 rounded-2xl bg-white/80 dark:bg-slate-900/80 flex items-center justify-center shadow-sm ring-1 ring-shopbee-blue/10 overflow-hidden">
                           {v.shopLogo ? (
                             <img
                               src={v.shopLogo}
@@ -249,13 +249,13 @@ const VouchersPage = () => {
                               className="h-full w-full object-cover"
                             />
                           ) : (
-                            <span className="text-xs font-bold text-shopee-blue">
+                            <span className="text-xs font-bold text-shopbee-blue">
                               {(v.shop || "M")[0]}
                             </span>
                           )}
                         </div>
                         <div>
-                          <p className="text-[11px] font-semibold text-shopee-blue uppercase tracking-widest">
+                          <p className="text-[11px] font-semibold text-shopbee-blue uppercase tracking-widest">
                             {v.shop || "Mã giảm"}
                           </p>
                           <p className="text-xl font-extrabold text-gray-900 dark:text-slate-100 mt-0.5">
@@ -264,7 +264,7 @@ const VouchersPage = () => {
                         </div>
                       </div>
                       {v.discount && (
-                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-white dark:bg-slate-900 text-shopee-blue dark:text-shopee-lightBlue font-semibold border border-shopee-blue/40 dark:border-shopee-lightBlue/60">
+                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-white dark:bg-slate-900 text-shopbee-blue dark:text-shopbee-lightBlue font-semibold border border-shopbee-blue/40 dark:border-shopbee-lightBlue/60">
                           {v.discount}
                         </span>
                       )}
@@ -440,3 +440,6 @@ const VouchersPage = () => {
 };
 
 export default VouchersPage;
+
+
+

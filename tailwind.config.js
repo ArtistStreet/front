@@ -5,7 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        shopee: {
+        shopbee: {
           blue: "#007aff",
           lightBlue: "#58a6ff",
         },
@@ -14,3 +14,4 @@ export default {
   },
   plugins: [],
 };
+

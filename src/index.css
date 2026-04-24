@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-shopee-blue: #007aff;
-  --color-shopee-light-blue: #58a6ff;
-  --color-shopee-orange: #ee4d2d;
+  --color-shopbee-blue: #007aff;
+  --color-shopbee-light-blue: #58a6ff;
+  --color-shopbee-orange: #ee4d2d;
 }
 
 @variant dark (&:where(.dark, .dark *));
@@ -146,3 +146,6 @@ body {
     transform: translateX(100%);
   }
 }
+
+
+

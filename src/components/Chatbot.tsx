@@ -15,7 +15,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Xin chào! Tôi là trợ lý ảo của Shopee. Tôi có thể giúp gì cho bạn?",
+      text: "Xin chào! Tôi là trợ lý ảo của ShopBee. Tôi có thể giúp gì cho bạn?",
       sender: "bot",
       timestamp: new Date(),
     },
@@ -114,7 +114,7 @@ const Chatbot = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-sm tracking-tight">
-                    Hỗ Trợ Shopee AI
+                    Hỗ Trợ ShopBee AI
                   </h3>
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
@@ -148,8 +148,8 @@ const Chatbot = () => {
                   >
                     <div
                       className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-sm ${msg.sender === "user"
-                        ? "bg-shopee-blue text-white"
-                        : "bg-white text-shopee-blue dark:bg-slate-900 dark:text-slate-100"
+                        ? "bg-shopbee-blue text-white"
+                        : "bg-white text-shopbee-blue dark:bg-slate-900 dark:text-slate-100"
                         }`}
                     >
                       {msg.sender === "user" ? (
@@ -183,9 +183,9 @@ const Chatbot = () => {
               {isTyping && (
                 <div className="flex justify-start">
                   <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 dark:border-slate-800 flex gap-1">
-                    <span className="w-1.5 h-1.5 bg-shopee-blue/40 rounded-full animate-bounce"></span>
-                    <span className="w-1.5 h-1.5 bg-shopee-blue/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                    <span className="w-1.5 h-1.5 bg-shopee-blue/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                    <span className="w-1.5 h-1.5 bg-shopbee-blue/40 rounded-full animate-bounce"></span>
+                    <span className="w-1.5 h-1.5 bg-shopbee-blue/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                    <span className="w-1.5 h-1.5 bg-shopbee-blue/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
                   </div>
                 </div>
               )}
@@ -194,13 +194,13 @@ const Chatbot = () => {
 
             {/* Input Area */}
             <div className="p-4 bg-white/50 dark:bg-slate-900/60 backdrop-blur-md border-t border-white/20 dark:border-slate-800/60">
-              <div className="flex gap-2 bg-gray-100/80 dark:bg-slate-800/70 p-1.5 rounded-2xl focus-within:bg-white dark:focus-within:bg-slate-800 focus-within:ring-2 focus-within:ring-shopee-blue/20 transition-all">
+              <div className="flex gap-2 bg-gray-100/80 dark:bg-slate-800/70 p-1.5 rounded-2xl focus-within:bg-white dark:focus-within:bg-slate-800 focus-within:ring-2 focus-within:ring-shopbee-blue/20 transition-all">
                 <input
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-                  placeholder="Hỏi Shopee AI..."
+                  placeholder="Hỏi ShopBee AI..."
                   className="flex-1 bg-transparent px-3 py-1.5 text-sm outline-none text-gray-800 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-gray-500"
                 />
                 <button
@@ -224,7 +224,7 @@ const Chatbot = () => {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="liquid-btn text-white p-4 rounded-3xl shadow-2xl shadow-shopee-blue/30 relative group overflow-hidden hidden md:flex"
+        className="liquid-btn text-white p-4 rounded-3xl shadow-2xl shadow-shopbee-blue/30 relative group overflow-hidden hidden md:flex"
       >
         <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
         {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
@@ -239,3 +239,5 @@ const Chatbot = () => {
 };
 
 export default Chatbot;
+
+

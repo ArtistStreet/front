@@ -22,6 +22,7 @@ import { io } from "socket.io-client";
 import { prefetchRouteByPath } from "../utils/routePrefetch";
 
 const Navbar = () => {
+  const logo = "/logo.png";
   const { cartCount } = useCart();
   const { theme, toggleTheme } = useTheme();
   const { user, logout, isAdmin, isSeller, token, login } = useAuth();
@@ -144,7 +145,7 @@ const Navbar = () => {
             {isSeller ? (
               <Link
                 to="/admin/dashboard"
-                className="hover:text-shopee-blue transition-colors"
+                className="hover:text-shopbee-blue transition-colors"
                 onMouseEnter={() => prefetchRouteByPath("/admin/dashboard")}
               >
                 Kênh Người Bán
@@ -152,14 +153,14 @@ const Navbar = () => {
             ) : user ? (
               <button
                 onClick={handleBecomeSeller}
-                className="hover:text-shopee-blue transition-colors cursor-pointer"
+                className="hover:text-shopbee-blue transition-colors cursor-pointer"
               >
                 Trở thành Người Bán
               </button>
             ) : (
               <Link
                 to="/login"
-                className="hover:text-shopee-blue transition-colors"
+                className="hover:text-shopbee-blue transition-colors"
                 onMouseEnter={() => prefetchRouteByPath("/login")}
               >
                 Kênh Người Bán
@@ -167,7 +168,7 @@ const Navbar = () => {
             )}
             <button
               type="button"
-              className="hover:text-shopee-blue transition-colors"
+              className="hover:text-shopbee-blue transition-colors"
             >
               Tải ứng dụng
             </button>
@@ -186,7 +187,7 @@ const Navbar = () => {
 
             <button
               onClick={toggleTheme}
-              className="hidden md:inline-flex hover:text-shopee-blue transition-colors"
+              className="hidden md:inline-flex hover:text-shopbee-blue transition-colors"
             >
               {theme === "light" ? <Moon size={13} /> : <Sun size={13} />}
             </button>
@@ -207,7 +208,7 @@ const Navbar = () => {
                   }
                   await markAllNotificationsAsRead(list);
                 }}
-                className="flex items-center space-x-1 hover:text-shopee-blue transition-colors relative py-1"
+                className="flex items-center space-x-1 hover:text-shopbee-blue transition-colors relative py-1"
               >
                 <Bell size={13} />
                 <span>Thông báo</span>
@@ -227,7 +228,7 @@ const Navbar = () => {
                       Thông báo mới nhận
                     </span>
                     <button
-                      className="text-[10px] text-shopee-blue hover:underline"
+                      className="text-[10px] text-shopbee-blue hover:underline"
                       onClick={() => {
                         setShowNotifications(false);
                         navigate("/notifications");
@@ -241,8 +242,8 @@ const Navbar = () => {
                       notifications.map((n) => (
                         <div
                           key={n._id}
-                          className={`px-4 py-3 hover:bg-shopee-blue/5 transition-colors cursor-pointer border-b border-gray-50 dark:border-gray-800/50 last:border-0 ${
-                            !n.isRead ? "bg-shopee-blue/[0.02]" : ""
+                          className={`px-4 py-3 hover:bg-shopbee-blue/5 transition-colors cursor-pointer border-b border-gray-50 dark:border-gray-800/50 last:border-0 ${
+                            !n.isRead ? "bg-shopbee-blue/[0.02]" : ""
                           }`}
                           onClick={() => handleNotificationClick(n)}
                         >
@@ -273,21 +274,23 @@ const Navbar = () => {
 
             <button
               type="button"
-              className="hidden md:flex items-center space-x-1 hover:text-shopee-blue transition-colors"
+              className="hidden md:flex items-center space-x-1 hover:text-shopbee-blue transition-colors"
             >
               <HelpCircle size={13} />
               <span>Hỗ trợ</span>
             </button>
-            <div className="hidden md:flex items-center space-x-1 cursor-pointer hover:text-shopee-blue transition-colors">
+            <div className="hidden md:flex items-center space-x-1 cursor-pointer hover:text-shopbee-blue transition-colors">
               <Globe size={13} />
               <span>Tiếng Việt</span>
             </div>
             {/* Mobile Logo - centered */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 md:hidden">
               <Link to="/" aria-label="Trang chủ">
-                <h1 className="text-xl font-extrabold tracking-tight text-shopee-blue">
-                  shoppe
-                </h1>
+                <img
+                  src={logo}
+                  alt="ShopBee"
+                  className="h-[72px] w-[72px] object-contain"
+                />
               </Link>
             </div>
             {/* Mobile language - right aligned (balanced with menu) */}
@@ -302,9 +305,9 @@ const Navbar = () => {
               <div className="relative hidden md:block">
                 <button
                   onMouseEnter={() => setShowUserMenu(true)}
-                  className="flex items-center space-x-2 hover:text-shopee-blue transition-colors py-1"
+                  className="flex items-center space-x-2 hover:text-shopbee-blue transition-colors py-1"
                 >
-                  <div className="w-6 h-6 rounded-full bg-shopee-blue/10 flex items-center justify-center overflow-hidden">
+                  <div className="w-6 h-6 rounded-full bg-shopbee-blue/10 flex items-center justify-center overflow-hidden">
                     {user.avatar ? (
                       <img
                         src={user.avatar}
@@ -314,7 +317,7 @@ const Navbar = () => {
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <User size={12} className="text-shopee-blue" />
+                      <User size={12} className="text-shopbee-blue" />
                     )}
                   </div>
                   <span className="font-bold max-w-[140px] truncate">
@@ -329,21 +332,21 @@ const Navbar = () => {
                   >
                     <Link
                       to="/account"
-                      className="block px-4 py-2 text-sm hover:bg-shopee-blue/5 text-gray-800 dark:text-slate-100 transition-colors"
+                      className="block px-4 py-2 text-sm hover:bg-shopbee-blue/5 text-gray-800 dark:text-slate-100 transition-colors"
                       onMouseEnter={() => prefetchRouteByPath("/account")}
                     >
                       Tài khoản của tôi
                     </Link>
                     <Link
                       to="/orders"
-                      className="block px-4 py-2 text-sm hover:bg-shopee-blue/5 text-gray-800 dark:text-slate-100 transition-colors"
+                      className="block px-4 py-2 text-sm hover:bg-shopbee-blue/5 text-gray-800 dark:text-slate-100 transition-colors"
                       onMouseEnter={() => prefetchRouteByPath("/orders")}
                     >
                       Đơn mua
                     </Link>
                     <Link
                       to="/vouchers"
-                      className="block px-4 py-2 text-sm hover:bg-shopee-blue/5 text-gray-800 dark:text-slate-100 transition-colors"
+                      className="block px-4 py-2 text-sm hover:bg-shopbee-blue/5 text-gray-800 dark:text-slate-100 transition-colors"
                       onMouseEnter={() => prefetchRouteByPath("/vouchers")}
                     >
                       Kho voucher
@@ -353,7 +356,7 @@ const Navbar = () => {
                         <div className="my-1 border-t border-gray-100 dark:border-gray-700" />
                         <Link
                           to="/admin/dashboard"
-                          className="flex items-center space-x-3 px-4 py-2 hover:bg-shopee-blue/5 text-shopee-blue font-bold transition-colors text-sm"
+                          className="flex items-center space-x-3 px-4 py-2 hover:bg-shopbee-blue/5 text-shopbee-blue font-bold transition-colors text-sm"
                           onMouseEnter={() =>
                             prefetchRouteByPath("/admin/dashboard")
                           }
@@ -379,13 +382,13 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="hidden md:flex space-x-3">
-                <Link to="/register" className="hover:text-shopee-blue">
+                <Link to="/register" className="hover:text-shopbee-blue">
                   Đăng Ký
                 </Link>
                 <div className="border-r border-gray-300 dark:border-gray-600 h-3 my-auto"></div>
                 <Link
                   to="/login"
-                  className="hover:text-shopee-blue font-bold"
+                  className="hover:text-shopbee-blue font-bold"
                   onMouseEnter={() => prefetchRouteByPath("/login")}
                 >
                   Đăng Nhập
@@ -398,9 +401,11 @@ const Navbar = () => {
         {!isAdminRoute && (
           <div className="flex flex-col md:flex-row items-stretch md:items-center py-2 md:py-3 gap-2 md:gap-8">
             <Link to="/" className="hidden md:flex items-center shrink-0">
-              <h1 className="text-3xl font-extrabold tracking-tight text-shopee-blue">
-                shoppe
-              </h1>
+              <img
+                src={logo}
+                alt="ShopBee"
+                className="h-[72px] w-[72px] object-contain"
+              />
             </Link>
 
             {!(
@@ -411,7 +416,7 @@ const Navbar = () => {
                 <div className="flex items-center gap-3">
                   <form
                     onSubmit={handleSearch}
-                    className="flex-1 rounded-2xl flex p-1.5 bg-white/95 dark:bg-slate-800/70 border border-gray-200 dark:border-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-shopee-blue/30"
+                    className="flex-1 rounded-2xl flex p-1.5 bg-white/95 dark:bg-slate-800/70 border border-gray-200 dark:border-slate-700 shadow-sm focus-within:ring-2 focus-within:ring-shopbee-blue/30"
                   >
                     <input
                       type="text"
@@ -435,7 +440,7 @@ const Navbar = () => {
                   >
                     <ShoppingCart
                       size={22}
-                      className="text-gray-700 dark:text-gray-300 group-hover:text-shopee-blue transition-colors"
+                      className="text-gray-700 dark:text-gray-300 group-hover:text-shopbee-blue transition-colors"
                     />
                     {cartCount > 0 && (
                       <span className="absolute -top-1 -right-1 glass glass-capsule glass-tint-blue text-slate-900 dark:text-slate-100 text-[9px] px-1.5 py-0.5 font-bold ring-2 ring-white dark:ring-slate-900">
@@ -455,20 +460,20 @@ const Navbar = () => {
             <div className="grid grid-cols-2 gap-2 text-[12px]">
               <Link
                 to={isAdmin ? "/admin/dashboard" : "/login"}
-                className="p-2 rounded-xl hover:bg-shopee-blue/5 text-gray-700 dark:text-gray-200"
+                className="p-2 rounded-xl hover:bg-shopbee-blue/5 text-gray-700 dark:text-gray-200"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Kênh Người Bán
               </Link>
               <button
                 type="button"
-                className="p-2 rounded-xl hover:bg-shopee-blue/5 text-gray-700 dark:text-gray-200 text-left"
+                className="p-2 rounded-xl hover:bg-shopbee-blue/5 text-gray-700 dark:text-gray-200 text-left"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Tải ứng dụng
               </button>
               <button
-                className="p-2 rounded-xl hover:bg-shopee-blue/5 text-left text-gray-700 dark:text-gray-200"
+                className="p-2 rounded-xl hover:bg-shopbee-blue/5 text-left text-gray-700 dark:text-gray-200"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   toggleTheme();
@@ -478,7 +483,7 @@ const Navbar = () => {
               </button>
               <button
                 type="button"
-                className="p-2 rounded-xl hover:bg-shopee-blue/5 text-gray-700 dark:text-gray-200 text-left"
+                className="p-2 rounded-xl hover:bg-shopbee-blue/5 text-gray-700 dark:text-gray-200 text-left"
                 onClick={() => {
                   setMobileMenuOpen(false);
                   navigate("/notifications");
@@ -495,3 +500,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+

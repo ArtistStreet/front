@@ -143,9 +143,9 @@ const AdminProductList = () => {
       return <ArrowUpDown size={14} className="ml-1 opacity-50" />;
     }
     return sortConfig.direction === "asc" ? (
-      <ArrowUp size={14} className="ml-1 text-shopee-blue" />
+      <ArrowUp size={14} className="ml-1 text-shopbee-blue" />
     ) : (
-      <ArrowDown size={14} className="ml-1 text-shopee-blue" />
+      <ArrowDown size={14} className="ml-1 text-shopbee-blue" />
     );
   };
 
@@ -182,7 +182,7 @@ const AdminProductList = () => {
             <input
               type="text"
               placeholder="Tìm kiếm sản phẩm..."
-              className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopee-blue/50"
+              className="w-full pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopbee-blue/50"
               value={searchQuery}
               onChange={(e) => {
                 setVisibleCount(ROW_BATCH_SIZE);
@@ -194,7 +194,7 @@ const AdminProductList = () => {
           <div className="flex items-center gap-2">
             <Filter size={18} className="text-gray-400" />
             <select
-              className="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopee-blue/50"
+              className="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopbee-blue/50"
               value={selectedCategory}
               onChange={(e) => {
                 setVisibleCount(ROW_BATCH_SIZE);
@@ -212,7 +212,7 @@ const AdminProductList = () => {
 
           <div className="flex items-center gap-2">
             <select
-              className="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopee-blue/50"
+              className="px-4 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-shopbee-blue/50"
               value={stockStatus}
               onChange={(e) => {
                 setVisibleCount(ROW_BATCH_SIZE);
@@ -264,7 +264,7 @@ const AdminProductList = () => {
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         {product.category}
                       </p>
-                      <p className="text-sm font-bold text-shopee-blue mt-1">
+                      <p className="text-sm font-bold text-shopbee-blue mt-1">
                         ₫{product.price.toLocaleString()}
                       </p>
                     </div>
@@ -298,7 +298,7 @@ const AdminProductList = () => {
                   <div className="flex justify-end gap-2 mt-3">
                     <Link
                       to={`/admin/products/edit/${productId}`}
-                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-shopee-blue/10 text-shopee-blue"
+                      className="px-3 py-1.5 rounded-lg text-xs font-semibold bg-shopbee-blue/10 text-shopbee-blue"
                     >
                       Sửa
                     </Link>
@@ -444,7 +444,7 @@ const AdminProductList = () => {
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <Link
                           to={`/admin/products/edit/${productId}`}
-                          className="text-shopee-blue hover:text-shopee-lightBlue mr-4 inline-block p-1 hover:bg-shopee-blue/10 rounded-full transition-colors"
+                          className="text-shopbee-blue hover:text-shopbee-lightBlue mr-4 inline-block p-1 hover:bg-shopbee-blue/10 rounded-full transition-colors"
                           title="Chỉnh sửa"
                         >
                           <Edit size={18} />
@@ -485,3 +485,6 @@ const AdminProductList = () => {
 };
 
 export default AdminProductList;
+
+
+
