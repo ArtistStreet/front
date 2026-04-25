@@ -36,6 +36,17 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const getStoredUserSafely = (): User | null => {
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) return null;
+    try {
+      return normalizeUser(JSON.parse(storedUser) as User);
+    } catch (_error) {
+      localStorage.removeItem("user");
+      return null;
+    }
+  };
+
   const normalizeToken = (value: string | null): string | null => {
     if (!value) return null;
     const trimmed = String(value).trim().replace(/^"+|"+$/g, "");
@@ -51,8 +62,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const [user, setUser] = useState<User | null>(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? normalizeUser(JSON.parse(storedUser) as User) : null;
+    return getStoredUserSafely();
   });
   const [token, setToken] = useState<string | null>(() => {
     return normalizeToken(localStorage.getItem("token"));
@@ -75,6 +85,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
     setToken(null);
   };

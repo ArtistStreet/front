@@ -370,8 +370,11 @@ const Navbar = () => {
                     <div className="my-1 border-t border-gray-100 dark:border-gray-700" />
                     <button
                       onClick={() => {
+                        setShowUserMenu(false);
+                        setShowNotifications(false);
+                        setMobileMenuOpen(false);
                         logout();
-                        navigate("/");
+                        window.location.replace("/login");
                       }}
                       className="w-full flex items-center space-x-3 px-4 py-2 hover:bg-red-50 text-red-500 transition-colors text-sm"
                     >
