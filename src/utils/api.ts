@@ -147,7 +147,7 @@ export const productApi = {
     options?: { forceRefresh?: boolean; preferFresh?: boolean },
   ) => {
     const cacheKey = buildProductListCacheKey(params);
-    const preferFresh = Boolean(options?.preferFresh);
+    const preferFresh = options?.preferFresh ?? true;
 
     if (!options?.forceRefresh) {
       const cached = getCachedProductList(cacheKey);
@@ -175,7 +175,7 @@ export const productApi = {
     id: string,
     options?: { forceRefresh?: boolean; preferFresh?: boolean },
   ) => {
-    const preferFresh = Boolean(options?.preferFresh);
+    const preferFresh = options?.preferFresh ?? true;
     if (!options?.forceRefresh) {
       const cached = getCachedProductDetail(id);
       if (cached?.isFresh) return { data: cached.data };

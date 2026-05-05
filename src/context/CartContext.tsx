@@ -18,7 +18,7 @@ interface CartContextType {
 }
 
 export const CartContext = createContext<CartContextType>(
-  {} as CartContextType
+  {} as CartContextType,
 );
 
 export const useCart = () => useContext(CartContext);
@@ -36,29 +36,41 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     quantity: number;
   };
 
+  const mapServerCartToClient = (
+    items: (ServerCartItem & { stock?: number })[],
+  ) =>
+    items.map((i) => ({
+      id: String(i.product),
+      _id: String(i.product),
+      name: i.name,
+      price: i.price,
+      originalPrice: i.price,
+      discount: 0,
+      image: i.image,
+      rating: 0,
+      sold: 0,
+      category: "",
+      isMall: false,
+      stock: i.stock || 0,
+      quantity: i.quantity,
+    }));
+
+  const syncCartFromServer = async (authToken: string) => {
+    const res = await productApi.getCart(authToken);
+    const serverItems = (res.data?.items || []) as (ServerCartItem & {
+      stock?: number;
+    })[];
+    setCart(mapServerCartToClient(serverItems));
+  };
+
   useEffect(() => {
     const load = async () => {
-      if (!token) return;
+      if (!token) {
+        setCart([]);
+        return;
+      }
       try {
-        const res = await productApi.getCart(token);
-        const items = ((res.data?.items || []) as (ServerCartItem & { stock: number })[]).map(
-          (i) => ({
-            id: String(i.product),
-            _id: String(i.product),
-            name: i.name,
-            price: i.price,
-            originalPrice: i.price,
-            discount: 0,
-            image: i.image,
-            rating: 0,
-            sold: 0,
-            category: "",
-            isMall: false,
-            stock: i.stock || 0,
-            quantity: i.quantity,
-          })
-        );
-        setCart(items);
+        await syncCartFromServer(token);
       } catch {
         setCart([]);
       }
@@ -67,65 +79,106 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [token]);
 
   const addToCart = (product: Product, quantity: number) => {
+    const normalizedProductId = String(product.id ?? product._id ?? "");
+    if (!normalizedProductId) return;
     setCart((prev) => {
-      const existingItem = prev.find((item) => item.id === product.id);
+      const existingItem = prev.find(
+        (item) => String(item.id) === normalizedProductId,
+      );
       const stock = product.stock ?? 0;
       if (existingItem) {
         const newQty = Math.min(existingItem.quantity + quantity, stock);
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: newQty } : item
+          String(item.id) === normalizedProductId
+            ? { ...item, quantity: newQty }
+            : item,
         );
       }
-      return [...prev, { ...product, quantity: Math.min(quantity, stock) }];
+      return [
+        ...prev,
+        {
+          ...product,
+          id: normalizedProductId,
+          _id: normalizedProductId,
+          quantity: Math.min(quantity, stock),
+        },
+      ];
     });
     if (token) {
       productApi
-        .addToCart({ productId: String(product.id), quantity }, token)
-        .catch(() => {});
+        .addToCart({ productId: normalizedProductId, quantity }, token)
+        .then(() => syncCartFromServer(token))
+        .catch(() => syncCartFromServer(token));
     }
   };
 
   const removeFromCart = (productId: string | number) => {
-    setCart((prev) => prev.filter((item) => item.id !== productId));
+    const normalizedProductId = String(productId);
+    const previousCart = cart;
+    setCart((prev) =>
+      prev.filter((item) => String(item.id) !== normalizedProductId),
+    );
     if (token) {
-      productApi.removeCartItem(String(productId), token).catch(() => {});
+      productApi
+        .removeCartItem(normalizedProductId, token)
+        .then(() => syncCartFromServer(token))
+        .catch((err) => {
+          setCart(previousCart);
+          const errMsg = err?.response?.data?.message;
+          if (errMsg) alert(errMsg);
+          return syncCartFromServer(token).catch(() => undefined);
+        });
     }
   };
 
   const updateQuantity = (productId: string | number, quantity: number) => {
+    const normalizedProductId = String(productId);
     if (quantity <= 0) {
-      removeFromCart(productId);
+      removeFromCart(normalizedProductId);
       return;
     }
-    const item = cart.find((i) => i.id === productId);
+    const item = cart.find((i) => String(i.id) === normalizedProductId);
     const stock = item?.stock ?? 0;
     const finalQty = Math.min(quantity, stock);
 
     setCart((prev) =>
       prev.map((item) =>
-        item.id === productId ? { ...item, quantity: finalQty } : item
-      )
+        String(item.id) === normalizedProductId
+          ? { ...item, quantity: finalQty }
+          : item,
+      ),
     );
     if (token) {
       productApi
-        .updateCartItem(String(productId), { quantity: finalQty }, token)
+        .updateCartItem(normalizedProductId, { quantity: finalQty }, token)
+        .then(() => syncCartFromServer(token))
         .catch((err) => {
           const errMsg = err.response?.data?.message;
           if (errMsg) alert(errMsg);
+          return syncCartFromServer(token);
         });
     }
   };
 
   const clearCart = () => {
+    const previousCart = cart;
     setCart([]);
     if (token) {
-      productApi.clearCart(token).catch(() => {});
+      productApi
+        .clearCart(token)
+        .then(() => syncCartFromServer(token))
+        .catch((err) => {
+          setCart(previousCart);
+          const errMsg = err?.response?.data?.message;
+          if (errMsg) alert(errMsg);
+          return syncCartFromServer(token).catch(() => undefined);
+        });
     }
   };
 
   const cartTotal = cart.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
   const cartCount = cart.reduce((count, item) => count + item.quantity, 0);
 
@@ -145,6 +198,3 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     </CartContext.Provider>
   );
 };
-
-
-
