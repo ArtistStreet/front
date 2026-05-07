@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { Minus, Plus, Ticket, Trash2, X, MapPin } from "lucide-react";
+import { Minus, Plus, Ticket, Trash2, X, MapPin, Wallet, Truck, CreditCard } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import { productApi } from "../utils/api";
@@ -55,6 +55,7 @@ const Checkout = () => {
 
   const [items, setItems] = useState<CheckoutItem[]>(() => state.items || []);
   const [submitting, setSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"cod" | "online">("cod");
 
   // Addresses
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -181,6 +182,7 @@ const Checkout = () => {
             product: String(item.id),
           })),
           voucherCode: selectedVoucher?.code,
+          paymentMethod,
           shippingAddress: {
             fullName: selectedAddress.fullName,
             phoneNumber: selectedAddress.phone,
@@ -224,8 +226,8 @@ const Checkout = () => {
   }
 
   return (
-    <div className="site-container py-8 min-h-[60vh]">
-      <h1 className="text-2xl font-bold mb-6">Thanh toán</h1>
+    <div className="site-container py-4 sm:py-8 pb-20 sm:pb-8 min-h-[60vh]">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Thanh toán</h1>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           <div className="glass-card rounded-2xl p-6">
@@ -406,6 +408,68 @@ const Checkout = () => {
                 Tiết kiệm ₫{discountAmount.toLocaleString()} từ voucher.
               </p>
             )}
+          </div>
+
+          {/* Payment Method Selection */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <Wallet size={16} className="inline mr-1.5 text-shopbee-blue" />
+              Phương thức thanh toán
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setPaymentMethod("cod")}
+                className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
+                  paymentMethod === "cod"
+                    ? "border-shopbee-blue bg-shopbee-blue/5 shadow-md shadow-shopbee-blue/10"
+                    : "border-gray-200 hover:border-shopbee-blue/40 bg-white/60"
+                }`}
+              >
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                  paymentMethod === "cod" ? "bg-shopbee-blue text-white" : "bg-gray-100 text-gray-400"
+                }`}>
+                  <Truck size={20} />
+                </div>
+                <div className="text-left flex-1">
+                  <p className={`text-sm font-bold ${paymentMethod === "cod" ? "text-shopbee-blue" : "text-gray-700"}`}>
+                    Thanh toán khi nhận hàng
+                  </p>
+                  <p className="text-[11px] text-gray-400 mt-0.5">Trả tiền mặt khi nhận được hàng (COD)</p>
+                </div>
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                  paymentMethod === "cod" ? "border-shopbee-blue" : "border-gray-300"
+                }`}>
+                  {paymentMethod === "cod" && <div className="w-2.5 h-2.5 rounded-full bg-shopbee-blue" />}
+                </div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPaymentMethod("online")}
+                className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all ${
+                  paymentMethod === "online"
+                    ? "border-shopbee-blue bg-shopbee-blue/5 shadow-md shadow-shopbee-blue/10"
+                    : "border-gray-200 hover:border-shopbee-blue/40 bg-white/60"
+                }`}
+              >
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                  paymentMethod === "online" ? "bg-shopbee-blue text-white" : "bg-gray-100 text-gray-400"
+                }`}>
+                  <CreditCard size={20} />
+                </div>
+                <div className="text-left flex-1">
+                  <p className={`text-sm font-bold ${paymentMethod === "online" ? "text-shopbee-blue" : "text-gray-700"}`}>
+                    Thanh toán trực tuyến
+                  </p>
+                  <p className="text-[11px] text-gray-400 mt-0.5">Ví điện tử, thẻ ngân hàng, QR Code</p>
+                </div>
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                  paymentMethod === "online" ? "border-shopbee-blue" : "border-gray-300"
+                }`}>
+                  {paymentMethod === "online" && <div className="w-2.5 h-2.5 rounded-full bg-shopbee-blue" />}
+                </div>
+              </button>
+            </div>
           </div>
 
           <div className="flex justify-between mb-4 text-sm text-gray-600">

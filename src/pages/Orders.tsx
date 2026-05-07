@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import { productApi } from "../utils/api";
-import { ShoppingCart, MapPin } from "lucide-react";
+import { ShoppingCart, MapPin, Truck, CreditCard } from "lucide-react";
 import AnimatedPage from "../components/AnimatedPage";
 import {
   GlassListSkeleton,
@@ -28,6 +28,7 @@ interface Order {
   totalPrice: number;
   isPaid: boolean;
   isCancelled?: boolean;
+  paymentMethod?: "cod" | "online";
   createdAt: string;
 }
 
@@ -157,14 +158,16 @@ const OrdersPage = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-gray-100">
-                <div className="text-xs text-gray-500">
-                  Trạng thái:{" "}
-                  <span className="font-semibold text-gray-700">
-                    {order.isCancelled
-                      ? "Đã hủy"
-                      : order.isPaid
-                        ? "Đã thanh toán"
-                        : "Chờ thanh toán"}
+                <div className="flex items-center gap-2 text-xs text-gray-500 flex-wrap">
+                  <span>Trạng thái:{" "}
+                    <span className={`font-semibold ${order.isCancelled ? "text-red-500" : order.isPaid ? "text-green-600" : "text-amber-500"}`}>
+                      {order.isCancelled ? "Đã hủy" : order.isPaid ? "Đã thanh toán" : "Chờ thanh toán"}
+                    </span>
+                  </span>
+                  <span className="hidden sm:inline text-gray-300">|</span>
+                  <span className="flex items-center gap-1">
+                    {order.paymentMethod === "online" ? <CreditCard size={12} /> : <Truck size={12} />}
+                    {order.paymentMethod === "online" ? "Thanh toán trực tuyến" : "Thanh toán khi nhận hàng"}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">

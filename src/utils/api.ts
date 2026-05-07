@@ -234,35 +234,14 @@ export const productApi = {
     });
   },
   uploadProductVideo: (formData: FormData, token: string) => {
-    return axios.post<{ videoUrl: string }>(
-      `${API_URL}/products/upload-video`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      },
-    );
+    return axios.post<{ videoUrl: string }>(`${API_URL}/products/upload-video`, formData, {
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
+    });
   },
-  // chatbot: (message: string, partnerId?: string, token?: string) => {
-  //   if (token) {
-  //     return axios.post(
-  //       `${API_URL}/chatbot`,
-  //       { message, partnerId },
-  //       { headers: { Authorization: `Bearer ${token}` } },
-  //     );
-  //   }
-  //   return api.post("/chatbot", { message, partnerId });
-  // },
   getChatMessages: (token: string, partnerId?: string, sellerId?: string) => {
     return axios.get<ChatMessage[]>(`${API_URL}/chat/messages`, {
       headers: { Authorization: `Bearer ${token}` },
-      params: partnerId
-        ? sellerId
-          ? { partnerId, sellerId }
-          : { partnerId }
-        : undefined,
+      params: partnerId ? (sellerId ? { partnerId, sellerId } : { partnerId }) : undefined,
     });
   },
   sendChatMessage: (
@@ -270,21 +249,23 @@ export const productApi = {
     token: string,
     partnerId?: string,
     sellerId?: string,
+    product?: { productId: string; name: string; image: string; price: number },
   ) => {
-    return axios.post<ChatMessage>(
-      `${API_URL}/chat/messages`,
-      partnerId
-        ? sellerId
-          ? { text, partnerId, sellerId }
-          : { text, partnerId }
-        : { text },
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    );
+    const body: Record<string, unknown> = { text };
+    if (partnerId) body.partnerId = partnerId;
+    if (sellerId) body.sellerId = sellerId;
+    if (product) body.product = product;
+    return axios.post<ChatMessage>(`${API_URL}/chat/messages`, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
   },
   getChatConversations: (token: string) => {
     return axios.get<ChatConversation[]>(`${API_URL}/chat/conversations`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  deleteChatConversation: (token: string, partnerId: string) => {
+    return axios.delete(`${API_URL}/chat/conversations/${partnerId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
@@ -295,21 +276,11 @@ export const productApi = {
   },
   createOrder: (
     orderData: {
-      orderItems: {
-        name: string;
-        quantity: number;
-        image: string;
-        price: number;
-        product: string;
-      }[];
+      orderItems: { name: string; quantity: number; image: string; price: number; product: string }[];
       totalPrice?: number;
       voucherCode?: string;
-      shippingAddress: {
-        fullName: string;
-        phoneNumber: string;
-        addressLine: string;
-        isDefault?: boolean;
-      };
+      paymentMethod?: "cod" | "online";
+      shippingAddress: { fullName: string; phoneNumber: string; addressLine: string; isDefault?: boolean };
     },
     token: string,
   ) => {

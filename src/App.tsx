@@ -36,7 +36,7 @@ const AdminProductForm = lazy(() => import("./pages/admin/AdminProductForm"));
 const AdminReviewList = lazy(() => import("./pages/admin/AdminReviewList"));
 const AdminChat = lazy(() => import("./pages/admin/AdminChat"));
 const AdminShopProfile = lazy(() => import("./pages/admin/AdminShopProfile"));
-const Chatbot = lazy(() => import("./components/Chatbot"));
+const UnifiedChat = lazy(() => import("./components/UnifiedChat"));
 const AccountLayout = lazy(() => import("./components/AccountLayout"));
 
 function App() {
@@ -176,7 +176,7 @@ function App() {
             </AnimatePresence>
             {!isAdminRoute && (
               <Suspense fallback={null}>
-                <Chatbot />
+                <UnifiedChat />
               </Suspense>
             )}
           </Layout>

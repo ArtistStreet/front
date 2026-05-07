@@ -493,7 +493,7 @@ const ProductDetail = () => {
       alert("Bạn đang đăng nhập bằng chính tài khoản shop này.");
       return;
     }
-    const event = new CustomEvent("open-chatbot", {
+    const event = new CustomEvent("open-customer-chat", {
       detail: { sellerId: product.sellerId },
     });
     window.dispatchEvent(event);

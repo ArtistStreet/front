@@ -88,6 +88,12 @@ export interface ChatMessage {
   userReadAt?: string | null;
   customerId?: string;
   sellerId?: string;
+  product?: {
+    productId: string;
+    name: string;
+    image: string;
+    price: number;
+  } | null;
 }
 
 export interface ChatConversation {

@@ -10,6 +10,25 @@ interface Message {
   timestamp: Date;
 }
 
+/** Lightweight markdown-ish formatter for bot replies */
+const formatBotMessage = (text: string) => {
+  return text
+    // Bold **text**
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    // Bold __text__
+    .replace(/__(.+?)__/g, "<strong>$1</strong>")
+    // Italic *text*
+    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, "<em>$1</em>")
+    // Bullet list items
+    .replace(/^[-•]\s+(.+)$/gm, "<li>$1</li>")
+    // Numbered list items
+    .replace(/^\d+\.\s+(.+)$/gm, "<li>$1</li>")
+    // Wrap consecutive <li> in <ul>
+    .replace(/((?:<li>.*<\/li>\n?)+)/g, "<ul class='ml-3 list-disc space-y-0.5'>$1</ul>")
+    // Line breaks
+    .replace(/\n/g, "<br/>");
+};
+
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
@@ -97,14 +116,16 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="fixed z-50 bottom-24 left-1/2 -translate-x-1/2 md:bottom-6 md:left-auto md:right-6 md:translate-x-0">
+    <>
+      {/* Chat Window - positioned above the button */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            initial={{ opacity: 0, scale: 0.85, y: 30 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            className="glass-card rounded-4xl w-[90vw] sm:w-95 h-[60vh] sm:h-137.5 flex flex-col overflow-hidden mb-4 shadow-2xl border-white/40"
+            exit={{ opacity: 0, scale: 0.85, y: 30 }}
+            transition={{ type: "spring", damping: 22, stiffness: 300 }}
+            className="fixed z-50 bottom-[5.5rem] right-6 glass-card rounded-4xl w-95 h-137.5 flex flex-col overflow-hidden shadow-2xl border-white/40"
           >
             {/* Header - iOS Glass Style */}
             <div className="liquid-btn p-5 flex justify-between items-center text-white shrink-0 shadow-lg">
@@ -164,7 +185,16 @@ const Chatbot = () => {
                         : "bg-white text-gray-800 dark:bg-slate-900/80 dark:text-slate-100 rounded-tl-none shadow-sm border border-gray-100 dark:border-slate-800"
                         }`}
                     >
-                      {msg.text}
+                      {msg.sender === "bot" ? (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: formatBotMessage(msg.text),
+                          }}
+                          className="chatbot-message [&_ul]:my-1 [&_li]:ml-2 [&_strong]:font-bold [&_strong]:text-shopbee-blue"
+                        />
+                      ) : (
+                        msg.text
+                      )}
                       <div
                         className={`text-[9px] mt-1.5 font-medium ${msg.sender === "user"
                           ? "text-slate-600 dark:text-slate-400 text-right"
@@ -220,21 +250,32 @@ const Chatbot = () => {
         )}
       </AnimatePresence>
 
+      {/* Toggle Button - always stays in the same position */}
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.92 }}
         onClick={() => setIsOpen(!isOpen)}
-        className="liquid-btn text-white p-4 rounded-3xl shadow-2xl shadow-shopbee-blue/30 relative group overflow-hidden hidden md:flex"
+        className="fixed z-50 bottom-6 right-6 liquid-btn text-white p-4 rounded-3xl shadow-2xl shadow-shopbee-blue/30 group overflow-hidden hidden md:flex items-center justify-center"
       >
         <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-        {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            key={isOpen ? "close" : "open"}
+            initial={{ rotate: -90, scale: 0 }}
+            animate={{ rotate: 0, scale: 1 }}
+            exit={{ rotate: 90, scale: 0 }}
+            transition={{ duration: 0.2, ease: "easeInOut" }}
+          >
+            {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
+          </motion.div>
+        </AnimatePresence>
 
         {/* Badge */}
         {!isOpen && (
           <span className="absolute -top-1 -right-1 bg-red-500 w-4 h-4 rounded-full border-2 border-white animate-bounce"></span>
         )}
       </motion.button>
-    </div>
+    </>
   );
 };
 

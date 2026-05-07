@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { CATEGORIES } from "../utils/mockData";
 import ProductCard from "../components/ProductCard";
 import { ChevronRight, ChevronLeft } from "lucide-react";
@@ -10,7 +10,27 @@ import {
   ProductCardSkeleton as ProductGridSkeleton,
 } from "../components/GlassLoader";
 
+/** Hook to measure the sticky navbar height dynamically */
+const useNavbarHeight = () => {
+  const [height, setHeight] = useState(0);
+
+  useEffect(() => {
+    const header = document.querySelector("header");
+    if (!header) return;
+
+    const update = () => setHeight(header.getBoundingClientRect().height);
+    update();
+
+    const ro = new ResizeObserver(update);
+    ro.observe(header);
+    return () => ro.disconnect();
+  }, []);
+
+  return height;
+};
+
 const Home = () => {
+  const navbarHeight = useNavbarHeight();
   const heroBanners = [
     {
       id: 1,
@@ -442,7 +462,7 @@ const Home = () => {
 
         {/* Products Section */}
         <div className="mt-8 mb-6">
-          <div className="sticky top-28 z-20">
+          <div className="sticky z-40" style={{ top: `${navbarHeight}px` }}>
             <div className="glass-card bg-white/80 dark:bg-slate-900/90 rounded-3xl overflow-hidden">
               <div className="flex text-[11px] sm:text-xs md:text-sm lg:text-base">
                 <button
