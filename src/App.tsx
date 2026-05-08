@@ -36,6 +36,8 @@ const AdminProductForm = lazy(() => import("./pages/admin/AdminProductForm"));
 const AdminReviewList = lazy(() => import("./pages/admin/AdminReviewList"));
 const AdminChat = lazy(() => import("./pages/admin/AdminChat"));
 const AdminShopProfile = lazy(() => import("./pages/admin/AdminShopProfile"));
+const AdminBanners = lazy(() => import("./pages/admin/AdminBanners"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
 const UnifiedChat = lazy(() => import("./components/UnifiedChat"));
 const AccountLayout = lazy(() => import("./components/AccountLayout"));
 
@@ -169,6 +171,14 @@ function App() {
                     element={renderPage(<AdminReviewList />)}
                   />
                   <Route path="chat" element={renderPage(<AdminChat />)} />
+                  <Route
+                    path="banners"
+                    element={renderPage(<AdminBanners />)}
+                  />
+                  <Route
+                    path="users"
+                    element={renderPage(<AdminUsers />)}
+                  />
                 </Route>
 
                 <Route path="*" element={renderPage(<Home />)} />

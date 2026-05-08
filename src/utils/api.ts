@@ -595,7 +595,83 @@ export const productApi = {
       console.error('Lỗi gọi chatbot:', error);
       throw error;
     }
-  }
+  },
+
+  // Banner APIs
+  getActiveBanners: () => {
+    return axios.get(`${API_URL}/banners/active`);
+  },
+  getAllBanners: (token: string) => {
+    return axios.get(`${API_URL}/banners`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  createBanner: (data: Record<string, unknown>, token: string) => {
+    return axios.post(`${API_URL}/banners`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  updateBanner: (id: string, data: Record<string, unknown>, token: string) => {
+    return axios.put(`${API_URL}/banners/${id}`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  deleteBanner: (id: string, token: string) => {
+    return axios.delete(`${API_URL}/banners/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  uploadBannerImage: (formData: FormData, token: string) => {
+    return axios.post<{ imageUrl: string; sources?: { avif?: string; webp?: string } }>(
+      `${API_URL}/banners/upload`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+  },
+
+  // Admin Management APIs
+  getAdminAllUsers: (token: string) => {
+    return axios.get(`${API_URL}/admin/users`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  getAdminUsers: (token: string) => {
+    return axios.get(`${API_URL}/admin/admins`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  createAdminUser: (
+    data: { name: string; email: string; password: string; permissions: string[] },
+    token: string,
+  ) => {
+    return axios.post(`${API_URL}/admin/create-admin`, data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  updateAdminPermissions: (userId: string, permissions: string[], token: string) => {
+    return axios.put(
+      `${API_URL}/admin/users/${userId}/permissions`,
+      { permissions },
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+  },
+  changeUserRole: (userId: string, role: string, token: string) => {
+    return axios.put(
+      `${API_URL}/admin/users/${userId}/role`,
+      { role },
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+  },
+  deleteAdminUser: (userId: string, token: string) => {
+    return axios.delete(`${API_URL}/admin/users/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
 };
 
 export default api;

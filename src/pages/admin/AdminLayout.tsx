@@ -9,12 +9,15 @@ import {
   Store,
   Menu,
   X,
+  Image,
+  Users,
+  Crown,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 const AdminLayout = () => {
   const NAVBAR_OFFSET = "3.5rem";
-  const { isSeller, user } = useAuth();
+  const { isSeller, isAdmin, user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
@@ -30,6 +33,12 @@ const AdminLayout = () => {
     { to: "/admin/shop-profile", label: "Thông tin shop", icon: Store },
     { to: "/admin/reviews", label: "Đánh giá", icon: MessageSquare },
     { to: "/admin/chat", label: "Chat khách hàng", icon: MessageCircle },
+    ...(isAdmin
+      ? [
+          { to: "/admin/banners", label: "Quảng cáo", icon: Image },
+          { to: "/admin/users", label: "Quản lý tài khoản", icon: Users },
+        ]
+      : []),
   ];
 
   const navClassName = ({ isActive }: { isActive: boolean }) =>

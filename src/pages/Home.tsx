@@ -31,26 +31,48 @@ const useNavbarHeight = () => {
 
 const Home = () => {
   const navbarHeight = useNavbarHeight();
-  const heroBanners = [
+
+  // Dynamic banner data from DB
+  interface BannerData {
+    _id: string;
+    title: string;
+    subtitle: string;
+    image: string;
+    link?: string;
+    position: "main" | "side-top" | "side-bottom";
+  }
+  const [mainBanners, setMainBanners] = useState<BannerData[]>([]);
+  const [sideBannerTop, setSideBannerTop] = useState<BannerData | null>(null);
+  const [sideBannerBottom, setSideBannerBottom] = useState<BannerData | null>(null);
+  const [bannersLoaded, setBannersLoaded] = useState(false);
+
+  // Fallback banners
+  const defaultBanners: BannerData[] = [
     {
-      id: 1,
-      image: "https://picsum.photos/seed/banner1/1200/600",
+      _id: "default-1",
       title: "Siêu Sale Công Nghệ",
       subtitle: "Giảm đến 50% cho các thiết bị Apple",
+      image: "https://picsum.photos/seed/banner1/1200/600",
+      position: "main",
     },
     {
-      id: 2,
-      image: "https://picsum.photos/seed/banner2/1200/600",
+      _id: "default-2",
       title: "Flash Deal Trong Ngày",
       subtitle: "Săn ưu đãi sốc từ 0h - 24h",
+      image: "https://picsum.photos/seed/banner2/1200/600",
+      position: "main",
     },
     {
-      id: 3,
-      image: "https://picsum.photos/seed/banner3/1200/600",
+      _id: "default-3",
       title: "Mua Sắm Không Lo Giá",
       subtitle: "Miễn phí vận chuyển cho đơn từ 99K",
+      image: "https://picsum.photos/seed/banner3/1200/600",
+      position: "main",
     },
   ];
+
+  const heroBanners = mainBanners.length > 0 ? mainBanners : defaultBanners;
+
   const [products, setProducts] = useState<Product[]>([]);
   const [bestProducts, setBestProducts] = useState<Product[]>([]);
   const [newProducts, setNewProducts] = useState<Product[]>([]);
@@ -74,6 +96,26 @@ const Home = () => {
       sort: searchParams.get("sort") || "",
     };
   }, [location.search]);
+
+  // Fetch banners from API
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const res = await productApi.getActiveBanners();
+        const banners: BannerData[] = res.data || [];
+        setMainBanners(banners.filter((b) => b.position === "main"));
+        const topBanner = banners.find((b) => b.position === "side-top");
+        const bottomBanner = banners.find((b) => b.position === "side-bottom");
+        setSideBannerTop(topBanner || null);
+        setSideBannerBottom(bottomBanner || null);
+      } catch (_err) {
+        // Use fallback banners
+      } finally {
+        setBannersLoaded(true);
+      }
+    };
+    fetchBanners();
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -224,15 +266,28 @@ const Home = () => {
     navigate(`/?${sp.toString()}`);
   };
 
+  const handleBannerClick = (banner: BannerData) => {
+    if (banner.link) {
+      if (banner.link.startsWith("http")) {
+        window.open(banner.link, "_blank");
+      } else {
+        navigate(banner.link);
+      }
+    }
+  };
+
   return (
     <div className="bg-slate-50 dark:bg-slate-950 pb-10 min-h-screen">
       <div className="site-container">
-        {/* Banner Section - iOS Liquid Glass style */}
+        {/* Banner Section - Shopee Style */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mt-6 h-[220px] md:h-[280px] lg:h-[320px]">
-          <div className="lg:col-span-2 relative glass-card rounded-3xl overflow-hidden group">
+          <div
+            className="lg:col-span-2 relative glass-card rounded-3xl overflow-hidden group cursor-pointer"
+            onClick={() => handleBannerClick(heroBanners[activeBannerIndex])}
+          >
             <img
               src={heroBanners[activeBannerIndex].image}
-              alt="Main Banner"
+              alt={heroBanners[activeBannerIndex].title}
               loading="eager"
               fetchPriority="high"
               decoding="async"
@@ -249,7 +304,7 @@ const Home = () => {
             </div>
             <button
               type="button"
-              onClick={handlePrevBanner}
+              onClick={(e) => { e.stopPropagation(); handlePrevBanner(); }}
               aria-label="Banner trước"
               className="absolute top-1/2 left-4 -translate-y-1/2 bg-white/20 backdrop-blur-md p-3 rounded-2xl text-white hover:bg-white/40 transition-all"
             >
@@ -257,7 +312,7 @@ const Home = () => {
             </button>
             <button
               type="button"
-              onClick={handleNextBanner}
+              onClick={(e) => { e.stopPropagation(); handleNextBanner(); }}
               aria-label="Banner tiếp theo"
               className="absolute top-1/2 right-4 -translate-y-1/2 bg-white/20 backdrop-blur-md p-3 rounded-2xl text-white hover:bg-white/40 transition-all"
             >
@@ -266,9 +321,9 @@ const Home = () => {
             <div className="absolute bottom-4 right-4 flex gap-2">
               {heroBanners.map((banner, index) => (
                 <button
-                  key={banner.id}
+                  key={banner._id}
                   type="button"
-                  onClick={() => setActiveBannerIndex(index)}
+                  onClick={(e) => { e.stopPropagation(); setActiveBannerIndex(index); }}
                   aria-label={`Chuyển đến banner ${index + 1}`}
                   className={`h-2.5 rounded-full transition-all ${
                     index === activeBannerIndex
@@ -280,25 +335,41 @@ const Home = () => {
             </div>
           </div>
           <div className="grid grid-rows-2 gap-3 h-full mt-3 lg:mt-0">
-            <div className="glass-card rounded-3xl overflow-hidden relative group">
+            <div
+              className="glass-card rounded-3xl overflow-hidden relative group cursor-pointer"
+              onClick={() => sideBannerTop && handleBannerClick(sideBannerTop)}
+            >
               <img
-                src="https://picsum.photos/seed/sub1/400/200"
-                alt="Sub Banner 1"
+                src={sideBannerTop?.image || "https://picsum.photos/seed/sub1/400/200"}
+                alt={sideBannerTop?.title || "Sub Banner 1"}
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-shopbee-blue/10"></div>
+              {sideBannerTop?.title && (
+                <div className="absolute bottom-2 left-3 text-white text-xs font-bold drop-shadow-lg">
+                  {sideBannerTop.title}
+                </div>
+              )}
             </div>
-            <div className="glass-card rounded-3xl overflow-hidden relative group">
+            <div
+              className="glass-card rounded-3xl overflow-hidden relative group cursor-pointer"
+              onClick={() => sideBannerBottom && handleBannerClick(sideBannerBottom)}
+            >
               <img
-                src="https://picsum.photos/seed/sub2/400/200"
-                alt="Sub Banner 2"
+                src={sideBannerBottom?.image || "https://picsum.photos/seed/sub2/400/200"}
+                alt={sideBannerBottom?.title || "Sub Banner 2"}
                 loading="lazy"
                 decoding="async"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-shopbee-lightBlue/10"></div>
+              {sideBannerBottom?.title && (
+                <div className="absolute bottom-2 left-3 text-white text-xs font-bold drop-shadow-lg">
+                  {sideBannerBottom.title}
+                </div>
+              )}
             </div>
           </div>
         </div>
