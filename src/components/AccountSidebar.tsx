@@ -19,8 +19,7 @@ const AccountSidebar = ({ active = "profile" }: AccountSidebarProps) => {
     try {
       const res = await productApi.becomeSeller(token);
       login(res.data.user, res.data.token);
-      alert("Chúc mừng! Bạn đã trở thành người bán hàng.");
-      navigate("/admin/dashboard");
+      alert(res.data.message || "Yêu cầu đã được gửi. Vui lòng chờ admin phê duyệt.");
     } catch (error) {
       const apiError = error as ApiError;
       alert(apiError.response?.data?.message || "Có lỗi xảy ra");
@@ -57,13 +56,20 @@ const AccountSidebar = ({ active = "profile" }: AccountSidebarProps) => {
       </div>
 
       {!isSeller && (
-        <button
-          onClick={handleBecomeSeller}
-          className="w-full mb-6 p-3 rounded-2xl bg-shopbee-blue/10 text-shopbee-blue font-bold text-xs flex items-center justify-center gap-2 hover:bg-shopbee-blue/20 transition-all border border-shopbee-blue/20"
-        >
-          <ShieldCheck size={14} />
-          Trở thành Người Bán
-        </button>
+        user.sellerRequestStatus === "pending" ? (
+          <div className="w-full mb-6 p-3 rounded-2xl bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 font-bold text-xs flex items-center justify-center gap-2 border border-yellow-200 dark:border-yellow-800">
+            <span className="inline-block w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
+            Đang chờ admin duyệt
+          </div>
+        ) : (
+          <button
+            onClick={handleBecomeSeller}
+            className="w-full mb-6 p-3 rounded-2xl bg-shopbee-blue/10 text-shopbee-blue font-bold text-xs flex items-center justify-center gap-2 hover:bg-shopbee-blue/20 transition-all border border-shopbee-blue/20"
+          >
+            <ShieldCheck size={14} />
+            Trở thành Người Bán
+          </button>
+        )
       )}
 
       <div className="space-y-2 text-sm">

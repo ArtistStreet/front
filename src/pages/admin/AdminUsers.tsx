@@ -5,6 +5,7 @@ import {
   UserPlus, Shield, ShieldCheck, Trash2, X, Users, Crown, Store,
   User as UserIcon, Check, Search, Mail, Calendar, LayoutGrid, List,
   Eye, EyeOff, Lock, KeyRound, ChevronRight, Sparkles, AlertTriangle,
+  ClipboardCheck, XCircle, Clock,
 } from "lucide-react";
 
 interface AdminUser {
@@ -16,6 +17,8 @@ interface AdminUser {
   avatar?: string;
   adminPermissions?: string[];
   createdAt: string;
+  sellerRequestStatus?: string;
+  sellerRequestDate?: string;
 }
 
 const ALL_PERMISSIONS = [
@@ -62,6 +65,8 @@ const AdminUsers = () => {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
   const [showRoleMenu, setShowRoleMenu] = useState<string | null>(null);
+  const [pendingRequests, setPendingRequests] = useState<AdminUser[]>([]);
+  const [loadingRequests, setLoadingRequests] = useState(false);
 
   // Create form state
   const [formData, setFormData] = useState({
@@ -87,9 +92,23 @@ const AdminUsers = () => {
     }
   }, [token]);
 
+  const fetchPendingRequests = useCallback(async () => {
+    if (!token) return;
+    setLoadingRequests(true);
+    try {
+      const res = await productApi.getPendingSellerRequests(token);
+      setPendingRequests(res.data || []);
+    } catch (err) {
+      console.error("Lỗi tải yêu cầu người bán:", err);
+    } finally {
+      setLoadingRequests(false);
+    }
+  }, [token]);
+
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]);
+    fetchPendingRequests();
+  }, [fetchUsers, fetchPendingRequests]);
 
   const handleCreateAdmin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,6 +164,28 @@ const AdminUsers = () => {
       setShowDeleteConfirm(null);
     } catch (err: any) {
       alert(err?.response?.data?.message || "Lỗi xóa người dùng");
+    }
+  };
+
+  const handleApproveSellerRequest = async (userId: string) => {
+    if (!token) return;
+    try {
+      await productApi.approveSellerRequest(userId, token);
+      await fetchPendingRequests();
+      await fetchUsers();
+    } catch (err: any) {
+      alert(err?.response?.data?.message || "Lỗi chấp nhận yêu cầu");
+    }
+  };
+
+  const handleRejectSellerRequest = async (userId: string) => {
+    if (!token) return;
+    try {
+      await productApi.rejectSellerRequest(userId, token);
+      await fetchPendingRequests();
+      await fetchUsers();
+    } catch (err: any) {
+      alert(err?.response?.data?.message || "Lỗi từ chối yêu cầu");
     }
   };
 
@@ -204,11 +245,12 @@ const AdminUsers = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { count: adminCount, label: "Quản trị viên", Icon: Crown, grad: "from-red-500 to-orange-400", bg: "bg-red-50 dark:bg-red-950/30" },
           { count: sellerCount, label: "Người bán", Icon: Store, grad: "from-blue-500 to-cyan-400", bg: "bg-blue-50 dark:bg-blue-950/30" },
           { count: userCount, label: "Người dùng", Icon: Users, grad: "from-violet-500 to-purple-400", bg: "bg-violet-50 dark:bg-violet-950/30" },
+          { count: pendingRequests.length, label: "Chờ duyệt", Icon: Clock, grad: "from-amber-500 to-orange-400", bg: "bg-amber-50 dark:bg-amber-950/30" },
         ].map((s) => (
           <div key={s.label} className={`relative overflow-hidden rounded-2xl p-5 ${s.bg} border border-white/60 dark:border-white/5`}>
             <div className={`absolute -top-4 -right-4 w-20 h-20 rounded-full bg-gradient-to-br ${s.grad} opacity-15 blur-xl`} />
@@ -227,6 +269,76 @@ const AdminUsers = () => {
           </div>
         ))}
       </div>
+
+      {/* Pending Seller Requests */}
+      {pendingRequests.length > 0 && (
+        <div className="relative overflow-hidden rounded-2xl border border-amber-200 dark:border-amber-800/50 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 dark:from-amber-950/30 dark:via-orange-950/20 dark:to-yellow-950/20 p-5">
+          <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-br from-amber-400 to-orange-400 opacity-10 blur-2xl" />
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg shadow-amber-200 dark:shadow-amber-900/30">
+              <ClipboardCheck size={20} className="text-white" />
+            </div>
+            <div>
+              <h2 className="text-lg font-black text-gray-800 dark:text-white flex items-center gap-2">
+                Yêu Cầu Trở Thành Người Bán
+                <span className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 rounded-full bg-amber-500 text-white text-[11px] font-bold animate-pulse">
+                  {pendingRequests.length}
+                </span>
+              </h2>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Phê duyệt hoặc từ chối yêu cầu đăng ký bán hàng</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {pendingRequests.map((req) => (
+              <div key={req._id} className="relative bg-white dark:bg-gray-900/80 rounded-2xl border border-amber-100 dark:border-amber-900/30 overflow-hidden hover:shadow-lg hover:shadow-amber-100/40 dark:hover:shadow-amber-900/10 transition-all duration-300">
+                <div className="h-1 bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400" />
+                <div className="p-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="relative shrink-0 w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-400 p-[2px]">
+                      <div className="w-full h-full rounded-[12px] bg-white dark:bg-gray-900 flex items-center justify-center overflow-hidden">
+                        {req.avatar ? (
+                          <img src={req.avatar} alt={req.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <span className="text-lg font-black bg-gradient-to-br from-amber-500 to-orange-500 bg-clip-text text-transparent">
+                            {req.name.charAt(0).toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-sm text-gray-800 dark:text-white truncate">{req.name}</h3>
+                      <div className="flex items-center gap-1 text-[11px] text-gray-400">
+                        <Mail size={10} />
+                        <span className="truncate">{req.email}</span>
+                      </div>
+                      {req.sellerRequestDate && (
+                        <div className="flex items-center gap-1 text-[10px] text-amber-600 dark:text-amber-400 mt-0.5">
+                          <Clock size={10} />
+                          <span>{new Date(req.sellerRequestDate).toLocaleDateString('vi-VN')} {new Date(req.sellerRequestDate).toLocaleTimeString('vi-VN', {hour: '2-digit', minute: '2-digit'})}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => handleApproveSellerRequest(req._id)}
+                      className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 shadow-md shadow-emerald-200 dark:shadow-emerald-900/30 hover:-translate-y-0.5 transition-all duration-200"
+                    >
+                      <Check size={14} /> Chấp nhận
+                    </button>
+                    <button
+                      onClick={() => handleRejectSellerRequest(req._id)}
+                      className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-red-500 to-rose-500 hover:from-red-600 hover:to-rose-600 shadow-md shadow-red-200 dark:shadow-red-900/30 hover:-translate-y-0.5 transition-all duration-200"
+                    >
+                      <XCircle size={14} /> Từ chối
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Search & Tab Filter */}
       <div className="flex flex-col gap-3">

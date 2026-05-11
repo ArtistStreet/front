@@ -672,6 +672,25 @@ export const productApi = {
       headers: { Authorization: `Bearer ${token}` },
     });
   },
+  getPendingSellerRequests: (token: string) => {
+    return axios.get(`${API_URL}/admin/seller-requests`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+  approveSellerRequest: (userId: string, token: string) => {
+    return axios.put(
+      `${API_URL}/admin/seller-requests/${userId}/approve`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+  },
+  rejectSellerRequest: (userId: string, token: string) => {
+    return axios.put(
+      `${API_URL}/admin/seller-requests/${userId}/reject`,
+      {},
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+  },
 };
 
 export default api;

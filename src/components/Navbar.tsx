@@ -45,8 +45,7 @@ const Navbar = () => {
     try {
       const res = await productApi.becomeSeller(token);
       login(res.data.user, res.data.token);
-      alert("Chúc mừng! Bạn đã trở thành người bán hàng.");
-      navigate("/admin/dashboard");
+      alert(res.data.message || "Yêu cầu đã được gửi. Vui lòng chờ admin phê duyệt.");
     } catch (error) {
       const apiError = error as ApiError;
       alert(apiError.response?.data?.message || "Có lỗi xảy ra");
@@ -152,12 +151,19 @@ const Navbar = () => {
                 Kênh Người Bán
               </Link>
             ) : user ? (
-              <button
-                onClick={handleBecomeSeller}
-                className="hover:text-shopbee-blue transition-colors cursor-pointer"
-              >
-                Trở thành Người Bán
-              </button>
+              user.sellerRequestStatus === "pending" ? (
+                <span className="text-yellow-600 dark:text-yellow-400 cursor-default flex items-center gap-1">
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse" />
+                  Đang chờ duyệt
+                </span>
+              ) : (
+                <button
+                  onClick={handleBecomeSeller}
+                  className="hover:text-shopbee-blue transition-colors cursor-pointer"
+                >
+                  Trở thành Người Bán
+                </button>
+              )
             ) : (
               <Link
                 to="/login"

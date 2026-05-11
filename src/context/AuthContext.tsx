@@ -16,6 +16,8 @@ interface User {
   shopCover?: string;
   shopAddress?: string;
   _id?: string;
+  sellerRequestStatus?: string;
+  sellerRequestDate?: string;
 }
 
 export interface AuthContextType {
@@ -102,6 +104,3 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     </AuthContext.Provider>
   );
 };
-
-
-
